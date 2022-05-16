@@ -1,0 +1,13 @@
+package es.taw.swishbay;
+
+import org.junit.jupiter.api.Test;
+import org.springframework.boot.test.context.SpringBootTest;
+
+@SpringBootTest
+class SwishBayApplicationTests {
+
+    @Test
+    void contextLoads() {
+    }
+
+}
