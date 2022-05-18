@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import javax.servlet.http.HttpSession;
+import java.util.Collections;
 import java.util.List;
 
 @Controller
@@ -50,7 +51,7 @@ public class SellerController {
     }*/
 
     @PostMapping("/SellerController")
-    public String inicio (Model model, HttpSession sesion, String filtro, String filtroCategoria, String desde, String hasta) {
+    public String inicio (Model model, HttpSession sesion, String filtroNombre, String filtroCategoria, String desde, String hasta) {
 
         UsuarioDTO user = (UsuarioDTO)sesion.getAttribute("usuario");
 
@@ -59,27 +60,17 @@ public class SellerController {
         if(desde!=null && (Double.parseDouble(desde)> Double.parseDouble(hasta)))
             desde="0";
 
-        List<ProductoDTO> productos = sellerService.listarProductos(user, filtroNombre, filtroCategoria, filtroDesde, filtroHasta);
+        List<ProductoDTO> productos = sellerService.listarProductos(user, filtroNombre, filtroCategoria, desde, hasta);
 
         Collections.reverse(productos);
+        model.addAttribute("productos", productos);
+        model.addAttribute("categorias", categorias);
+        model.addAttribute("filtroCategoria", filtroCategoria);
+        model.addAttribute("desdeSelected", desde);
+        model.addAttribute("hastaSelected", hasta);
+        model.addAttribute("usuario", user);
 
-
+        return "seller";
     }
-
-
-
-
-
-    List<ProductoDTO> productos = ss.listarProductos(user, filtroNombre, filtroCategoria, filtroDesde, filtroHasta);
-
-            Collections.reverse(productos);
-            request.setAttribute("productos", productos);
-            request.setAttribute("categorias", categorias);
-            request.setAttribute("selected", filtroCategoria);
-            request.setAttribute("desdeSelected", filtroDesde);
-            request.setAttribute("hastaSelected", filtroHasta);
-            request.setAttribute("usuario", user);
-
-            request.getRequestDispatcher("WEB-INF/jsp/seller.jsp").forward(request, response);
 
 }

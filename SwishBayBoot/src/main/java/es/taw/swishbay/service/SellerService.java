@@ -97,10 +97,10 @@ public class SellerService {
                 }
             }else{
                 if(filtroCategoria==null || filtroCategoria.equals("Categoria")){
-                    productos = productoRepository.findVendidosByNombreDesde(user.getId(),filtroNombre, filtroDesde, filtroHasta);
+                    productos = productoRepository.findVendidosByNombreDesde(user.getId(),filtroNombre, Double.parseDouble(filtroDesde), Double.parseDouble(filtroHasta));
 
                 }else{
-                    productos = productoRepository.findVendidosByNombreFilteredDesde(user.getId(),filtroNombre,filtroCategoria, filtroDesde, filtroHasta);
+                    productos = productoRepository.findVendidosByNombreFilteredDesde(user.getId(),filtroNombre,filtroCategoria, Double.parseDouble(filtroDesde), Double.parseDouble(filtroHasta));
 
                 }
             }
