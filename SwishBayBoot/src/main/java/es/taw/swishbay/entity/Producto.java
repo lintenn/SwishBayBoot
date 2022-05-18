@@ -5,6 +5,9 @@
  */
 package es.taw.swishbay.entity;
 
+import es.taw.swishbay.dto.ProductoDTO;
+import es.taw.swishbay.dto.PujaDTO;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
@@ -228,7 +231,7 @@ public class Producto implements Serializable {
         return "swishbay.entity.Producto[ id=" + id + " ]";
     }
     
-    /*public ProductoDTO toDTO () { // Galo
+    public ProductoDTO toDTO () { // Galo
         ProductoDTO dto = new ProductoDTO();
         
         dto.setId(id);
@@ -252,6 +255,6 @@ public class Producto implements Serializable {
         dto.setPujaList(listaDTO);
         
         return dto;
-    }*/
+    }
     
 }

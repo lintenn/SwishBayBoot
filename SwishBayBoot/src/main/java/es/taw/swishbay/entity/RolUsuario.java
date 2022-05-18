@@ -5,6 +5,8 @@
  */
 package es.taw.swishbay.entity;
 
+import es.taw.swishbay.dto.RolUsuarioDTO;
+
 import java.io.Serializable;
 import java.util.List;
 import javax.persistence.Basic;
@@ -107,7 +109,7 @@ public class RolUsuario implements Serializable {
         return true;
     }
 
-    /*@Override
+    @Override
     public String toString() {
         return "swishbay.entity.RolUsuario[ id=" + id + " ]";
     }
@@ -119,6 +121,6 @@ public class RolUsuario implements Serializable {
         dto.setNombre(nombre);
         
         return dto;
-    }*/
+    }
     
 }
