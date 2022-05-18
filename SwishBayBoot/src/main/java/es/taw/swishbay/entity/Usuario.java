@@ -9,25 +9,8 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import javax.persistence.Basic;
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
-import javax.persistence.Temporal;
+import javax.persistence.*;
 import javax.persistence.TemporalType;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
@@ -40,17 +23,17 @@ import javax.xml.bind.annotation.XmlTransient;
 @Table(name = "USUARIO")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Usuario.findAll", query = "SELECT u FROM Usuario u")
-    , @NamedQuery(name = "Usuario.findById", query = "SELECT u FROM Usuario u WHERE u.id = :id")
-    , @NamedQuery(name = "Usuario.findByCorreo", query = "SELECT u FROM Usuario u WHERE u.correo = :correo")
-    , @NamedQuery(name = "Usuario.findByPassword", query = "SELECT u FROM Usuario u WHERE u.password = :password")
-    , @NamedQuery(name = "Usuario.findByNombre", query = "SELECT u FROM Usuario u WHERE u.nombre = :nombre")
-    , @NamedQuery(name = "Usuario.findByApellidos", query = "SELECT u FROM Usuario u WHERE u.apellidos = :apellidos")
-    , @NamedQuery(name = "Usuario.findByDomicilio", query = "SELECT u FROM Usuario u WHERE u.domicilio = :domicilio")
-    , @NamedQuery(name = "Usuario.findByFechaNacimiento", query = "SELECT u FROM Usuario u WHERE u.fechaNacimiento = :fechaNacimiento")
-    , @NamedQuery(name = "Usuario.findBySexo", query = "SELECT u FROM Usuario u WHERE u.sexo = :sexo")
-    , @NamedQuery(name = "Usuario.findByCiudad", query = "SELECT u FROM Usuario u WHERE u.ciudad = :ciudad")
-    , @NamedQuery(name = "Usuario.findBySaldo", query = "SELECT u FROM Usuario u WHERE u.saldo = :saldo")})
+        @NamedQuery(name = "Usuario.findAll", query = "SELECT u FROM Usuario u")
+        , @NamedQuery(name = "Usuario.findById", query = "SELECT u FROM Usuario u WHERE u.id = :id")
+        , @NamedQuery(name = "Usuario.findByCorreo", query = "SELECT u FROM Usuario u WHERE u.correo = :correo")
+        , @NamedQuery(name = "Usuario.findByPassword", query = "SELECT u FROM Usuario u WHERE u.password = :password")
+        , @NamedQuery(name = "Usuario.findByNombre", query = "SELECT u FROM Usuario u WHERE u.nombre = :nombre")
+        , @NamedQuery(name = "Usuario.findByApellidos", query = "SELECT u FROM Usuario u WHERE u.apellidos = :apellidos")
+        , @NamedQuery(name = "Usuario.findByDomicilio", query = "SELECT u FROM Usuario u WHERE u.domicilio = :domicilio")
+        , @NamedQuery(name = "Usuario.findByFechaNacimiento", query = "SELECT u FROM Usuario u WHERE u.fechaNacimiento = :fechaNacimiento")
+        , @NamedQuery(name = "Usuario.findBySexo", query = "SELECT u FROM Usuario u WHERE u.sexo = :sexo")
+        , @NamedQuery(name = "Usuario.findByCiudad", query = "SELECT u FROM Usuario u WHERE u.ciudad = :ciudad")
+        , @NamedQuery(name = "Usuario.findBySaldo", query = "SELECT u FROM Usuario u WHERE u.saldo = :saldo")})
 public class Usuario implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -60,56 +43,43 @@ public class Usuario implements Serializable {
     @Column(name = "ID")
     private Integer id;
     @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 45)
-    @Column(name = "CORREO")
+    @Column(name = "CORREO", nullable = false, length = 45)
     private String correo;
     @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 45)
-    @Column(name = "PASSWORD")
+    @Column(name = "PASSWORD", nullable = false, length = 45)
     private String password;
     @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 45)
-    @Column(name = "NOMBRE")
+    @Column(name = "NOMBRE", nullable = false, length = 45)
     private String nombre;
     @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 45)
-    @Column(name = "APELLIDOS")
+    @Column(name = "APELLIDOS", nullable = false, length = 45)
     private String apellidos;
-    @Size(max = 100)
-    @Column(name = "DOMICILIO")
+    @Column(name = "DOMICILIO", length = 100)
     private String domicilio;
     @Basic(optional = false)
-    @NotNull
-    @Column(name = "FECHA_NACIMIENTO")
+    @Column(name = "FECHA_NACIMIENTO", nullable = false)
     @Temporal(TemporalType.DATE)
     private Date fechaNacimiento;
-    @Size(max = 5)
-    @Column(name = "SEXO")
+    @Column(name = "SEXO", length = 5)
     private String sexo;
-    @Size(max = 45)
-    @Column(name = "CIUDAD")
+    @Column(name = "CIUDAD", length = 45)
     private String ciudad;
     @Basic(optional = false)
-    @NotNull
-    @Column(name = "SALDO")
+    @Column(name = "SALDO", nullable = false)
     private double saldo;
     @JoinTable(name = "FAVORITO", joinColumns = {
-        @JoinColumn(name = "COMPRADOR", referencedColumnName = "ID")}, inverseJoinColumns = {
-        @JoinColumn(name = "PRODUCTO", referencedColumnName = "ID")})
+            @JoinColumn(name = "COMPRADOR", referencedColumnName = "ID")}, inverseJoinColumns = {
+            @JoinColumn(name = "PRODUCTO", referencedColumnName = "ID")})
     @ManyToMany
     private List<Producto> productoList;
     @JoinTable(name = "GRUPOCOMPRADOR", joinColumns = {
-        @JoinColumn(name = "COMPRADOR", referencedColumnName = "ID")}, inverseJoinColumns = {
-        @JoinColumn(name = "GRUPO", referencedColumnName = "ID")})
+            @JoinColumn(name = "COMPRADOR", referencedColumnName = "ID")}, inverseJoinColumns = {
+            @JoinColumn(name = "GRUPO", referencedColumnName = "ID")})
     @ManyToMany
     private List<Grupo> grupoList;
     @JoinTable(name = "MENSAJECOMPRADOR", joinColumns = {
-        @JoinColumn(name = "COMPRADOR", referencedColumnName = "ID")}, inverseJoinColumns = {
-        @JoinColumn(name = "MENSAJE", referencedColumnName = "ID")})
+            @JoinColumn(name = "COMPRADOR", referencedColumnName = "ID")}, inverseJoinColumns = {
+            @JoinColumn(name = "MENSAJE", referencedColumnName = "ID")})
     @ManyToMany
     private List<Mensaje> mensajeList;
     @ManyToMany(mappedBy = "usuarioList")
