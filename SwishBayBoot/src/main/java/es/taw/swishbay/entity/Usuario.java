@@ -23,17 +23,17 @@ import javax.xml.bind.annotation.XmlTransient;
 @Table(name = "USUARIO")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Usuario.findAll", query = "SELECT u FROM Usuario u")
-    , @NamedQuery(name = "Usuario.findById", query = "SELECT u FROM Usuario u WHERE u.id = :id")
-    , @NamedQuery(name = "Usuario.findByCorreo", query = "SELECT u FROM Usuario u WHERE u.correo = :correo")
-    , @NamedQuery(name = "Usuario.findByPassword", query = "SELECT u FROM Usuario u WHERE u.password = :password")
-    , @NamedQuery(name = "Usuario.findByNombre", query = "SELECT u FROM Usuario u WHERE u.nombre = :nombre")
-    , @NamedQuery(name = "Usuario.findByApellidos", query = "SELECT u FROM Usuario u WHERE u.apellidos = :apellidos")
-    , @NamedQuery(name = "Usuario.findByDomicilio", query = "SELECT u FROM Usuario u WHERE u.domicilio = :domicilio")
-    , @NamedQuery(name = "Usuario.findByFechaNacimiento", query = "SELECT u FROM Usuario u WHERE u.fechaNacimiento = :fechaNacimiento")
-    , @NamedQuery(name = "Usuario.findBySexo", query = "SELECT u FROM Usuario u WHERE u.sexo = :sexo")
-    , @NamedQuery(name = "Usuario.findByCiudad", query = "SELECT u FROM Usuario u WHERE u.ciudad = :ciudad")
-    , @NamedQuery(name = "Usuario.findBySaldo", query = "SELECT u FROM Usuario u WHERE u.saldo = :saldo")})
+        @NamedQuery(name = "Usuario.findAll", query = "SELECT u FROM Usuario u")
+        , @NamedQuery(name = "Usuario.findById", query = "SELECT u FROM Usuario u WHERE u.id = :id")
+        , @NamedQuery(name = "Usuario.findByCorreo", query = "SELECT u FROM Usuario u WHERE u.correo = :correo")
+        , @NamedQuery(name = "Usuario.findByPassword", query = "SELECT u FROM Usuario u WHERE u.password = :password")
+        , @NamedQuery(name = "Usuario.findByNombre", query = "SELECT u FROM Usuario u WHERE u.nombre = :nombre")
+        , @NamedQuery(name = "Usuario.findByApellidos", query = "SELECT u FROM Usuario u WHERE u.apellidos = :apellidos")
+        , @NamedQuery(name = "Usuario.findByDomicilio", query = "SELECT u FROM Usuario u WHERE u.domicilio = :domicilio")
+        , @NamedQuery(name = "Usuario.findByFechaNacimiento", query = "SELECT u FROM Usuario u WHERE u.fechaNacimiento = :fechaNacimiento")
+        , @NamedQuery(name = "Usuario.findBySexo", query = "SELECT u FROM Usuario u WHERE u.sexo = :sexo")
+        , @NamedQuery(name = "Usuario.findByCiudad", query = "SELECT u FROM Usuario u WHERE u.ciudad = :ciudad")
+        , @NamedQuery(name = "Usuario.findBySaldo", query = "SELECT u FROM Usuario u WHERE u.saldo = :saldo")})
 public class Usuario implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -68,18 +68,18 @@ public class Usuario implements Serializable {
     @Column(name = "SALDO", nullable = false)
     private double saldo;
     @JoinTable(name = "FAVORITO", joinColumns = {
-        @JoinColumn(name = "COMPRADOR", referencedColumnName = "ID")}, inverseJoinColumns = {
-        @JoinColumn(name = "PRODUCTO", referencedColumnName = "ID")})
+            @JoinColumn(name = "COMPRADOR", referencedColumnName = "ID")}, inverseJoinColumns = {
+            @JoinColumn(name = "PRODUCTO", referencedColumnName = "ID")})
     @ManyToMany
     private List<Producto> productoList;
     @JoinTable(name = "GRUPOCOMPRADOR", joinColumns = {
-        @JoinColumn(name = "COMPRADOR", referencedColumnName = "ID")}, inverseJoinColumns = {
-        @JoinColumn(name = "GRUPO", referencedColumnName = "ID")})
+            @JoinColumn(name = "COMPRADOR", referencedColumnName = "ID")}, inverseJoinColumns = {
+            @JoinColumn(name = "GRUPO", referencedColumnName = "ID")})
     @ManyToMany
     private List<Grupo> grupoList;
     @JoinTable(name = "MENSAJECOMPRADOR", joinColumns = {
-        @JoinColumn(name = "COMPRADOR", referencedColumnName = "ID")}, inverseJoinColumns = {
-        @JoinColumn(name = "MENSAJE", referencedColumnName = "ID")})
+            @JoinColumn(name = "COMPRADOR", referencedColumnName = "ID")}, inverseJoinColumns = {
+            @JoinColumn(name = "MENSAJE", referencedColumnName = "ID")})
     @ManyToMany
     private List<Mensaje> mensajeList;
     @ManyToMany(mappedBy = "usuarioList")
