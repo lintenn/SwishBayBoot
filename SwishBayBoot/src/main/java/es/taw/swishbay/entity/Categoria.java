@@ -5,6 +5,8 @@
  */
 package es.taw.swishbay.entity;
 
+import es.taw.swishbay.dto.CategoriaDTO;
+
 import java.io.Serializable;
 import java.util.List;
 import javax.persistence.Basic;
@@ -137,7 +139,7 @@ public class Categoria implements Serializable {
         return true;
     }
 
-    /*@Override
+    @Override
     public String toString() {
         return "swishbay.entity.Categoria[ id=" + id + " ]";
     }
@@ -150,6 +152,6 @@ public class Categoria implements Serializable {
         dto.setNombre(nombre);
         
         return dto;
-    }*/
+    }
     
 }

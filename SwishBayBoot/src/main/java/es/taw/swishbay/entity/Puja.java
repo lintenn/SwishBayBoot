@@ -5,6 +5,8 @@
  */
 package es.taw.swishbay.entity;
 
+import es.taw.swishbay.dto.PujaDTO;
+
 import java.io.Serializable;
 import java.util.Date;
 import javax.persistence.Basic;
@@ -132,7 +134,7 @@ public class Puja implements Serializable {
         return true;
     }
 
-    /*@Override
+    @Override
     public String toString() {
         return "swishbay.entity.Puja[ pujaPK=" + pujaPK + " ]";
     }
@@ -147,6 +149,6 @@ public class Puja implements Serializable {
 
 
         return dto;
-    } */
+    }
     
 }

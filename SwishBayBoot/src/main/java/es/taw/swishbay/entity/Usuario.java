@@ -5,6 +5,8 @@
  */
 package es.taw.swishbay.entity;
 
+import es.taw.swishbay.dto.UsuarioDTO;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
@@ -309,7 +311,7 @@ public class Usuario implements Serializable {
         return "swishbay.entity.Usuario[ id=" + id + " ]";
     }
     
-    /*public UsuarioDTO toDTO () {    // Luis
+    public UsuarioDTO toDTO () {    // Luis
         UsuarioDTO dto = new UsuarioDTO();
         
         dto.setApellidos(apellidos);
@@ -342,5 +344,5 @@ public class Usuario implements Serializable {
         dto.setFavoritos(favoritos);
        
         return dto;        
-    }  */
+    }
 }
