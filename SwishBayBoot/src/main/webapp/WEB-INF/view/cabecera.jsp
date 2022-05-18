@@ -1,4 +1,4 @@
-<%-- 
+<%@ page import="es.taw.swishbay.dto.UsuarioDTO" %><%--
     Document   : cabecera
     Created on : Apr 12, 2022, 3:01:32 PM
     Author     : Miguel Oña Guerrero
