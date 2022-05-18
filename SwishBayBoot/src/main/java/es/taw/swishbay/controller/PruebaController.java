@@ -15,17 +15,17 @@ import java.util.List;
 @Controller
 public class PruebaController {
 
-    private UsuarioService usuarioService;
+    private UsuarioRepository usuarioRepository;
 
     @Autowired
-    public void setUsuarioService(UsuarioService usuarioService) {
-        this.usuarioService = usuarioService;
+    public void setUsuarioRepository(UsuarioRepository usuarioRepository) {
+        this.usuarioRepository = usuarioRepository;
     }
 
     @GetMapping("/Usuarios")
     public String inicio (Model model, HttpSession sesion) {
 
-        List<Usuario> lista = this.usuarioService.findAll();
+        List<Usuario> lista = this.usuarioRepository.findAll();
         model.addAttribute("usuarios", lista);
 
 
