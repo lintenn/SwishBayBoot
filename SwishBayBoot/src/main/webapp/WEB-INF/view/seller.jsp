@@ -33,7 +33,7 @@
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                   <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <li class="nav-item">
-                      <a class="nav-link active" aria-current="page" href="SellerServlet"> Mis productos</a>
+                      <a class="nav-link active" aria-current="page" href="SellerController"> Mis productos</a>
                     </li>
                     <li class="nav-item">
                       <a class="nav-link" href="PujasServlet">Mis pujas</a>
@@ -140,22 +140,23 @@
             <%
                 }
                 if(productos == null || productos.isEmpty()){
-            %>
-            <div class="py-5">    
-                Lista de productos vacía.
-            </div>
-            </main>
 
-            <footer class="text-white-50 fixed-bottom">
-            <p>© 2022 SwishBay, aplicación web desarrollada por el <a href="/" class="text-white">Grupo 10</a>.</p>
+            %>
+                <div class="py-5">
+                    Lista de productos vacía.
+                </div>
+                </main>
+
+                <footer class="text-white-50 fixed-bottom">
+                <p>© 2022 SwishBay, aplicación web desarrollada por el <a href="/" class="text-white">Grupo 10</a>.</p>
 
             <%
                 }else{
             %>
-            </main>
+                </main>
 
-            <footer class="mt-5 text-white-50">
-            <p class="pt-5">© 2022 SwishBay, aplicación web desarrollada por el <a href="/" class="text-white">Grupo 10</a>.</p>
+                <footer class="mt-5 text-white-50">
+                <p class="pt-5">© 2022 SwishBay, aplicación web desarrollada por el <a href="/" class="text-white">Grupo 10</a>.</p>
             <%
                 }
             %>

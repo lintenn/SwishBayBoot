@@ -26,5 +26,11 @@ public interface ProductoRepository  extends JpaRepository<Producto, Integer> {
     @Query("select p from Producto p where p.titulo like :titulo and p.categoria.nombre like :filtroCategoria and p.vendedor.id=:user")
     List<Producto> findVendidosByNombreFiltered(Integer user, String titulo, String filtroCategoria);
 
-    
+    @Query("select p from Producto p where p.titulo like :titulo and p.vendedor.id=:user and p.precioSalida>=:desde and p.precioSalida<=:hasta")
+    List<Producto> findVendidosByNombreDesde(Integer user, String titulo, Double desde, Double hasta);
+
+    @Query("select p from Producto p where p.titulo like :titulo and p.categoria.nombre like :filtroCategoria and p.vendedor.id=:user and p.precioSalida>=:desde and p.precioSalida<=:hasta")
+    List<Producto> findVendidosByNombreFilteredDesde(Integer user, String titulo, String filtroCategoria, Double desde, Double hasta);
+
+
 }
