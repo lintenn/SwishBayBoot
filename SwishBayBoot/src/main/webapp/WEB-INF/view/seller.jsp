@@ -22,7 +22,6 @@
     </head>
     <body class="d-flex h-100 text-center text-white bg-dark">
         <div class="cover-container d-flex w-100 h-100 p-3 mx-auto flex-column">
-            <jsp:include page="cabecera.jsp" />
 
             <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
               <div class="container-fluid">
@@ -46,7 +45,7 @@
                     </li>
                     
                   </ul>
-                  <form method="post" class="d-flex" action="SellerController">
+                  <form method="POST" class="d-flex" action="SellerController">
                       <%
                         String filtroDesde = (String) request.getAttribute("desdeSelected");
                         String filtroHasta = (String) request.getAttribute("hastaSelected");
@@ -56,13 +55,13 @@
                         Desde:  
                       </div>
                       
-                      <input class="form-control mx-1" type="number" min="0"  style=" width:80px;" id="desde" name="desde" value=<%= filtroDesde==null ? "0":Integer.parseInt(filtroDesde)  %> ></>
+                      <input class="form-control mx-1" type="number" min="0"  style=" width:80px;" id="desde" name="desde" value=<%= filtroDesde==null ? "0":Integer.parseInt(filtroDesde)  %> />
                       <div class="mt-2" style="margin-right: 15px;">€</div>
                       <div class="mt-2">
                         Hasta:  
                       </div>
                       
-                      <input class="form-control mx-1" type="number" min="0" style=" width:80px;" id="hasta" name="hasta" value=<%= filtroHasta==null ? "9999":Integer.parseInt(filtroHasta)  %> ></>
+                      <input class="form-control mx-1" type="number" min="0" style=" width:80px;" id="hasta" name="hasta" value=<%= filtroHasta==null ? "9999":Integer.parseInt(filtroHasta)  %> />
                       <div class="mt-2" style="margin-right: 15px;">€</div>
                      
                       <div class="col-sm-3">
@@ -85,7 +84,7 @@
                         </select>
                       </div>
                     <input class="form-control me-2 mx-2" type="search" placeholder="Buscar" name="filtro" aria-label="Search">
-                    <input class="btn btn-outline-success" type="submit" value="Buscar"></>
+                    <input class="btn btn-outline-success" type="submit" value="Buscar"/>
                   </form>
                 </div>
               </div>
@@ -142,25 +141,26 @@
                 if(productos == null || productos.isEmpty()){
 
             %>
-                <div class="py-5">
-                    Lista de productos vacía.
-                </div>
-                </main>
+                    <div class="py-5">
+                        Lista de productos vacía.
+                    </div>
+                    </main>
 
-                <footer class="text-white-50 fixed-bottom">
-                <p>© 2022 SwishBay, aplicación web desarrollada por el <a href="/" class="text-white">Grupo 10</a>.</p>
-
+                    <footer class="text-white-50 fixed-bottom">
+                    <p>© 2022 SwishBay, aplicación web desarrollada por el <a href="/" class="text-white">Grupo 10</a>.</p>
+                    </footer>
             <%
                 }else{
             %>
-                </main>
+                    </main>
 
-                <footer class="mt-5 text-white-50">
-                <p class="pt-5">© 2022 SwishBay, aplicación web desarrollada por el <a href="/" class="text-white">Grupo 10</a>.</p>
+                    <footer class="mt-5 text-white-50">
+                    <p class="pt-5">© 2022 SwishBay, aplicación web desarrollada por el <a href="/" class="text-white">Grupo 10</a>.</p>
+                    </footer>
             <%
                 }
             %>
-            </footer>
+
         </div>
         
         <!-- Optional JavaScript; choose one of the two! -->
