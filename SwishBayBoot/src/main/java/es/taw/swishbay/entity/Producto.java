@@ -57,28 +57,22 @@ public class Producto implements Serializable {
     @Column(name = "ID")
     private Integer id;
     @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 45)
-    @Column(name = "TITULO")
+    @Column(name = "TITULO", nullable = false, length = 45)
     private String titulo;
     @Lob
-    @Size(max = 2147483647)
-    @Column(name = "DESCRIPCION")
+    @Column(name = "DESCRIPCION", length = 2147483647)
     private String descripcion;
     @Basic(optional = false)
-    @NotNull
-    @Column(name = "PRECIO_SALIDA")
+    @Column(name = "PRECIO_SALIDA", nullable = false)
     private double precioSalida;
     @Column(name = "FIN_PUJA")
     @Temporal(TemporalType.DATE)
     private Date finPuja;
     @Lob
-    @Size(max = 2147483647)
-    @Column(name = "FOTO")
+    @Column(name = "FOTO", length = 2147483647)
     private String foto;
     @Basic(optional = false)
-    @NotNull
-    @Column(name = "EN_PUJA")
+    @Column(name = "EN_PUJA", nullable = false)
     private short enPuja;
     @ManyToMany(mappedBy = "productoList")
     private List<Usuario> usuarioList;

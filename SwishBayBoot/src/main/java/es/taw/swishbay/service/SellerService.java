@@ -67,6 +67,13 @@ public class SellerService {
         return this.listaCategoriaEntityADTO(list);
     }
 
+    public List<ProductoDTO> listarTodos(UsuarioDTO user){ // Galo
+
+        List<Producto> productos = productos = productoRepository.findVendidos(user.getId());
+
+        return this.listaProductoEntityADTO(productos);
+    }
+
     public List<ProductoDTO> listarProductos(UsuarioDTO user, String filtroNombre, String filtroCategoria, String filtroDesde, String filtroHasta){ // Galo
 
         List<Producto> productos = null;
@@ -107,5 +114,38 @@ public class SellerService {
         }
         return this.listaProductoEntityADTO(productos);
     }
+
+    public List<Object[]> listarTodosEnPuja(UsuarioDTO user) {
+
+        List<Object[]> lista = productoRepository.findEnPuja(user.getId());
+        this.listaEnPujaEntityADTO(lista);
+        return lista;
+    }
+
+    public List<Object[]> listarEnPuja(UsuarioDTO user, String filtroNombre, String filtroCategoria){
+
+        List<Object[]> productos = null;
+
+        if(filtroNombre == null || filtroNombre.isEmpty()){
+            if(filtroCategoria==null || filtroCategoria.equals("Categoria")){
+                productos = productoRepository.findEnPuja(user.getId());
+
+            }else{
+                productos= productoRepository.findEnPujaFiltered(user.getId(),filtroCategoria);
+
+            }
+        }else{
+            if(filtroCategoria==null || filtroCategoria.equals("Categoria")){
+                productos = productoRepository.findEnPujaByNombre(user.getId(),filtroNombre);
+
+            }else{
+                productos = productoRepository.findEnPujaByNombreFiltered(user.getId(),filtroNombre,filtroCategoria);
+
+            }
+        }
+        listaEnPujaEntityADTO(productos);
+        return productos;
+    }
+
 
 }

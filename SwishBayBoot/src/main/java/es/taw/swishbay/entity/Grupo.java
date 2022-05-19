@@ -44,8 +44,7 @@ public class Grupo implements Serializable {
     @Basic(optional = false)
     @Column(name = "ID")
     private Integer id;
-    @Size(max = 45)
-    @Column(name = "NOMBRE")
+    @Column(name = "NOMBRE", length = 45)
     private String nombre;
     @ManyToMany(mappedBy = "grupoList")
     private List<Usuario> usuarioList;

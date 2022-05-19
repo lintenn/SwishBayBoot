@@ -34,7 +34,7 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Puja.findAll", query = "SELECT p FROM Puja p")
     , @NamedQuery(name = "Puja.findByComprador", query = "SELECT p FROM Puja p WHERE p.pujaPK.comprador = :comprador")
     , @NamedQuery(name = "Puja.findByProducto", query = "SELECT p FROM Puja p WHERE p.pujaPK.producto = :producto")
-    , @NamedQuery(name = "Puja.findByPrecio", query = "SELECT p FROM Puja p WHERE p.precio = :precio")
+    , @NamedQuery(name = "Puja.findByPrecio", query = "SELECT p FROM Puja p WHERE p.pujaPK.precio = :precio")
     , @NamedQuery(name = "Puja.findByFecha", query = "SELECT p FROM Puja p WHERE p.fecha = :fecha")})
 public class Puja implements Serializable {
 
@@ -42,12 +42,7 @@ public class Puja implements Serializable {
     @EmbeddedId
     protected PujaPK pujaPK;
     @Basic(optional = false)
-    @NotNull
-    @Column(name = "PRECIO")
-    private double precio;
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "FECHA")
+    @Column(name = "FECHA", nullable = false)
     @Temporal(TemporalType.DATE)
     private Date fecha;
     @JoinColumn(name = "COMPRADOR", referencedColumnName = "ID", insertable = false, updatable = false)
@@ -64,14 +59,13 @@ public class Puja implements Serializable {
         this.pujaPK = pujaPK;
     }
 
-    public Puja(PujaPK pujaPK, double precio, Date fecha) {
+    public Puja(PujaPK pujaPK, Date fecha) {
         this.pujaPK = pujaPK;
-        this.precio = precio;
         this.fecha = fecha;
     }
 
-    public Puja(int comprador, int producto) {
-        this.pujaPK = new PujaPK(comprador, producto);
+    public Puja(int comprador, int producto, double precio) {
+        this.pujaPK = new PujaPK(comprador, producto, precio);
     }
 
     public PujaPK getPujaPK() {
@@ -80,14 +74,6 @@ public class Puja implements Serializable {
 
     public void setPujaPK(PujaPK pujaPK) {
         this.pujaPK = pujaPK;
-    }
-
-    public double getPrecio() {
-        return precio;
-    }
-
-    public void setPrecio(double precio) {
-        this.precio = precio;
     }
 
     public Date getFecha() {
@@ -144,7 +130,7 @@ public class Puja implements Serializable {
 
         dto.setComprador(usuario.toDTO());
         dto.setFecha(fecha);
-        dto.setPrecio(precio);
+        dto.setPrecio(pujaPK.getPrecio());
         dto.setProducto(producto1.getId());
 
 

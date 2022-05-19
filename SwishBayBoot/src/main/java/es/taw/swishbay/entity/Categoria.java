@@ -49,13 +49,10 @@ public class Categoria implements Serializable {
     @Column(name = "ID")
     private Integer id;
     @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 45)
-    @Column(name = "NOMBRE")
+    @Column(name = "NOMBRE", length = 45, nullable = false)
     private String nombre;
     @Lob
-    @Size(max = 2147483647)
-    @Column(name = "DESCRIPCION")
+    @Column(name = "DESCRIPCION", length = 2147483647)
     private String descripcion;
     @JoinTable(name = "PREFERENCIA", joinColumns = {
         @JoinColumn(name = "CATEGORIA", referencedColumnName = "ID")}, inverseJoinColumns = {
