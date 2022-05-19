@@ -73,7 +73,7 @@ public class UsuarioService {
         if (filtroNombre == null || filtroNombre.isEmpty()) {
             usuarios = this.usuarioRepository.findAll();
         } else {
-            //usuarios = this.usuarioRepository.findByNombre(filtroNombre);
+            usuarios = this.usuarioRepository.findByNombre(filtroNombre);
         }
 
         return this.listaEntityADTO(usuarios);
@@ -87,15 +87,15 @@ public class UsuarioService {
                 usuarios = this.usuarioRepository.findAll();
 
             } else {
-                //usuarios = this.usuarioRepository.findAll(filtroRol);
+                usuarios = this.usuarioRepository.findAll(filtroRol);
 
             }
         } else {
             if (filtroRol == null || filtroRol.equals("Tipo")) {
-                //usuarios = this.usuarioRepository.findByNombre(filtroNombre);
+                usuarios = this.usuarioRepository.findByNombre(filtroNombre);
 
             } else {
-                //usuarios = this.usuarioRepository.findByNombre(filtroNombre, filtroRol);
+                usuarios = this.usuarioRepository.findByNombre(filtroNombre, filtroRol);
 
             }
         }
@@ -290,7 +290,7 @@ public class UsuarioService {
 
     }
 
-    /*public UsuarioDTO comprobarCredenciales (String correo, String password) { // Luis
+    public UsuarioDTO comprobarCredenciales (String correo, String password) { // Luis
         UsuarioDTO userdto = null;
 
         try {
@@ -301,7 +301,7 @@ public class UsuarioService {
         }
 
         return userdto;
-    }*/
+    }
 
     public UsuarioDTO manejoFavoritos(int idProducto, int idUsuario){ //Miguel Oña Guerrero
 
