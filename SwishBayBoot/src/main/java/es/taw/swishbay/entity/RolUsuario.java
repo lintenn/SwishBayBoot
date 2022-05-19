@@ -5,6 +5,8 @@
  */
 package es.taw.swishbay.entity;
 
+import es.taw.swishbay.dto.RolUsuarioDTO;
+
 import java.io.Serializable;
 import java.util.List;
 import javax.persistence.Basic;
@@ -43,9 +45,7 @@ public class RolUsuario implements Serializable {
     @Column(name = "ID")
     private Integer id;
     @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 45)
-    @Column(name = "NOMBRE")
+    @Column(name = "NOMBRE", length = 45, nullable = false)
     private String nombre;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "rol")
     private List<Usuario> usuarioList;
@@ -107,7 +107,7 @@ public class RolUsuario implements Serializable {
         return true;
     }
 
-    /*@Override
+    @Override
     public String toString() {
         return "swishbay.entity.RolUsuario[ id=" + id + " ]";
     }
@@ -119,6 +119,6 @@ public class RolUsuario implements Serializable {
         dto.setNombre(nombre);
         
         return dto;
-    }*/
+    }
     
 }

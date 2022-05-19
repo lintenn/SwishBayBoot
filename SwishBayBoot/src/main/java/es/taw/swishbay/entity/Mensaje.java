@@ -48,16 +48,13 @@ public class Mensaje implements Serializable {
     @Basic(optional = false)
     @Column(name = "ID")
     private Integer id;
-    @Size(max = 150)
-    @Column(name = "ASUNTO")
+    @Column(name = "ASUNTO", length = 150)
     private String asunto;
     @Lob
-    @Size(max = 2147483647)
-    @Column(name = "CONTENIDO")
+    @Column(name = "CONTENIDO", length = 2147483647)
     private String contenido;
     @Basic(optional = false)
-    @NotNull
-    @Column(name = "FECHA")
+    @Column(name = "FECHA", nullable = false)
     @Temporal(TemporalType.DATE)
     private Date fecha;
     @ManyToMany(mappedBy = "mensajeList")

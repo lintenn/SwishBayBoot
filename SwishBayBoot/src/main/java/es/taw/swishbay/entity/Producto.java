@@ -5,6 +5,9 @@
  */
 package es.taw.swishbay.entity;
 
+import es.taw.swishbay.dto.ProductoDTO;
+import es.taw.swishbay.dto.PujaDTO;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
@@ -54,28 +57,22 @@ public class Producto implements Serializable {
     @Column(name = "ID")
     private Integer id;
     @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 45)
-    @Column(name = "TITULO")
+    @Column(name = "TITULO", nullable = false, length = 45)
     private String titulo;
     @Lob
-    @Size(max = 2147483647)
-    @Column(name = "DESCRIPCION")
+    @Column(name = "DESCRIPCION", length = 2147483647)
     private String descripcion;
     @Basic(optional = false)
-    @NotNull
-    @Column(name = "PRECIO_SALIDA")
+    @Column(name = "PRECIO_SALIDA", nullable = false)
     private double precioSalida;
     @Column(name = "FIN_PUJA")
     @Temporal(TemporalType.DATE)
     private Date finPuja;
     @Lob
-    @Size(max = 2147483647)
-    @Column(name = "FOTO")
+    @Column(name = "FOTO", length = 2147483647)
     private String foto;
     @Basic(optional = false)
-    @NotNull
-    @Column(name = "EN_PUJA")
+    @Column(name = "EN_PUJA", nullable = false)
     private short enPuja;
     @ManyToMany(mappedBy = "productoList")
     private List<Usuario> usuarioList;
@@ -228,7 +225,7 @@ public class Producto implements Serializable {
         return "swishbay.entity.Producto[ id=" + id + " ]";
     }
     
-    /*public ProductoDTO toDTO () { // Galo
+    public ProductoDTO toDTO () { // Galo
         ProductoDTO dto = new ProductoDTO();
         
         dto.setId(id);
@@ -252,6 +249,6 @@ public class Producto implements Serializable {
         dto.setPujaList(listaDTO);
         
         return dto;
-    }*/
+    }
     
 }
