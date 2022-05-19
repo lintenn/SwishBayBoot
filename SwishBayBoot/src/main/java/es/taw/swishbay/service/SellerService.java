@@ -147,5 +147,37 @@ public class SellerService {
         return productos;
     }
 
+    public List<Object[]> listarTodosVendidos(UsuarioDTO user) {
 
+        List<Object[]> productos = productoRepository.findVendidosAUser(user.getId());
+
+        listaEnPujaEntityADTO(productos);
+        return productos;
+    }
+
+    public List<Object[]> listarVendidos(UsuarioDTO user, String filtroNombre, String filtroCategoria) {
+
+        List<Object[]> productos = null;
+
+        if(filtroNombre == null || filtroNombre.isEmpty()){
+            if(filtroCategoria==null || filtroCategoria.equals("Categoria")){
+                productos = productoRepository.findVendidosAUser(user.getId());
+
+            }else{
+                productos= productoRepository.findVendidosAUserFiltered(user.getId(), filtroCategoria);
+
+            }
+        }else{
+            if(filtroCategoria==null || filtroCategoria.equals("Categoria")){
+                productos = productoRepository.findVendidosAUserByNombre(user.getId(), filtroNombre);
+
+            }else{
+                productos = productoRepository.findVendidosAUserByNombreFiltered(user.getId(), filtroNombre,filtroCategoria);
+
+            }
+        }
+
+        listaEnPujaEntityADTO(productos);
+        return productos;
+    }
 }
