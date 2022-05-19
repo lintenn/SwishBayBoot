@@ -16,12 +16,13 @@
         <title>SwishBay</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        
+
         <!-- Bootstrap CSS -->
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
     </head>
     <body class="d-flex h-100 text-center text-white bg-dark">
         <div class="cover-container d-flex w-100 h-100 p-3 mx-auto flex-column">
+            <%--<jsp:include page="cabecera.jsp" />--%>
 
             <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
               <div class="container-fluid">
@@ -32,10 +33,10 @@
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                   <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <li class="nav-item">
-                      <a class="nav-link active" aria-current="page" href="SellerController"> Mis productos</a>
+                      <a class="nav-link active" aria-current="page" href="misProductos"> Mis productos</a>
                     </li>
                     <li class="nav-item">
-                      <a class="nav-link" href="PujasServlet">Mis pujas</a>
+                      <a class="nav-link" href="misProductosEnPuja">Mis pujas</a>
                     </li>
                     <li class="nav-item">
                       <a class="nav-link" href="ProductosVendidosServlet">Productos vendidos</a>
@@ -45,7 +46,7 @@
                     </li>
                     
                   </ul>
-                  <form method="POST" class="d-flex" action="SellerController">
+                  <form method="POST" class="d-flex" action="buscarMisProductos">
                       <%
                         String filtroDesde = (String) request.getAttribute("desdeSelected");
                         String filtroHasta = (String) request.getAttribute("hastaSelected");
@@ -83,7 +84,7 @@
                            %>
                         </select>
                       </div>
-                    <input class="form-control me-2 mx-2" type="search" placeholder="Buscar" name="filtro" aria-label="Search">
+                    <input class="form-control me-2 mx-2" type="search" placeholder="Buscar" name="filtroNombre" aria-label="Search">
                     <input class="btn btn-outline-success" type="submit" value="Buscar"/>
                   </form>
                 </div>

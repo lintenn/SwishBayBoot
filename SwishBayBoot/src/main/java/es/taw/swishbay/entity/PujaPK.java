@@ -19,20 +19,22 @@ import javax.validation.constraints.NotNull;
 public class PujaPK implements Serializable {
 
     @Basic(optional = false)
-    @NotNull
-    @Column(name = "COMPRADOR")
+    @Column(name = "COMPRADOR", nullable = false)
     private int comprador;
     @Basic(optional = false)
-    @NotNull
-    @Column(name = "PRODUCTO")
+    @Column(name = "PRODUCTO", nullable = false)
     private int producto;
+    @Basic(optional = false)
+    @Column(name = "PRECIO", nullable = false)
+    private double precio;
 
     public PujaPK() {
     }
 
-    public PujaPK(int comprador, int producto) {
+    public PujaPK(int comprador, int producto, double precio) {
         this.comprador = comprador;
         this.producto = producto;
+        this.precio = precio;
     }
 
     public int getComprador() {
@@ -49,6 +51,14 @@ public class PujaPK implements Serializable {
 
     public void setProducto(int producto) {
         this.producto = producto;
+    }
+
+    public double getPrecio() {
+        return precio;
+    }
+
+    public void setPrecio(double precio) {
+        this.precio = precio;
     }
 
     @Override
