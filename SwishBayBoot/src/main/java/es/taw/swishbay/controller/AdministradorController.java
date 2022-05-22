@@ -9,10 +9,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpSession;
 import java.util.List;
 
 @Controller
-public class AdministradorController {
+public class AdministradorController extends SwishBayController {
 
     @Autowired
     private UsuarioService usuarioService;
@@ -21,7 +22,11 @@ public class AdministradorController {
     private RolUsuarioService rolUsuarioService;
 
     @RequestMapping(value = "/usuarios", method = { RequestMethod.GET, RequestMethod.POST })
-    public String listarUsuarios(Model model, @RequestParam(value = "filtro", required = false) String filtroNombre, @RequestParam(value = "filtroRol", required = false) String filtroRol) {
+    public String listarUsuarios(Model model, HttpSession session, @RequestParam(value = "filtro", required = false) String filtroNombre, @RequestParam(value = "filtroRol", required = false) String filtroRol) {
+
+        if (!super.comprobarAdminSession(session)) {
+            return super.redirectComprobarAdminSession(session);
+        }
 
         List<RolUsuarioDTO> roles = this.rolUsuarioService.listarRoles();
 
