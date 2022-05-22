@@ -1,6 +1,8 @@
 package es.taw.swishbay.controller;
 
+import es.taw.swishbay.dto.CategoriaDTO;
 import es.taw.swishbay.dto.UsuarioDTO;
+import es.taw.swishbay.service.CategoriaService;
 import es.taw.swishbay.service.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -10,17 +12,21 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpSession;
+import java.util.List;
 
 /**
- * Controlador del login.
+ * Controlador del login y registro.
  * @author Luis
  */
 
 @Controller
-public class LoginController {
+public class LoginRegisterController {
 
     @Autowired
     private UsuarioService usuarioService;
+
+    @Autowired
+    private CategoriaService categoriaService;
 
     @GetMapping("/")
     public String doInit() {
@@ -30,6 +36,15 @@ public class LoginController {
     @GetMapping("/login")
     public String doLogin() {
         return "login";
+    }
+
+    @GetMapping("/register")
+    public String doRegister(Model model) {
+
+        List<CategoriaDTO> categorias = this.categoriaService.listarCategorias();
+
+        model.addAttribute("categorias", categorias);
+        return "register";
     }
 
     @PostMapping("/autentica")
