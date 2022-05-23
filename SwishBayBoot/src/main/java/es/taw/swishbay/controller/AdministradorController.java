@@ -1,9 +1,11 @@
 package es.taw.swishbay.controller;
 
 import es.taw.swishbay.dto.CategoriaDTO;
+import es.taw.swishbay.dto.ProductoDTO;
 import es.taw.swishbay.dto.RolUsuarioDTO;
 import es.taw.swishbay.dto.UsuarioDTO;
 import es.taw.swishbay.service.CategoriaService;
+import es.taw.swishbay.service.ProductoService;
 import es.taw.swishbay.service.RolUsuarioService;
 import es.taw.swishbay.service.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,6 +35,13 @@ public class AdministradorController extends SwishBayController {
 
     @Autowired
     private CategoriaService categoriaService;
+
+    @Autowired
+    private ProductoService productoService;
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    //////////////                                      USUARIOS                                           /////////////////
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     @RequestMapping(value = "/usuarios", method = { RequestMethod.GET, RequestMethod.POST })
     public String listarUsuarios(Model model, HttpSession session, @RequestParam(value = "filtro", required = false) String filtroNombre, @RequestParam(value = "filtroRol", required = false) String filtroRol) {
@@ -150,6 +159,116 @@ public class AdministradorController extends SwishBayController {
             return redirectTo;
 
         }
+    }
+
+    @GetMapping("/usuarioBorrar")
+    public String usuarioBorrar(@RequestParam("id") Integer id, HttpSession session) {
+        if (!super.comprobarAdminSession(session)) {
+            return super.redirectComprobarAdminSession(session);
+        }
+
+        this.usuarioService.borrarUsuario(id);
+
+        return "redirect:/usuarios";
+    }
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    //////////////                                      PRODUCTOS                                          /////////////////
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    @RequestMapping(value = "/productosAdmin", method = { RequestMethod.GET, RequestMethod.POST })
+    public String productosAdmin(Model model, HttpSession session, @RequestParam(value = "filtro", required = false) String filtroNombre, @RequestParam(value = "filtroCategoria", required = false) String filtroCategoria, @RequestParam(value = "desde", required = false) String filtroDesde, @RequestParam(value = "hasta", required = false) String filtroHasta) {
+        if (!super.comprobarAdminSession(session)) {
+            return super.redirectComprobarAdminSession(session);
+        }
+
+        List<CategoriaDTO> categorias = this.categoriaService.listarCategorias();
+
+        if(filtroDesde!=null && (Double.parseDouble(filtroDesde)> Double.parseDouble(filtroHasta)))
+            filtroDesde="0";
+
+        List<ProductoDTO> productos = this.productoService.listarProductos(filtroNombre, filtroCategoria, filtroDesde, filtroHasta);
+
+        model.addAttribute("productos", productos);
+        model.addAttribute("categorias", categorias);
+        model.addAttribute("selected", filtroCategoria);
+        model.addAttribute("desdeSelected", filtroDesde);
+        model.addAttribute("hastaSelected", filtroHasta);
+
+        return "productosAdmin";
+    }
+
+    @GetMapping("/productoAdminEditar")
+    public String productoEditar(@RequestParam("id") String id, Model model, HttpSession session) {
+        if (!super.comprobarAdminSession(session)) {
+            return super.redirectComprobarAdminSession(session);
+        }
+
+        ProductoDTO producto = this.productoService.buscarProducto(id);
+        List<CategoriaDTO> categorias = this.categoriaService.listarCategorias();
+
+
+        model.addAttribute("categorias", categorias);
+        model.addAttribute("producto", producto);
+
+        return "productoAdmin";
+    }
+
+    // Falta /productoAdminGuardar
+
+    @GetMapping("/productoAdminBorrar")
+    public String productoBorrar(@RequestParam("id") Integer id, HttpSession session) {
+        if (!super.comprobarAdminSession(session)) {
+            return super.redirectComprobarAdminSession(session);
+        }
+
+        this.productoService.borrarProducto(id);
+
+        return "redirect:/productosAdmin";
+    }
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    //////////////                                      CATEGORIAS                                         /////////////////
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    @RequestMapping(value = "/categorias", method = { RequestMethod.GET, RequestMethod.POST })
+    public String categorias(Model model, HttpSession session, @RequestParam(value = "filtro", required = false) String filtroNombre) {
+        if (!super.comprobarAdminSession(session)) {
+            return super.redirectComprobarAdminSession(session);
+        }
+
+        List<CategoriaDTO> categorias = this.categoriaService.listarCategorias(filtroNombre);
+
+        model.addAttribute("categorias", categorias);
+
+        return "categorias";
+    }
+
+    @GetMapping("/categoriaNuevoEditar")
+    public String categoriaNuevoEditar(@RequestParam(value = "id", required = false) String id, Model model, HttpSession session) {
+        if (!super.comprobarAdminSession(session)) {
+            return super.redirectComprobarAdminSession(session);
+        }
+
+        if (id != null && !id.isEmpty()) {
+            CategoriaDTO categoria = this.categoriaService.buscarCategoria(Integer.parseInt(id));
+            model.addAttribute("categoria", categoria);
+        }
+
+        return "categoria";
+    }
+
+    // Falta /categoriaGuardar
+
+    @GetMapping("/categoriaBorrar")
+    public String categoriaBorrar(@RequestParam("id") Integer id, HttpSession session) {
+        if (!super.comprobarAdminSession(session)) {
+            return super.redirectComprobarAdminSession(session);
+        }
+
+        this.categoriaService.borrarCategoria(id);
+
+        return "redirect:/categorias";
     }
 
 }

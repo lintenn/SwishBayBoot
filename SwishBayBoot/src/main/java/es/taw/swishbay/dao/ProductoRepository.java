@@ -10,6 +10,27 @@ import java.util.List;
 
 public interface ProductoRepository  extends JpaRepository<Producto, Integer> {
 
+    @Query("select p from Producto p where p.titulo like CONCAT('%',:titulo,'%')")
+    List<Producto> findByNombre(String titulo); // Luis
+
+    @Query("select p from Producto p where p.categoria.nombre like :filtroCategoria")
+    List<Producto> findAll(String filtroCategoria); // Luis
+
+    @Query("select p from Producto p where p.titulo like CONCAT('%',:titulo,'%') and p.categoria.nombre like :filtroCategoria")
+    List<Producto> findByNombre(String titulo, String filtroCategoria); // Luis
+
+    @Query("select p from Producto p where p.precioSalida >= :desde and p.precioSalida <= :hasta")
+    List<Producto> findAllDesde(Double desde, Double hasta); // Luis
+
+    @Query("select p from Producto p where p.categoria.nombre like :filtroCategoria and p.precioSalida >= :desde and p.precioSalida <= :hasta")
+    List<Producto> findAllFilteredDesde(String filtroCategoria, Double desde, Double hasta); // Luis
+
+    @Query("select p from Producto p where p.titulo like CONCAT('%',:titulo,'%') and p.precioSalida >= :desde and p.precioSalida <= :hasta")
+    List<Producto> findByNombreDesde(String titulo, Double desde, Double hasta); // Luis
+
+    @Query("select p from Producto p where p.titulo like CONCAT('%',:titulo,'%') and p.categoria.nombre like :filtroCategoria and p.precioSalida >= :desde and p.precioSalida <= :hasta")
+    List<Producto> findByNombreFilteredDesde(String titulo, String filtroCategoria, Double desde, Double hasta); // Luis
+
     @Query("select p from Producto p where p.vendedor.id= :user")
     List<Producto> findVendidos(Integer user);
 
