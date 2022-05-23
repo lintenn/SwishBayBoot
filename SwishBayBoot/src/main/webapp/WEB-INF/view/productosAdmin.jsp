@@ -84,8 +84,8 @@
             <input class="btn btn-outline-success" type="submit" value="Buscar"/>
         </form>
 </div>
-</nav>
 </div>
+</nav>
 
 
 <main class="row d-flex justify-content-center mt-4">
