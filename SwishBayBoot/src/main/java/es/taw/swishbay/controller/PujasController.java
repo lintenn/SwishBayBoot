@@ -57,9 +57,11 @@ public class PujasController {
 
         ProductoDTO p = productoService.buscarProducto(""+id);
         Double precio = 0.0;
-        if(p.getEnPuja()==1)
-            precio = productoService.precioMax(""+id);
-        else
+        if(p.getEnPuja()==1) {
+            precio = productoService.precioMax("" + id);
+            if(precio==null)
+                precio=p.getPrecioSalida();
+        }else
             precio = p.getPrecioSalida();
 
         model.addAttribute("producto", p);
@@ -101,7 +103,7 @@ public class PujasController {
                 productoService.modificarPuja(id, d);
             }
 
-            return "redirect:/misProductosEnPuja";
+            return "redirect:/seller/misProductosEnPuja";
         }else{
             status= "La fecha introducida es anterior a la actual";
             model.addAttribute("status", status);
@@ -119,10 +121,24 @@ public class PujasController {
 
         productoService.quitarPuja(""+id);
 
-        return "redirect:/misProductosEnPuja";
+        return "redirect:/seller/misProductosEnPuja";
 
         //}
     }
+
+    @GetMapping("/{id}/finalizar")
+    public String doFinalizarPuja(@PathVariable("id") int id) {
+
+        //if (super.comprobarCompradorVendedorSession(request, response)) {
+
+        productoService.finalizarPuja(id);
+
+        return "redirect:/seller/misProductosEnPuja";
+
+        //}
+    }
+
+
 
 
 }

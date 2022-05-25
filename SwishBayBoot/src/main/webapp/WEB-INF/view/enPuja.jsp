@@ -63,7 +63,7 @@
             </br>
             <h1 class="mb-2"><%=producto.getTitulo() %></h1>
             </br>
-            <form  method="POST" action="pujas/guardar">
+            <form  method="POST" action="/pujas/guardar">
                 <div class="form-group row justify-content-md-center mb-4">
                   <div class="col-sm-4">
                       <input type="hidden" class="form-control" id="inputId" name="id" value="<%= producto==null? "": producto.getId() %>" >

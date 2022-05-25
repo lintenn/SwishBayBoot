@@ -72,7 +72,7 @@ public class ProductosController {
         //}
     }
 
-    @PostMapping("/producto/crear")
+    @PostMapping("/crear")
     public String doGuardarProducto(Model model, @RequestParam("id") String strId, @RequestParam("nombre") String nombre, @RequestParam("descripcion") String descripcion, @RequestParam("foto") String foto, @RequestParam("precio") String precio, @RequestParam("categoria") String categoria) {
 
         //if (super.comprobarCompradorVendedorSession(request, response)) {
@@ -88,9 +88,12 @@ public class ProductosController {
 
         if(!precio.matches("[-+]?\\d*\\.?\\d+")){
             status= "Formato de precio incorrecto.";
+            List<CategoriaDTO> categorias = categoriaService.listarCategorias();
+
+            model.addAttribute("categorias", categorias);
             model.addAttribute("status", status);
 
-            return "/producto/crear";
+            return "producto";
 
         }
         if(strId == null || strId.isEmpty()){
@@ -100,7 +103,7 @@ public class ProductosController {
             productoService.modificarProducto(strId, nombre, descripcion, foto, date, categoria, precio);
         }
 
-        return "redirect:/misProductos";
+        return "redirect:/seller/misProductos";
         //}
     }
 
@@ -110,7 +113,7 @@ public class ProductosController {
         //if (super.comprobarCompradorVendedorSession(request, response)) {
         productoService.borrarProducto(id);
 
-        return "redirect:/misProductos";
+        return "redirect:/seller/misProductos";
         //}
     }
 
