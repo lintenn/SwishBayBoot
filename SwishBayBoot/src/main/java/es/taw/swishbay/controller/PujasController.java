@@ -4,25 +4,29 @@ import es.taw.swishbay.dto.CategoriaDTO;
 import es.taw.swishbay.dto.ProductoDTO;
 import es.taw.swishbay.dto.UsuarioDTO;
 import es.taw.swishbay.service.CategoriaService;
+import es.taw.swishbay.service.ProductoService;
 import es.taw.swishbay.service.SellerService;
 import es.taw.swishbay.service.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 
 @Controller
+@RequestMapping("pujas")
 public class PujasController {
 
     private CategoriaService categoriaService;
     private SellerService sellerService;
     private UsuarioService usuarioService;
+    private ProductoService productoService;
 
     @Autowired
     public void setCategoriaService(CategoriaService categoriaService) {
@@ -39,42 +43,86 @@ public class PujasController {
         this.usuarioService = usuarioService;
     }
 
-    @GetMapping("/misProductosEnPuja")
-    public String listar (Model model, HttpSession session) {
+    @Autowired
+    public void setProductoService(ProductoService productoService){
+        this.productoService= productoService;
+    }
+
+
+    @GetMapping("/{id}/editar")
+    public String doPonerEnPuja(@PathVariable("id") int id, Model model) {
 
         //if (super.comprobarCompradorVendedorSession(request, response)) {
-        //UsuarioDTO user = (UsuarioDTO)session.getAttribute("usuario"); quitar usuarioService despues
-        UsuarioDTO user = usuarioService.buscarUsuario(4);
 
-        List<CategoriaDTO> categorias= categoriaService.listarCategorias();
-        List<Object[]> productos = sellerService.listarTodosEnPuja(user);
 
-        model.addAttribute("usuario", user);
-        model.addAttribute("categorias", categorias);
-        model.addAttribute("productos", productos);
+        ProductoDTO p = productoService.buscarProducto(""+id);
+        Double precio = 0.0;
+        if(p.getEnPuja()==1)
+            precio = productoService.precioMax(""+id);
+        else
+            precio = p.getPrecioSalida();
 
-        return "pujas";
+        model.addAttribute("producto", p);
+        model.addAttribute("precio", precio);
+
+        return "enPuja";
         //}
     }
 
-    @PostMapping("/buscarMisProductosEnPuja")
-    public String listarBuscados (Model model, HttpSession session, @RequestParam("filtro") String filtroNombre, @RequestParam("filtroCategoria") String filtroCategoria) {
+    @PostMapping("/guardar")
+    public String doGuardarEnPuja(Model model, @RequestParam("id") int id, @RequestParam("time") String time, @RequestParam("precio") Double precio) {
 
         //if (super.comprobarCompradorVendedorSession(request, response)) {
-        //UsuarioDTO user = (UsuarioDTO)sesion.getAttribute("usuario");
-        UsuarioDTO user = usuarioService.buscarUsuario(4);
 
-        List<CategoriaDTO> categorias= categoriaService.listarCategorias();
+        ProductoDTO p;
 
-        List<Object[]> productos = sellerService.listarEnPuja(user, filtroNombre, filtroCategoria);
+        String str, status= null;
 
-        model.addAttribute("productos", productos);
-        model.addAttribute("categorias", categorias);
-        model.addAttribute("selected", filtroCategoria);
-        model.addAttribute("user", user);
 
-        return "pujas";
+        p = productoService.buscarProducto(""+id);
+
+
+        SimpleDateFormat dateParser = new SimpleDateFormat("yy-MM-dd");
+        Date d=new Date();
+
+        try {
+            d = dateParser.parse(time);
+        } catch (ParseException ex) {
+            System.err.println(ex.getLocalizedMessage());
+        }
+
+        Date actual = new Date();
+        if(actual.before(d)){
+
+            if(p.getEnPuja()==0){
+
+                productoService.modificarPuja(id,precio,d);
+            }else{
+                productoService.modificarPuja(id, d);
+            }
+
+            return "redirect:/misProductosEnPuja";
+        }else{
+            status= "La fecha introducida es anterior a la actual";
+            model.addAttribute("status", status);
+
+            return "enPuja";
+
+        }
         //}
     }
+
+    @GetMapping("/{id}/borrar")
+    public String doBorrarEnPuja(@PathVariable("id") int id) {
+
+        //if (super.comprobarCompradorVendedorSession(request, response)) {
+
+        productoService.quitarPuja(""+id);
+
+        return "redirect:/misProductosEnPuja";
+
+        //}
+    }
+
 
 }

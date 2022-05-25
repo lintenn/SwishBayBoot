@@ -38,16 +38,16 @@
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                   <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <li class="nav-item">
-                      <a class="nav-link" aria-current="page" href="/misProductos"> Mis productos</a>
+                      <a class="nav-link" aria-current="page" href="/seller/misProductos"> Mis productos</a>
                     </li>
                     <li class="nav-item">
-                      <a class="nav-link" href="/misProductosEnPuja">Mis pujas</a>
+                      <a class="nav-link" href="/seller/misProductosEnPuja">Mis pujas</a>
                     </li>
                     <li class="nav-item">
-                      <a class="nav-link" href="/misProductosVendidos">Productos vendidos</a>
+                      <a class="nav-link" href="/seller/misProductosVendidos">Productos vendidos</a>
                     </li>
                     <li class="nav-item">
-                      <a class="nav-link active" href="/producto/nuevo">Añadir/modificar producto</a>
+                      <a class="nav-link active" href="/productos/nuevo">Añadir/modificar producto</a>
                     </li>
                   
                   </ul>
@@ -62,7 +62,7 @@
              </form:form>
              --%>
 
-            <form  method="POST" action="/producto/crear">
+            <form  method="POST" action="/productos/crear">
                 <div class="form-group row justify-content-md-center mb-4">
                   <div class="col-sm-4">
                       <input type="hidden" class="form-control" id="inputId" name="id" value="<%= producto==null? "": producto.getId() %>" >
@@ -130,7 +130,7 @@
                 <div class="form-group row justify-content-md-center mt-0">
                   <div class="col-sm-10">
                     <button type="submit" class="btn btn-lg btn-success fw-bold border-white mx-2"><%= producto==null? "Añadir": "Modificar" %></button>
-                    <a href="/misProductos" class="btn btn-lg btn-secondary fw-bold border-white mx-2">Cancelar</a>
+                    <a href="/seller/misProductos" class="btn btn-lg btn-secondary fw-bold border-white mx-2">Cancelar</a>
                   </div>
                 </div>
             </form>                
