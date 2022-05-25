@@ -63,7 +63,7 @@ public class LoginRegisterController {
             if (user.getRol().getNombre().equals("administrador")) {
                 goTo = "usuarios";
             } else if (user.getRol().getNombre().equals("compradorvendedor")) {
-                goTo = "compradorProductosServlet";
+                goTo = "seller/misProductos";
             } else if (user.getRol().getNombre().equals("marketing")) {
                 goTo = "usuarioCompradorServlet";
             }
