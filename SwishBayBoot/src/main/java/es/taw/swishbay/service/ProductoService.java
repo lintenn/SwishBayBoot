@@ -55,6 +55,79 @@ public class ProductoService {
         return listaDTO;
     }
 
+    public List<ProductoDTO> listarProductos (String filtroNombre, String filtroCategoria) { // Luis
+        List<Producto> productos = null;
+
+        if (filtroNombre == null || filtroNombre.isEmpty()) {
+            if (filtroCategoria==null || filtroCategoria.equals("Categoria")) {
+                productos = this.productoRepository.findAll();
+
+            } else {
+                productos= this.productoRepository.findAll(filtroCategoria);
+
+            }
+        } else {
+            if (filtroCategoria==null || filtroCategoria.equals("Categoria")) {
+                productos = this.productoRepository.findByNombre(filtroNombre);
+
+            } else {
+                productos = productoRepository.findByNombre(filtroNombre,filtroCategoria);
+
+            }
+        }
+
+        return this.listaEntityADTO(productos);
+    }
+
+    public List<ProductoDTO> listarProductos (String filtroNombre, String filtroCategoria, String filtroDesde, String filtroHasta) { // Luis
+        List<Producto> productos = null;
+
+        if (filtroNombre == null || filtroNombre.isEmpty()) {
+
+            if (filtroDesde == null) {   // En este caso filtroHasta también sería null
+                if (filtroCategoria==null || filtroCategoria.equals("Categoria")) {
+                    productos = this.productoRepository.findAll();
+
+                } else {
+                    productos= this.productoRepository.findAll(filtroCategoria);
+
+                }
+            } else {
+                if (filtroCategoria==null || filtroCategoria.equals("Categoria")) {
+                    productos = this.productoRepository.findAllDesde(Double.parseDouble(filtroDesde), Double.parseDouble(filtroHasta));
+
+                } else {
+                    productos= this.productoRepository.findAllFilteredDesde(filtroCategoria, Double.parseDouble(filtroDesde), Double.parseDouble(filtroHasta));
+
+                }
+            }
+
+        } else {
+
+            if (filtroDesde == null) {   // En este caso filtroHasta también sería null
+                if (filtroCategoria==null || filtroCategoria.equals("Categoria")) {
+                    productos = this.productoRepository.findByNombre(filtroNombre);
+
+                } else {
+                    productos = productoRepository.findByNombre(filtroNombre, filtroCategoria);
+
+                }
+            } else {
+                if (filtroCategoria==null || filtroCategoria.equals("Categoria")) {
+                    productos = this.productoRepository.findByNombreDesde(filtroNombre, Double.parseDouble(filtroDesde), Double.parseDouble(filtroHasta));
+
+                } else {
+                    productos = productoRepository.findByNombreFilteredDesde(filtroNombre, filtroCategoria, Double.parseDouble(filtroDesde), Double.parseDouble(filtroHasta));
+
+                }
+            }
+
+
+        }
+
+        return this.listaEntityADTO(productos);
+    }
+
     public ProductoDTO buscarProducto(String strId){ // Galo
         Producto p=null;
         if(strId !=null && !strId.isEmpty()){
