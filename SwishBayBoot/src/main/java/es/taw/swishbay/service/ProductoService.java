@@ -247,9 +247,9 @@ public class ProductoService {
         productoRepository.save(p);
     }
 
-    public void finalizarPuja(String id) {
+    public void finalizarPuja(int id) {
 
-        Producto p = productoRepository.getById(Integer.parseInt(id));
+        Producto p = productoRepository.getById(id);
 
         //this.grupoService.notificarFinPuja("Grupo_"+p.getId(), p.toDTO());
 
@@ -261,7 +261,7 @@ public class ProductoService {
 
             puja = pujaRepository.findMax(p.getId());
             Usuario comprador =puja.getUsuario();
-            List<Puja> pujasPerdedoras = productoRepository.findLosers(Integer.parseInt(id), puja.getPujaPK());
+            List<Puja> pujasPerdedoras = productoRepository.findLosers(id, puja.getPujaPK());
 
 
             p.setEnPuja((short) 0);

@@ -82,6 +82,6 @@ public interface ProductoRepository  extends JpaRepository<Producto, Integer> {
     @Query("select MAX(pu.pujaPK.precio) from Producto p LEFT JOIN p.pujaList pu where p.id=:id Group by p")
     Double findPrecioMax(Integer id);
 
-    @Query("select pu from Puja pu where pu.producto1.id= :pId and pu.pujaPK!=:pujaId")
+    @Query("select pu from Puja pu where pu.producto1.id= :pId and pu.pujaPK<>:pujaId")
     List<Puja> findLosers(Integer pId, PujaPK pujaId);
 }
