@@ -34,6 +34,12 @@ public abstract class SwishBayController {
         return user != null && user.getRol().getNombre().equals("administrador");
     }
 
+    protected boolean comprobarCompradorVendedorSession(HttpSession session) { // Galo
+        UsuarioDTO user = (UsuarioDTO)session.getAttribute("usuario");
+
+        return user != null && user.getRol().getNombre().equals("compradorvendedor");
+    }
+
     protected String redirectComprobarAdminSession(HttpSession session) { // Luis
         UsuarioDTO user = (UsuarioDTO)session.getAttribute("usuario");
 

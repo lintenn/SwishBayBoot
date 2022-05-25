@@ -4,6 +4,7 @@
     Author     : galop
 --%>
 
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@page import="java.util.List"%>
 <%@ page import="es.taw.swishbay.dto.ProductoDTO" %>
 <%@ page import="es.taw.swishbay.dto.CategoriaDTO" %>
@@ -56,7 +57,11 @@
             </br>
 
             <h1 class="mb-1">Datos del producto</h1>
-            
+            <%-- <form:form action="" modelAttribute="">
+
+             </form:form>
+             --%>
+
             <form  method="POST" action="/producto/crear">
                 <div class="form-group row justify-content-md-center mb-4">
                   <div class="col-sm-4">
