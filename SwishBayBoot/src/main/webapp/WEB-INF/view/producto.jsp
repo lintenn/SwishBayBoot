@@ -19,7 +19,7 @@
 
     </head>
     <%
-       ProductoDTO producto = (ProductoDTO) request.getAttribute("producto");
+       //ProductoDTO producto = (ProductoDTO) request.getAttribute("producto");
        String status = (String) request.getAttribute("status");
        List<CategoriaDTO> categorias = (List) request.getAttribute("categorias");
 
@@ -57,67 +57,51 @@
             </br>
 
             <h1 class="mb-1">Datos del producto</h1>
-            <%-- <form:form action="" modelAttribute="">
-
-             </form:form>
-             --%>
-
-            <form  method="POST" action="/productos/crear">
+            <form:form action="/productos/crear" method="POST" modelAttribute="producto">
                 <div class="form-group row justify-content-md-center mb-4">
-                  <div class="col-sm-4">
-                      <input type="hidden" class="form-control" id="inputId" name="id" value="<%= producto==null? "": producto.getId() %>" >
-                  </div>
+                    <div class="col-sm-4">
+                        <form:hidden path="id" />
+                    </div>
                 </div>
                 <div class="form-group row justify-content-md-center mb-4">
-                  <label for="inputNombre" class="col-sm-1 col-form-label">Nombre:</label>
-                  <div class="col-sm-4">
-                    <input type="text" class="form-control" id="inputNombre" name="nombre" maxlength="45" value="<%= producto==null? "": producto.getTitulo() %>" required >
-                  </div>
-                  *
+                    <label class="col-sm-1 col-form-label">Nombre:</label>
+                    <div class="col-sm-4">
+                        <form:input type="text" class="form-control" path="titulo" maxlength="45" />
+                    </div>
+                    *
                 </div>
                 <div class="form-group row justify-content-md-center mb-4">
-                  <label class="col-sm-1 col-form-label">Descripción:</label>
-                  <div class="col-sm-4">
-                      <textarea class="form-control" name="descripcion" rows="3" maxlength="80"><%= producto==null? "": producto.getDescripcion() %></textarea>
-                  </div>
-                  &nbsp;
+                    <label class="col-sm-1 col-form-label">Descripción:</label>
+                    <div class="col-sm-4">
+                        <form:textarea class="form-control" path="descripcion" rows="3" maxlength="80" />
+                    </div>
+                    &nbsp;
                 </div>
                 <div class="form-group row justify-content-md-center mb-4">
-                  <label class="col-sm-1 col-form-label">Precio:</label>
-                  <div class="col-sm-4">
-                    <input type="text" class="form-control" id="input" name="precio" value="<%= producto==null? "": producto.getPrecioSalida() %>" required/>
-                  </div>
-                  *
+                    <label class="col-sm-1 col-form-label">Precio:</label>
+                    <div class="col-sm-4">
+                        <form:input type="number" class="form-control" path="precioSalida" required="true" />
+                    </div>
+                    *
                 </div>
                 <div class="form-group row justify-content-md-center mb-4">
                     <label  class="col-sm-1 col-form-label">Foto (URL):</label>
                     <div class="col-sm-4">
-                        <textarea type="text" class="form-control"  rows="2" name="foto" ><%= producto==null? "": producto.getFoto() %></textarea>
+                        <form:textarea class="form-control" path="foto" rows="2" />
                     </div>
                     &nbsp;
                 </div>
+
                 <div class="form-group row justify-content-md-center mb-3">
                     <label class="col-sm-1 col-form-label">Categoría:</label>
                     <div class="col-sm-4">
-                        <select class="form-select mb-2" id="categoria" name="categoria">
-                            <%
-                              
-                              for (CategoriaDTO c:categorias){
-                                String selected = "";
-                               
-                                if(producto != null && producto.getCategoria().getNombre().equals(c.getNombre()))
-                                    selected="selected";
-                               
-                            %>     
-                                <option <%= selected %> value="<%=c.getNombre()%>"><%=c.getNombre()%> </option>
-                           <%  
-                              }
-                           %>
-                        </select>
+                        <form:select class="form-select mb-2" path="categoria">
+                            <form:options items="${categorias}" itemLabel="nombre" itemValue="id" />
+                        </form:select>
                     </div>
                     &nbsp;
                 </div>
-                        <%
+                <%
                     if(status != null){
                 %>
                 <div class="form-group row justify-content-center" style="height: 50px;">
@@ -126,20 +110,21 @@
                 <% }
                 %>
                 </br>
-                
+
                 <div class="form-group row justify-content-md-center mt-0">
-                  <div class="col-sm-10">
-                    <button type="submit" class="btn btn-lg btn-success fw-bold border-white mx-2"><%= producto==null? "Añadir": "Modificar" %></button>
-                    <a href="/seller/misProductos" class="btn btn-lg btn-secondary fw-bold border-white mx-2">Cancelar</a>
-                  </div>
+                    <div class="col-sm-10">
+                        <button type="submit" class="btn btn-lg btn-success fw-bold border-white mx-2">Confirmar</button>
+                        <a href="/seller/misProductos" class="btn btn-lg btn-secondary fw-bold border-white mx-2">Cancelar</a>
+                    </div>
                 </div>
-            </form>                
+
+            </form:form>
 
             <footer class="mt-auto text-white-50 fixed-bottom">
               <p>© 2022 SwishBay, aplicación web desarrollada por el <a href="/" class="text-white">Grupo 10</a>.</p>
             </footer>
         </div>
-        
+
         <!-- Option 1: Bootstrap Bundle with Popper -->
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
     </body>
