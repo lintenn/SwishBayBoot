@@ -3,6 +3,7 @@ package es.taw.swishbay.controller;
 import es.taw.swishbay.dto.CategoriaDTO;
 import es.taw.swishbay.dto.ProductoDTO;
 import es.taw.swishbay.dto.UsuarioDTO;
+import es.taw.swishbay.entity.Producto;
 import es.taw.swishbay.service.CategoriaService;
 import es.taw.swishbay.service.ProductoService;
 import es.taw.swishbay.service.SellerService;
@@ -65,15 +66,17 @@ public class ProductosController {
         //if (super.comprobarCompradorVendedorSession(request, response)) {
 
         List<CategoriaDTO> categorias = categoriaService.listarCategorias();
+        ProductoDTO p = new ProductoDTO();
 
         model.addAttribute("categorias",categorias );
+        model.addAttribute("producto", p);
 
         return "producto";
         //}
     }
 
     @PostMapping("/crear")
-    public String doGuardarProducto(Model model, @RequestParam("id") String strId, @RequestParam("nombre") String nombre, @RequestParam("descripcion") String descripcion, @RequestParam("foto") String foto, @RequestParam("precio") String precio, @RequestParam("categoria") String categoria) {
+    public String doGuardarProducto(@ModelAttribute("producto") ProductoDTO producto , Model model) {
 
         //if (super.comprobarCompradorVendedorSession(request, response)) {
         //UsuarioDTO user = (UsuarioDTO)sesion.getAttribute("usuario"); quitar luego
@@ -82,25 +85,15 @@ public class ProductosController {
 
         java.sql.Date date=new java.sql.Date(System.currentTimeMillis());
 
-        if(foto==null || foto.isEmpty()){
-            foto= "https://th.bing.com/th/id/OIP.KeKY2Y3R0HRBkPEmGWU3FwHaHa?pid=ImgDet&rs=1";
+        if(producto.getFoto()==null || producto.getFoto().isEmpty()){
+            producto.setFoto("https://th.bing.com/th/id/OIP.KeKY2Y3R0HRBkPEmGWU3FwHaHa?pid=ImgDet&rs=1");
         }
 
-        if(!precio.matches("[-+]?\\d*\\.?\\d+")){
-            status= "Formato de precio incorrecto.";
-            List<CategoriaDTO> categorias = categoriaService.listarCategorias();
 
-            model.addAttribute("categorias", categorias);
-            model.addAttribute("status", status);
-
-            return "producto";
-
-        }
-        if(strId == null || strId.isEmpty()){
-
-            productoService.crearProducto(nombre, descripcion, foto, date, categoria, precio, user.getId());
+        if(producto.getId() == null){
+            productoService.crearProducto(producto.getTitulo(), producto.getDescripcion(), producto.getFoto(), date, producto.getCategoria(), producto.getPrecioSalida(), user.getId());
         }else {
-            productoService.modificarProducto(strId, nombre, descripcion, foto, date, categoria, precio);
+            productoService.modificarProducto(producto.getId(), producto.getTitulo(), producto.getDescripcion(), producto.getFoto(), date, producto.getCategoria(), producto.getPrecioSalida());
         }
 
         return "redirect:/seller/misProductos";
