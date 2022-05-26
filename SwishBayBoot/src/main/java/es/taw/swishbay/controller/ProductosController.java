@@ -18,21 +18,15 @@ import java.util.List;
 
 @Controller
 @RequestMapping("productos")
-public class ProductosController {
+public class ProductosController extends SwishBayController {
 
     private CategoriaService categoriaService;
-    private SellerService sellerService;
     private UsuarioService usuarioService;
     private ProductoService productoService;
 
     @Autowired
     public void setCategoriaService(CategoriaService categoriaService) {
         this.categoriaService = categoriaService;
-    }
-
-    @Autowired
-    public void setSellerService(SellerService sellerService) {
-        this.sellerService = sellerService;
     }
 
     @Autowired
@@ -46,9 +40,11 @@ public class ProductosController {
     }
 
     @GetMapping(value = "/{id}/editar")
-    public String doEnviarEditar(@PathVariable("id") int id, Model model) {
+    public String doEnviarEditar(@PathVariable("id") int id, Model model, HttpSession session) {
 
-        //if (super.comprobarCompradorVendedorSession(request, response)) {
+        if (!super.comprobarCompradorVendedorSession(session)) {
+            return super.redirectComprobarCompradorVendedorSession(session);
+        }
 
         ProductoDTO p= productoService.buscarProducto(""+id);
         List<CategoriaDTO> categorias = categoriaService.listarCategorias();
@@ -57,13 +53,15 @@ public class ProductosController {
         if(p!=null)
             model.addAttribute("producto", p);
         return "producto";
-        //}
+
     }
 
     @GetMapping(value = "/nuevo")
-    public String doEnviarCrear(Model model) {
+    public String doEnviarCrear(Model model, HttpSession session) {
 
-        //if (super.comprobarCompradorVendedorSession(request, response)) {
+        if (!super.comprobarCompradorVendedorSession(session)) {
+            return super.redirectComprobarCompradorVendedorSession(session);
+        }
 
         List<CategoriaDTO> categorias = categoriaService.listarCategorias();
         ProductoDTO p = new ProductoDTO();
@@ -72,14 +70,16 @@ public class ProductosController {
         model.addAttribute("producto", p);
 
         return "producto";
-        //}
+
     }
 
     @PostMapping("/crear")
-    public String doGuardarProducto(@ModelAttribute("producto") ProductoDTO producto , Model model) {
+    public String doGuardarProducto(@ModelAttribute("producto") ProductoDTO producto, HttpSession session) {
 
-        //if (super.comprobarCompradorVendedorSession(request, response)) {
-        //UsuarioDTO user = (UsuarioDTO)sesion.getAttribute("usuario"); quitar luego
+        if (!super.comprobarCompradorVendedorSession(session)) {
+            return super.redirectComprobarCompradorVendedorSession(session);
+        }
+
         UsuarioDTO user = usuarioService.buscarUsuario(4);
         String  status=null;
 
@@ -97,17 +97,20 @@ public class ProductosController {
         }
 
         return "redirect:/seller/misProductos";
-        //}
+
     }
 
     @GetMapping("/{id}/borrar")
-    public String borrarProducto(@PathVariable("id") int id) {
+    public String borrarProducto(@PathVariable("id") int id, HttpSession session) {
 
-        //if (super.comprobarCompradorVendedorSession(request, response)) {
+        if (!super.comprobarCompradorVendedorSession(session)) {
+            return super.redirectComprobarCompradorVendedorSession(session);
+        }
+
         productoService.borrarProducto(id);
 
         return "redirect:/seller/misProductos";
-        //}
+
     }
 
 

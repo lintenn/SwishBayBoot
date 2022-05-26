@@ -19,7 +19,7 @@ import java.util.List;
 
 @Controller
 @RequestMapping("seller")
-public class SellerController {
+public class SellerController extends SwishBayController{
 
     private UsuarioService usuarioService;
     private CategoriaService categoriaService;
@@ -43,9 +43,10 @@ public class SellerController {
     @GetMapping("/misProductos")
     public String doListar (Model model, HttpSession session) {
 
-        //if (super.comprobarCompradorVendedorSession(request, response)) {
-        //UsuarioDTO user = (UsuarioDTO)session.getAttribute("usuario");
-        UsuarioDTO user = usuarioService.buscarUsuario(4);
+        if (!super.comprobarCompradorVendedorSession(session)) {
+            return super.redirectComprobarCompradorVendedorSession(session);
+        }
+        UsuarioDTO user = (UsuarioDTO)session.getAttribute("usuario");
 
         List<CategoriaDTO> categorias = categoriaService.listarCategorias();
         List<ProductoDTO> productos = sellerService.listarTodos(user);
@@ -57,15 +58,15 @@ public class SellerController {
 
 
         return "seller";
-        //}
     }
 
     @PostMapping("/buscarMisProductos")
     public String doListarBuscados (Model model, HttpSession session, @RequestParam("filtroNombre") String filtroNombre, @RequestParam("filtroCategoria") String filtroCategoria, @RequestParam("desde") String desde, @RequestParam("hasta") String hasta) {
 
-        //if (super.comprobarCompradorVendedorSession(request, response)) {
-        //UsuarioDTO user = (UsuarioDTO)sesion.getAttribute("usuario");
-        UsuarioDTO user = usuarioService.buscarUsuario(4);
+        if (!super.comprobarCompradorVendedorSession(session)) {
+            return super.redirectComprobarCompradorVendedorSession(session);
+        }
+        UsuarioDTO user = (UsuarioDTO)session.getAttribute("usuario");
 
         List<CategoriaDTO> categorias = categoriaService.listarCategorias();
 
@@ -83,15 +84,16 @@ public class SellerController {
         model.addAttribute("usuario", user);
 
         return "seller";
-        //}
+
     }
 
     @GetMapping("/misProductosVendidos")
     public String doListarVendidos (Model model, HttpSession session) {
 
-        //if (super.comprobarCompradorVendedorSession(request, response)) {
-        //UsuarioDTO user = (UsuarioDTO)session.getAttribute("usuario"); quitar usuarioService despues
-        UsuarioDTO user = usuarioService.buscarUsuario(4);
+        if (!super.comprobarCompradorVendedorSession(session)) {
+            return super.redirectComprobarCompradorVendedorSession(session);
+        }
+        UsuarioDTO user = (UsuarioDTO)session.getAttribute("usuario");
 
         List<CategoriaDTO> categorias= categoriaService.listarCategorias();
         List<Object[]> productos = sellerService.listarTodosVendidos(user);
@@ -101,15 +103,16 @@ public class SellerController {
         model.addAttribute("productos", productos);
 
         return "productosVendidos";
-        //}
+
     }
 
     @PostMapping("/buscarMisProductosVendidos")
     public String doListarVendidosBuscados (Model model, HttpSession session, @RequestParam("filtro") String filtroNombre, @RequestParam("filtroCategoria") String filtroCategoria) {
 
-        //if (super.comprobarCompradorVendedorSession(request, response)) {
-        //UsuarioDTO user = (UsuarioDTO)sesion.getAttribute("usuario");
-        UsuarioDTO user = usuarioService.buscarUsuario(4);
+        if (!super.comprobarCompradorVendedorSession(session)) {
+            return super.redirectComprobarCompradorVendedorSession(session);
+        }
+        UsuarioDTO user = (UsuarioDTO)session.getAttribute("usuario");
 
         List<CategoriaDTO> categorias= categoriaService.listarCategorias();
 
@@ -121,15 +124,16 @@ public class SellerController {
         model.addAttribute("user", user);
 
         return "productosVendidos";
-        //}
+
     }
 
     @GetMapping("/misProductosEnPuja")
     public String doListarEnPuja (Model model, HttpSession session) {
 
-        //if (super.comprobarCompradorVendedorSession(request, response)) {
-        //UsuarioDTO user = (UsuarioDTO)session.getAttribute("usuario"); quitar usuarioService despues
-        UsuarioDTO user = usuarioService.buscarUsuario(4);
+        if (!super.comprobarCompradorVendedorSession(session)) {
+            return super.redirectComprobarCompradorVendedorSession(session);
+        }
+        UsuarioDTO user = (UsuarioDTO)session.getAttribute("usuario");
 
         List<CategoriaDTO> categorias= categoriaService.listarCategorias();
         List<Object[]> productos = sellerService.listarTodosEnPuja(user);
@@ -139,13 +143,15 @@ public class SellerController {
         model.addAttribute("productos", productos);
 
         return "pujas";
-        //}
+
     }
 
     @PostMapping("/buscarMisProductosEnPuja")
     public String doListarEnPujaBuscados (Model model, HttpSession session, @RequestParam("filtro") String filtroNombre, @RequestParam("filtroCategoria") String filtroCategoria) {
 
-        //if (super.comprobarCompradorVendedorSession(request, response)) {
+        if (!super.comprobarCompradorVendedorSession(session)) {
+            return super.redirectComprobarCompradorVendedorSession(session);
+        }
         //UsuarioDTO user = (UsuarioDTO)sesion.getAttribute("usuario");
         UsuarioDTO user = usuarioService.buscarUsuario(4);
 
@@ -159,7 +165,7 @@ public class SellerController {
         model.addAttribute("user", user);
 
         return "pujas";
-        //}
+
     }
 
 }

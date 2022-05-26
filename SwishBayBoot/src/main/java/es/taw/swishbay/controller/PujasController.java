@@ -21,27 +21,9 @@ import java.util.List;
 
 @Controller
 @RequestMapping("pujas")
-public class PujasController {
+public class PujasController extends SwishBayController {
 
-    private CategoriaService categoriaService;
-    private SellerService sellerService;
-    private UsuarioService usuarioService;
     private ProductoService productoService;
-
-    @Autowired
-    public void setCategoriaService(CategoriaService categoriaService) {
-        this.categoriaService = categoriaService;
-    }
-
-    @Autowired
-    public void setSellerService(SellerService sellerService) {
-        this.sellerService = sellerService;
-    }
-
-    @Autowired
-    public void setUsuarioService(UsuarioService usuarioService) {
-        this.usuarioService = usuarioService;
-    }
 
     @Autowired
     public void setProductoService(ProductoService productoService){
@@ -50,10 +32,11 @@ public class PujasController {
 
 
     @GetMapping("/{id}/editar")
-    public String doPonerEnPuja(@PathVariable("id") int id, Model model) {
+    public String doPonerEnPuja(@PathVariable("id") int id, Model model, HttpSession session) {
 
-        //if (super.comprobarCompradorVendedorSession(request, response)) {
-
+        if (!super.comprobarCompradorVendedorSession(session)) {
+            return super.redirectComprobarCompradorVendedorSession(session);
+        }
 
         ProductoDTO p = productoService.buscarProducto(""+id);
         Double precio = 0.0;
@@ -72,9 +55,11 @@ public class PujasController {
     }
 
     @PostMapping("/guardar")
-    public String doGuardarEnPuja(Model model, @RequestParam("id") int id, @RequestParam("time") String time, @RequestParam("precio") Double precio) {
+    public String doGuardarEnPuja(Model model, HttpSession session, @RequestParam("id") int id, @RequestParam("time") String time, @RequestParam("precio") Double precio) {
 
-        //if (super.comprobarCompradorVendedorSession(request, response)) {
+        if (!super.comprobarCompradorVendedorSession(session)) {
+            return super.redirectComprobarCompradorVendedorSession(session);
+        }
 
         ProductoDTO p;
 
@@ -111,31 +96,31 @@ public class PujasController {
             return "enPuja";
 
         }
-        //}
+
     }
 
     @GetMapping("/{id}/borrar")
-    public String doBorrarEnPuja(@PathVariable("id") int id) {
+    public String doBorrarEnPuja(HttpSession session, @PathVariable("id") int id) {
 
-        //if (super.comprobarCompradorVendedorSession(request, response)) {
-
+        if (!super.comprobarCompradorVendedorSession(session)) {
+            return super.redirectComprobarCompradorVendedorSession(session);
+        }
         productoService.quitarPuja(""+id);
 
         return "redirect:/seller/misProductosEnPuja";
 
-        //}
     }
 
     @GetMapping("/{id}/finalizar")
-    public String doFinalizarPuja(@PathVariable("id") int id) {
+    public String doFinalizarPuja(HttpSession session, @PathVariable("id") int id) {
 
-        //if (super.comprobarCompradorVendedorSession(request, response)) {
-
+        if (!super.comprobarCompradorVendedorSession(session)) {
+            return super.redirectComprobarCompradorVendedorSession(session);
+        }
         productoService.finalizarPuja(id);
 
         return "redirect:/seller/misProductosEnPuja";
 
-        //}
     }
 
 
