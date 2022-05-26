@@ -148,34 +148,34 @@ public class ProductoService {
         return p;
     }
 
-    private void rellenarProducto(Producto p, String titulo, String desc, String foto, Date date, String categoria, String precio, int vendedor){ // Galo
+    private void rellenarProducto(Producto p, String titulo, String desc, String foto, Date date, int categoria, Double precio, int vendedor){ // Galo
         p.setTitulo(titulo);
         p.setDescripcion(desc);
         p.setFoto(foto);
         p.setFinPuja(date);
-        p.setCategoria(categoriaRepository.findByName(categoria));
-        p.setPrecioSalida(Double.parseDouble(precio));
+        p.setCategoria(categoriaRepository.getById(categoria));
+        p.setPrecioSalida(precio);
         short n=0;
         p.setEnPuja(n);
         p.setVendedor(usuarioRepository.getById(vendedor));
     }
 
-    private void rellenarProducto(Producto p, String titulo, String desc, String foto, Date date, String categoria, String precio){ // Galo
+    private void rellenarProducto(Producto p, String titulo, String desc, String foto, Date date, int categoria, Double precio){ // Galo
         p.setTitulo(titulo);
         p.setDescripcion(desc);
         p.setFoto(foto);
         p.setFinPuja(date);
-        p.setCategoria(categoriaRepository.findByName(categoria));
-        p.setPrecioSalida(Double.parseDouble(precio));
+        p.setCategoria(categoriaRepository.getById(categoria));
+        p.setPrecioSalida(precio);
         short n=0;
         p.setEnPuja(n);
 
     }
 
-    public void crearProducto(String nombre, String descripcion, String foto, java.sql.Date date, String categoria, String precio, Integer id) {
+    public void crearProducto(String nombre, String descripcion, String foto, java.sql.Date date, int categoria, Double precio, Integer id) {
 
         Producto p = new Producto();
-        Categoria c = categoriaRepository.findByName(categoria);
+        Categoria c = categoriaRepository.getById(categoria);
         Usuario seller = usuarioRepository.getById(id);
 
         rellenarProducto(p,nombre,descripcion,foto,date,categoria,precio,id);
@@ -187,11 +187,11 @@ public class ProductoService {
         usuarioRepository.save(seller);
     }
 
-    public void modificarProducto(String strId, String nombre, String descripcion, String foto, java.sql.Date date, String categoria, String precio) {
+    public void modificarProducto(int id, String nombre, String descripcion, String foto, java.sql.Date date, int categoria, Double precio) {
 
-        Producto p = productoRepository.getById(Integer.parseInt(strId));
+        Producto p = productoRepository.getById(id);
         Categoria anteriorCategoria = p.getCategoria();
-        Categoria c = categoriaRepository.findByName(categoria);
+        Categoria c = categoriaRepository.getById(categoria);
 
         anteriorCategoria.getProductoList().remove(p);
         categoriaRepository.save(anteriorCategoria);
@@ -247,9 +247,9 @@ public class ProductoService {
         productoRepository.save(p);
     }
 
-    public void finalizarPuja(String id) {
+    public void finalizarPuja(int id) {
 
-        Producto p = productoRepository.getById(Integer.parseInt(id));
+        Producto p = productoRepository.getById(id);
 
         //this.grupoService.notificarFinPuja("Grupo_"+p.getId(), p.toDTO());
 
@@ -261,7 +261,7 @@ public class ProductoService {
 
             puja = pujaRepository.findMax(p.getId());
             Usuario comprador =puja.getUsuario();
-            List<Puja> pujasPerdedoras = productoRepository.findLosers(Integer.parseInt(id), puja.getPujaPK());
+            List<Puja> pujasPerdedoras = productoRepository.findLosers(id, puja.getPujaPK());
 
 
             p.setEnPuja((short) 0);

@@ -43,16 +43,16 @@
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                   <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <li class="nav-item">
-                      <a class="nav-link" aria-current="page" href="/misProductos"> Mis productos</a>
+                      <a class="nav-link" aria-current="page" href="/seller/misProductos"> Mis productos</a>
                     </li>
                     <li class="nav-item">
-                      <a class="nav-link" href="/misProductosEnPuja">Mis pujas</a>
+                      <a class="nav-link" href="/seller/misProductosEnPuja">Mis pujas</a>
                     </li>
                     <li class="nav-item">
-                      <a class="nav-link" href="/producto/nuevo">Nuevo producto</a>
+                      <a class="nav-link" href="/productos/nuevo">Nuevo producto</a>
                     </li>
                     <li class="nav-item">
-                      <a class="nav-link active" href="/puja/nuevo/<%=producto.getId() %>">Añadir/modificar puja</a>
+                      <a class="nav-link active" href="/pujas/nuevo/<%=producto.getId() %>">Añadir/modificar puja</a>
                     </li>
                   
                   </ul>
@@ -63,7 +63,7 @@
             </br>
             <h1 class="mb-2"><%=producto.getTitulo() %></h1>
             </br>
-            <form  method="POST" action="/puja/guardar">
+            <form  method="POST" action="/pujas/guardar">
                 <div class="form-group row justify-content-md-center mb-4">
                   <div class="col-sm-4">
                       <input type="hidden" class="form-control" id="inputId" name="id" value="<%= producto==null? "": producto.getId() %>" >
@@ -96,7 +96,7 @@
                 <div class="form-group row justify-content-md-center mt-2">
                   <div class="col-sm-10">
                     <button type="submit" class="btn btn-lg btn-success fw-bold border-white mx-2">Confirmar</button>
-                    <a href="/misProductosEnPuja" class="btn btn-lg btn-secondary fw-bold border-white mx-2">Cancelar</a>
+                    <a href="/seller/misProductosEnPuja" class="btn btn-lg btn-secondary fw-bold border-white mx-2">Cancelar</a>
                   </div>
                 </div>
             </form>                

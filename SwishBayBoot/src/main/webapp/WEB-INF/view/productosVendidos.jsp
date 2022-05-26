@@ -34,20 +34,20 @@
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                   <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <li class="nav-item">
-                      <a class="nav-link" aria-current="page" href="/misProductos"> Mis productos</a>
+                      <a class="nav-link" aria-current="page" href="/seller/misProductos"> Mis productos</a>
                     </li>
                     <li class="nav-item">
-                      <a class="nav-link" href="/misProductosEnPuja">Mis pujas</a>
+                      <a class="nav-link" href="/seller/misProductosEnPuja">Mis pujas</a>
                     </li>
                     <li class="nav-item">
-                      <a class="nav-link active" href="/misProductosVendidos">Productos vendidos</a>
+                      <a class="nav-link active" href="/seller/misProductosVendidos">Productos vendidos</a>
                     </li>
                     <li class="nav-item">
-                      <a class="nav-link" href="/producto/nuevo">Nuevo producto</a>
+                      <a class="nav-link" href="/productos/nuevo">Nuevo producto</a>
                     </li>
                     
                   </ul>
-                  <form method="post" class="d-flex" action="buscarMisProductosVendidos">
+                  <form method="post" class="d-flex" action="/seller/buscarMisProductosVendidos">
                         <div class="col-sm-4">
                             <select class="form-select px-2" id="filtroCategoria" name="filtroCategoria">
                                 <%
