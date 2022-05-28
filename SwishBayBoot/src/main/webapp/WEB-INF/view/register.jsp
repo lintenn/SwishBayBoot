@@ -20,9 +20,9 @@
     if (user != null) {
         String redirectTo = "compradorProductosServlet";
         if (user.getRol().getNombre().equals("administrador")) {
-            redirectTo = "usuarios";
+            redirectTo = "admin/usuarios";
         } else if (user.getRol().getNombre().equals("compradorvendedor")) {
-            redirectTo = "compradorProductosServlet";
+            redirectTo = "seller/misProductos";
         } else if (user.getRol().getNombre().equals("marketing")) {
             redirectTo = "usuarioCompradorServlet";
         }

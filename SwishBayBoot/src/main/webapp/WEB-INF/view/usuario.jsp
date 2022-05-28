@@ -34,20 +34,20 @@
 
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <div class="container-fluid">
-            <a class="navbar-brand" href="usuarios">Panel de Administrador</a>
+            <a class="navbar-brand" href="/admin/usuarios">Panel de Administrador</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="usuarios"> Usuarios</a>
+                        <a class="nav-link active" aria-current="page" href="/admin/usuarios"> Usuarios</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="productosAdmin">Productos</a>
+                        <a class="nav-link" href="/admin/productosAdmin">Productos</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="categorias">Categorías</a>
+                        <a class="nav-link" href="/admin/categorias">Categorías</a>
                     </li>
 
                 </ul>
@@ -59,7 +59,7 @@
     <h1 class="mb-2">Datos del usuario</h1>
     <br/>
 
-    <form  method="POST" action="usuarioGuardar">
+    <form  method="POST" action="/admin/usuario/guardar">
         <% if (status != null) {%>
         <div class="form-group row justify-content-center" style="height: 50px;">
             <div class=" alert alert-danger col-sm-4"><%=status%></div>
@@ -173,7 +173,7 @@
         <div class="form-group row justify-content-md-center mt-2">
             <div class="col-sm-10">
                 <button type="submit" class="btn btn-lg btn-success fw-bold border-white mx-2"><%= usuario==null? "Añadir": "Modificar" %></button>
-                <a href="usuarios" class="btn btn-lg btn-secondary fw-bold border-white mx-2">Cancelar</a>
+                <a href="/admin/usuarios" class="btn btn-lg btn-secondary fw-bold border-white mx-2">Cancelar</a>
             </div>
         </div>
     </form>
