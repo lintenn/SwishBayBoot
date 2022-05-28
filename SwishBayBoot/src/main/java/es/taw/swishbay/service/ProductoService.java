@@ -187,7 +187,7 @@ public class ProductoService {
         usuarioRepository.save(seller);
     }
 
-    public void modificarProducto(int id, String nombre, String descripcion, String foto, java.sql.Date date, int categoria, Double precio) {
+    public void modificarProducto(int id, String nombre, String descripcion, String foto, Date date, int categoria, Double precio) {
 
         Producto p = productoRepository.getById(id);
         Categoria anteriorCategoria = p.getCategoria();
