@@ -291,4 +291,14 @@ public class ProductoService {
 
         usuarioRepository.save(user);
     }
+
+    public Double obtenerMayorPrecio(List<ProductoDTO> productos){ //Miguel Oña Guerrero
+        List<Integer> idProductos = new ArrayList();
+
+        for(ProductoDTO producto : productos){
+            idProductos.add(producto.getId());
+        }
+
+        return (idProductos.isEmpty()) ? 0.0 : productoRepository.findPrecioMaximo(idProductos);
+    }
 }

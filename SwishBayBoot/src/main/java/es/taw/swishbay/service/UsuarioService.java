@@ -307,9 +307,8 @@ public class UsuarioService {
 
     public UsuarioDTO manejoFavoritos(int idProducto, int idUsuario){ //Miguel Oña Guerrero
 
-        Usuario usuario = this.usuarioRepository.getById(idUsuario);
-        Producto producto = this.productoRepository.getById(idProducto);
-
+        Usuario usuario = this.usuarioRepository.findById(idUsuario).orElse(null);
+        Producto producto = this.productoRepository.findById(idProducto).orElse(null);
 
         if(usuario.getProductoList().contains(producto)){
             usuario.getProductoList().remove(producto);

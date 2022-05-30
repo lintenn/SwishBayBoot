@@ -34,10 +34,10 @@
         <div class="float-md-end">
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
         <li class="nav-item">
-          <a class="nav-link active" aria-current="page" href="NotificacionesVerServlet">Notificaciones</a>
+          <a class="nav-link active" aria-current="page" href="">Notificaciones</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="LogoutServlet">Cerrar sesión</a>
+          <a class="nav-link" href="/logout">Cerrar sesión</a>
         </li>
       </ul>
         </div>
@@ -48,7 +48,7 @@
 </header>
   
 <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <form action="CompradorSaldoServlet" method="POST">
+  <form action="/comprador/saldo" method="POST">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
