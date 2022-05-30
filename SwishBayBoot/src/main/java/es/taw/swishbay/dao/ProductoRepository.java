@@ -97,5 +97,7 @@ public interface ProductoRepository  extends JpaRepository<Producto, Integer> {
     @Query("select p from Producto p where p.titulo like CONCAT('%', :titulo,'%') and p.precioSalida <= :precio and p.categoria.nombre like CONCAT('%',:filtroCategoria ,'%') and p.comprador.id = :id")
     List<Producto> findCompradosByFiltro(String titulo, String filtroCategoria, Double precio, Integer id); //Miguel Oña Guerrero
 
+    @Query("select max(p.precioSalida) from Producto p where p.id in :ids")
+    Double findPrecioMaximo(List<Integer> ids); //Miguel Oña Guerrero
 
 }
