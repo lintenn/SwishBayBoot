@@ -86,8 +86,8 @@
                             <p class="card-text text-dark text-center mb-0" >Fin subasta: <%= formato.format(producto.getFinPuja()) %> </p>
                         </div>
                         <div class="row justify-content-center pb-2 px-0">
-                            <a href="CompradorVerProductoServlet?id=<%=producto.getId() %>" class="btn btn-primary col-8 mx-2">Ver producto y pujar</a>
-                            <a href="CompradorManejoFavoritoServlet?id=<%=producto.getId() %>" class="col-2">
+                            <a href="/<%=producto.getId() %>" class="btn btn-primary col-8 mx-2">Ver producto y pujar</a>
+                            <a href="favorito/<%=producto.getId() %>" class="col-2">
                                 <%
                                     if(usuario.getFavoritos().contains(producto.getId())){
                                 %>

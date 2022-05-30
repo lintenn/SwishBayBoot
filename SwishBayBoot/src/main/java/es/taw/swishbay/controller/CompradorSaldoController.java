@@ -18,7 +18,7 @@ import javax.servlet.http.HttpSession;
 
 @Controller
 @RequestMapping("comprador")
-public class CompradorSaldoController {
+public class CompradorSaldoController extends SwishBayController{
 
     UsuarioService usuarioService;
 
@@ -29,6 +29,10 @@ public class CompradorSaldoController {
 
     @PostMapping("/saldo")
     public String doSumarSaldo(@RequestParam("id") Integer idUsuario, @RequestParam("saldo") Double cantidad, HttpSession session){
+
+        if (!super.comprobarCompradorVendedorSession(session)) {
+            return super.redirectComprobarCompradorVendedorSession(session);
+        }
 
         UsuarioDTO usuario = usuarioService.sumarSaldo(cantidad, idUsuario);
 
