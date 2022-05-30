@@ -12,6 +12,7 @@
     String action = (String)request.getAttribute("servlet");
     Double mayorPrecio = (Double)request.getAttribute("mayorPrecio");
     Double precio = (Double)request.getAttribute("precio");
+    String filtroTitulo = (String)request.getAttribute("filtroTitulo");
     if(precio == null || precio > mayorPrecio){
         precio = mayorPrecio;
     }
@@ -38,6 +39,6 @@
             %>
         </select>
     </div>
-    <input class="form-control me-2 mx-2" type="search" placeholder="Buscar" name="filtro" aria-label="Search">
+    <input class="form-control me-2 mx-2" type="search" placeholder="Buscar" value="<%= filtroTitulo %>" name="filtro" aria-label="Search">
     <input class="btn btn-outline-success" type="submit" value="Buscar">
 </form>
