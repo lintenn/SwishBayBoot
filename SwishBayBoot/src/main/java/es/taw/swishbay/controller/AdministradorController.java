@@ -71,9 +71,13 @@ public class AdministradorController extends SwishBayController {
 
         List<CategoriaDTO> categorias = this.categoriaService.listarCategorias();
         List<RolUsuarioDTO> roles = this.rolUsuarioService.listarRoles();
+        UsuarioDTO usuario = new UsuarioDTO();
+        usuario.setFechaNacimiento(new Date());
+        usuario.setSexo("masc");
 
         model.addAttribute("categorias", categorias);
         model.addAttribute("roles", roles);
+        model.addAttribute("usuario", usuario);
 
         return "usuario";
     }
@@ -99,7 +103,7 @@ public class AdministradorController extends SwishBayController {
 
 
     @PostMapping("/usuario/guardar")
-    public String usuarioGuardar(Model model, HttpSession session, @RequestParam(value = "id", required = false) String id, @RequestParam("nombre") String nombre, @RequestParam("apellidos") String apellidos, @RequestParam("correo") String correo, @RequestParam("password") String password, @RequestParam("domicilio") String domicilio, @RequestParam("ciudad") String ciudad, @RequestParam("fechaNacimiento") String strFechaNacimiento, @RequestParam(value = "saldo",defaultValue = "0") String strSaldo, @RequestParam("sexo") String sexo, @RequestParam(value = "tipo", defaultValue = "compradorvendedor") String strTipoUsuario, @RequestParam("categoria") String[] categorias) {
+    public String usuarioGuardar(Model model, HttpSession session, @ModelAttribute("usuario") UsuarioDTO newUser, @RequestParam(value = "tipo", defaultValue = "compradorvendedor") String strTipoUsuario, @RequestParam(value = "categoria", required = false) String[] categorias) { //, @RequestParam(value = "id", required = false) String id, @RequestParam("nombre") String nombre, @RequestParam("apellidos") String apellidos, @RequestParam("correo") String correo, @RequestParam("password") String password, @RequestParam("domicilio") String domicilio, @RequestParam("ciudad") String ciudad, @RequestParam("fechaNacimiento") String strFechaNacimiento, @RequestParam(value = "saldo",defaultValue = "0") String strSaldo, @RequestParam("sexo") String sexo, @RequestParam(value = "tipo", defaultValue = "compradorvendedor") String strTipoUsuario, @RequestParam("categoria") String[] categorias) {
 
         UsuarioDTO user = (UsuarioDTO) session.getAttribute("usuario");
 
@@ -110,13 +114,15 @@ public class AdministradorController extends SwishBayController {
             SimpleDateFormat formato = new SimpleDateFormat("yyyy-MM-dd");
             Date fechaNacimiento = null;
 
-            try {
-                fechaNacimiento = formato.parse(strFechaNacimiento);
-                status = this.usuarioService.comprobarInformacionUsuario(fechaNacimiento, id, correo, strSaldo);
-            } catch (ParseException ex) {
+            //try {
+                //fechaNacimiento = formato.parse(strFechaNacimiento);
+                fechaNacimiento = newUser.getFechaNacimiento();
+                System.out.println(fechaNacimiento);
+                status = this.usuarioService.comprobarInformacionUsuario(fechaNacimiento, newUser.getId() + "", newUser.getCorreo(), newUser.getSaldo() + "");
+            /*} catch (ParseException ex) {
                 status = "Formato de fecha de nacimiento incorrecto.";
                 System.out.println(ex);
-            }
+            }*/
 
             if (status != null) {
 
@@ -135,28 +141,28 @@ public class AdministradorController extends SwishBayController {
                 if (user == null) {    // Registro de compradorvendedor
 
                     //strTipoUsuario = "compradorvendedor";
-                    UsuarioDTO usuario = this.usuarioService.crearUsuario(nombre, apellidos, correo, password, domicilio, ciudad, sexo, fechaNacimiento, saldo, strTipoUsuario, categorias);
+                    UsuarioDTO usuario = this.usuarioService.crearUsuario(newUser.getNombre(), newUser.getApellidos(), newUser.getCorreo(), newUser.getPassword(), newUser.getDomicilio(), newUser.getCiudad(), newUser.getSexo(), fechaNacimiento, saldo, strTipoUsuario, categorias);
 
                     session.setAttribute("usuario", usuario);
                     goTo = "redirect:/compradorProductos";
 
-                } else if (id == null || id.isEmpty()) {    // Creación desde administrador
+                } else if (newUser.getId() == null) {    // Creación desde administrador
 
-                    saldo = Double.parseDouble(strSaldo);
-                    this.usuarioService.crearUsuario(nombre, apellidos, correo, password, domicilio, ciudad, sexo, fechaNacimiento, saldo, strTipoUsuario, categorias);
+                    saldo = newUser.getSaldo();
+                    this.usuarioService.crearUsuario(newUser.getNombre(), newUser.getApellidos(), newUser.getCorreo(), newUser.getPassword(), newUser.getDomicilio(), newUser.getCiudad(), newUser.getSexo(), fechaNacimiento, saldo, strTipoUsuario, categorias);
 
-                    goTo = "redirect:/usuarios";
+                    goTo = "redirect:/admin/usuarios";
                 } else {    // Modificación desde administrador
 
-                    saldo = Double.parseDouble(strSaldo);
-                    int idi = Integer.parseInt(id);
-                    UsuarioDTO usuario = this.usuarioService.modificarUsuario(idi, nombre, apellidos, correo, password, domicilio, ciudad, sexo, fechaNacimiento, saldo, strTipoUsuario, categorias);
+                    saldo = newUser.getSaldo();
+                    //int idi = Integer.parseInt(id);
+                    UsuarioDTO usuario = this.usuarioService.modificarUsuario(newUser.getId(), newUser.getNombre(), newUser.getApellidos(), newUser.getCorreo(), newUser.getPassword(), newUser.getDomicilio(), newUser.getCiudad(), newUser.getSexo(), fechaNacimiento, saldo, strTipoUsuario, categorias);
 
-                    if (user.getId() == idi) {    // si se modifica al propio administrador, hay que actualizar el usuario de la sesión
+                    if (user.getId() == (int)newUser.getId()) {    // si se modifica al propio administrador, hay que actualizar el usuario de la sesión
                         session.setAttribute("usuario", usuario);
                     }
 
-                    goTo = "redirect:/usuarios";
+                    goTo = "redirect:/admin/usuarios";
 
                 }
 
@@ -280,10 +286,13 @@ public class AdministradorController extends SwishBayController {
     }
 
     @GetMapping("/categoria/nuevo")
-    public String categoriaNuevo(HttpSession session) {
+    public String categoriaNuevo(Model model, HttpSession session) {
         if (!super.comprobarAdminSession(session)) {
             return super.redirectComprobarAdminSession(session);
         }
+
+        CategoriaDTO categoria = new CategoriaDTO();
+        model.addAttribute("categoria", categoria);
 
         return "categoria";
     }
