@@ -113,7 +113,7 @@ public class CompradorProductosController extends SwishBayController{
 
         addAttributes(comprador, model, session);
 
-        return "compradorProductos";
+        return "compradorProductosEnPuja";
     }
 
     @PostMapping("/enPuja")
@@ -137,7 +137,7 @@ public class CompradorProductosController extends SwishBayController{
 
         addAttributes(comprador, model, session);
 
-        return "compradorProductos";
+        return "compradorProductosEnPuja";
     }
 
     @GetMapping("/favoritos")
@@ -201,7 +201,7 @@ public class CompradorProductosController extends SwishBayController{
 
         addAttributes(comprador, model, session);
 
-        return "compradorProductos";
+        return "compradorProductosComprados";
     }
 
     @PostMapping("/comprados")
@@ -225,7 +225,7 @@ public class CompradorProductosController extends SwishBayController{
 
         addAttributes(comprador, model, session);
 
-        return "compradorProductos";
+        return "compradorProductosComprados";
     }
 
     private void setFiltros(CompradorDTO comprador, String filtroTitulo, String filtroCategoria, Double filtroPrecio){
