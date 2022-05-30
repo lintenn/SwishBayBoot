@@ -7,8 +7,13 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-
 import javax.servlet.http.HttpSession;
+
+/**
+ * Este controller añade y elimina productos favoritos de un comprador.
+ *
+ * @author Miguel Oña Guerrero
+ */
 
 @Controller
 @RequestMapping("comprador")
@@ -34,7 +39,7 @@ public class CompradorFavoritosController extends SwishBayController{
 
         session.setAttribute("usuario", usuario);
 
-        String goTo = (String) session.getAttribute("servlet");
+        String goTo = (String) session.getAttribute("goTo");
         if(goTo == null){
             goTo = "/productos";
         }

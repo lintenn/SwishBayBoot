@@ -7,11 +7,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-
 import javax.servlet.http.HttpSession;
 
 /**
- * Este servlet añade fondos al saldo actual.
+ * Este controller añade fondos al saldo actual.
  *
  * @author Miguel Oña Guerrero
  */
@@ -28,21 +27,23 @@ public class CompradorSaldoController extends SwishBayController{
     }
 
     @PostMapping("/saldo")
-    public String doSumarSaldo(@RequestParam("id") Integer idUsuario, @RequestParam("saldo") Double cantidad, HttpSession session){
+    public String doSumarSaldo(@RequestParam("saldo") Double cantidad, HttpSession session){
 
         if (!super.comprobarCompradorVendedorSession(session)) {
             return super.redirectComprobarCompradorVendedorSession(session);
         }
 
-        UsuarioDTO usuario = usuarioService.sumarSaldo(cantidad, idUsuario);
+        UsuarioDTO usuario = (UsuarioDTO) session.getAttribute("usuario");
+
+        usuario = usuarioService.sumarSaldo(cantidad, usuario.getId());
 
         session.setAttribute("usuario", usuario);
 
-        String goTo = (String) session.getAttribute("servlet");
+        String goTo = (String) session.getAttribute("goTo");
         if(goTo == null){
             goTo = "/productos";
         }
 
-        return "redirect:/comprador" +  goTo;
+        return "redirect:/comprador" + goTo;
     }
 }

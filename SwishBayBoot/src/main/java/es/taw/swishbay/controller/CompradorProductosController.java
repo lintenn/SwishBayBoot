@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import javax.servlet.http.HttpSession;
 
 /**
- * Recupera todos los productos existentes en la tienda que no sean vendidos por el usuario.
+ * Este controller recupera todos los diferentes productos de la tienda.
  *
  * @author Miguel Oña Guerrero
  */
@@ -268,8 +268,8 @@ public class CompradorProductosController extends SwishBayController{
         model.addAttribute("filtroTitulo", comprador.getFiltroTitulo());
         model.addAttribute("precio", comprador.getFiltroPrecio());
         model.addAttribute("selected", comprador.getFiltroCategoria());
-        model.addAttribute("servlet", comprador.getMapping());
-        session.setAttribute("servlet", comprador.getMapping());
+        model.addAttribute("goTo", comprador.getMapping());
+        session.setAttribute("goTo", comprador.getMapping());
 
         comprador.setUsuario(usuarioService.buscarUsuario(comprador.getUsuario().getId()));
         session.setAttribute("usuario", comprador.getUsuario());
