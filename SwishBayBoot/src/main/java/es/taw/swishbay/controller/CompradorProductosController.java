@@ -1,9 +1,6 @@
 package es.taw.swishbay.controller;
 
-import es.taw.swishbay.dto.CategoriaDTO;
-import es.taw.swishbay.dto.ProductoDTO;
-import es.taw.swishbay.dto.PujaDTO;
-import es.taw.swishbay.dto.UsuarioDTO;
+import es.taw.swishbay.dto.*;
 import es.taw.swishbay.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -12,9 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-
 import javax.servlet.http.HttpSession;
-import java.util.List;
 
 /**
  * Recupera todos los productos existentes en la tienda que no sean vendidos por el usuario.
@@ -31,16 +26,6 @@ public class CompradorProductosController extends SwishBayController{
     private PujaService pujaService;
     private ProductoService productoService;
     private UsuarioService usuarioService;
-
-    private UsuarioDTO usuario;
-    private List<ProductoDTO> productos;
-    private List<CategoriaDTO> categorias;
-    private List<PujaDTO> mayoresPujas;
-    private String filtroTitulo;
-    private String filtroCategoria;
-    private Double mayorPrecio;
-    private Double filtroPrecio;
-    private String mapping;
 
     @Autowired
     public void setCompradorService(CompradorService compradorService){
@@ -74,13 +59,15 @@ public class CompradorProductosController extends SwishBayController{
             return super.redirectComprobarCompradorVendedorSession(session);
         }
 
-        usuario = (UsuarioDTO) session.getAttribute("usuario");
-        setFiltros("", "", null);
-        productos = compradorService.listarProductosExistentes(this.filtroTitulo,this.filtroCategoria,this.filtroPrecio,usuario.getId());
-        setAttributes(null);
-        mapping = "/productos";
+        CompradorDTO comprador = new CompradorDTO();
+        comprador.setUsuario((UsuarioDTO) session.getAttribute("usuario"));
+        setFiltros(comprador,"", "", null);
+        comprador.setProductos(compradorService.listarProductosExistentes(comprador.getFiltroTitulo(), comprador.getFiltroCategoria(),
+                                                                          comprador.getFiltroPrecio(), comprador.getUsuario().getId()));
+        setAttributes(comprador, null);
+        comprador.setMapping("/productos");
 
-        addAttributes(model, session);
+        addAttributes(comprador, model, session);
 
         return "compradorProductos";
     }
@@ -96,13 +83,15 @@ public class CompradorProductosController extends SwishBayController{
             return super.redirectComprobarCompradorVendedorSession(session);
         }
 
-        usuario = (UsuarioDTO) session.getAttribute("usuario");
-        setFiltros(filtroTitulo, filtroCategoria, filtroPrecio);
-        productos = compradorService.listarProductosExistentes(this.filtroTitulo,this.filtroCategoria,this.filtroPrecio,usuario.getId());
-        setAttributes(precioMaximo);
-        mapping = "/productos";
+        CompradorDTO comprador = new CompradorDTO();
+        comprador.setUsuario((UsuarioDTO) session.getAttribute("usuario"));
+        setFiltros(comprador, filtroTitulo, filtroCategoria, filtroPrecio);
+        comprador.setProductos(compradorService.listarProductosExistentes(comprador.getFiltroTitulo(), comprador.getFiltroCategoria(),
+                                                                          comprador.getFiltroPrecio(), comprador.getUsuario().getId()));
+        setAttributes(comprador, precioMaximo);
+        comprador.setMapping("/productos");
 
-        addAttributes(model, session);
+        addAttributes(comprador, model, session);
 
         return "compradorProductos";
     }
@@ -114,13 +103,15 @@ public class CompradorProductosController extends SwishBayController{
             return super.redirectComprobarCompradorVendedorSession(session);
         }
 
-        usuario = (UsuarioDTO) session.getAttribute("usuario");
-        setFiltros("", "", null);
-        productos = compradorService.listarProductosEnPuja(this.filtroTitulo,this.filtroCategoria,this.filtroPrecio,usuario.getId());
-        setAttributes(null);
-        mapping = "/enPuja";
+        CompradorDTO comprador = new CompradorDTO();
+        comprador.setUsuario((UsuarioDTO) session.getAttribute("usuario"));
+        setFiltros(comprador, "", "", null);
+        comprador.setProductos(compradorService.listarProductosEnPuja(comprador.getFiltroTitulo(), comprador.getFiltroCategoria(),
+                                                                      comprador.getFiltroPrecio(), comprador.getUsuario().getId()));
+        setAttributes(comprador, null);
+        comprador.setMapping("/enPuja");
 
-        addAttributes(model, session);
+        addAttributes(comprador, model, session);
 
         return "compradorProductos";
     }
@@ -136,13 +127,15 @@ public class CompradorProductosController extends SwishBayController{
             return super.redirectComprobarCompradorVendedorSession(session);
         }
 
-        usuario = (UsuarioDTO) session.getAttribute("usuario");
-        setFiltros(filtroTitulo, filtroCategoria, filtroPrecio);
-        productos = compradorService.listarProductosEnPuja(this.filtroTitulo,this.filtroCategoria,this.filtroPrecio,usuario.getId());
-        setAttributes(precioMaximo);
-        mapping = "/enPuja";
+        CompradorDTO comprador = new CompradorDTO();
+        comprador.setUsuario((UsuarioDTO) session.getAttribute("usuario"));
+        setFiltros(comprador, filtroTitulo, filtroCategoria, filtroPrecio);
+        comprador.setProductos(compradorService.listarProductosEnPuja(comprador.getFiltroTitulo(), comprador.getFiltroCategoria(),
+                                                                      comprador.getFiltroPrecio(), comprador.getUsuario().getId()));
+        setAttributes(comprador, precioMaximo);
+        comprador.setMapping("/enPuja");
 
-        addAttributes(model, session);
+        addAttributes(comprador, model, session);
 
         return "compradorProductos";
     }
@@ -154,13 +147,15 @@ public class CompradorProductosController extends SwishBayController{
             return super.redirectComprobarCompradorVendedorSession(session);
         }
 
-        usuario = (UsuarioDTO) session.getAttribute("usuario");
-        setFiltros("", "", null);
-        productos = compradorService.listarProductosFavoritos(this.filtroTitulo,this.filtroCategoria,this.filtroPrecio,usuario.getId());
-        setAttributes(null);
-        mapping = "/favoritos";
+        CompradorDTO comprador = new CompradorDTO();
+        comprador.setUsuario((UsuarioDTO) session.getAttribute("usuario"));
+        setFiltros(comprador, "", "", null);
+        comprador.setProductos(compradorService.listarProductosFavoritos(comprador.getFiltroTitulo(), comprador.getFiltroCategoria(),
+                                                                         comprador.getFiltroPrecio(), comprador.getUsuario().getId()));
+        setAttributes(comprador, null);
+        comprador.setMapping("/favoritos");
 
-        addAttributes(model, session);
+        addAttributes(comprador, model, session);
 
         return "compradorProductos";
     }
@@ -176,13 +171,15 @@ public class CompradorProductosController extends SwishBayController{
             return super.redirectComprobarCompradorVendedorSession(session);
         }
 
-        usuario = (UsuarioDTO) session.getAttribute("usuario");
-        setFiltros(filtroTitulo, filtroCategoria, filtroPrecio);
-        productos = compradorService.listarProductosFavoritos(this.filtroTitulo,this.filtroCategoria,this.filtroPrecio,usuario.getId());
-        setAttributes(precioMaximo);
-        mapping = "/favoritos";
+        CompradorDTO comprador = new CompradorDTO();
+        comprador.setUsuario((UsuarioDTO) session.getAttribute("usuario"));
+        setFiltros(comprador, filtroTitulo, filtroCategoria, filtroPrecio);
+        comprador.setProductos(compradorService.listarProductosFavoritos(comprador.getFiltroTitulo(), comprador.getFiltroCategoria(),
+                                                                         comprador.getFiltroPrecio(), comprador.getUsuario().getId()));
+        setAttributes(comprador, precioMaximo);
+        comprador.setMapping("/favoritos");
 
-        addAttributes(model, session);
+        addAttributes(comprador, model, session);
 
         return "compradorProductos";
     }
@@ -194,13 +191,15 @@ public class CompradorProductosController extends SwishBayController{
             return super.redirectComprobarCompradorVendedorSession(session);
         }
 
-        usuario = (UsuarioDTO) session.getAttribute("usuario");
-        setFiltros("", "", null);
-        productos = compradorService.listarProductosComprados(this.filtroTitulo,this.filtroCategoria,this.filtroPrecio,usuario.getId());
-        setAttributes(null);
-        mapping = "/comprados";
+        CompradorDTO comprador = new CompradorDTO();
+        comprador.setUsuario((UsuarioDTO) session.getAttribute("usuario"));
+        setFiltros(comprador, "", "", null);
+        comprador.setProductos(compradorService.listarProductosComprados(comprador.getFiltroTitulo(), comprador.getFiltroCategoria(),
+                                                                         comprador.getFiltroPrecio(), comprador.getUsuario().getId()));
+        setAttributes(comprador, null);
+        comprador.setMapping("/comprados");
 
-        addAttributes(model, session);
+        addAttributes(comprador, model, session);
 
         return "compradorProductos";
     }
@@ -216,61 +215,64 @@ public class CompradorProductosController extends SwishBayController{
             return super.redirectComprobarCompradorVendedorSession(session);
         }
 
-        usuario = (UsuarioDTO) session.getAttribute("usuario");
-        setFiltros(filtroTitulo, filtroCategoria, filtroPrecio);
-        productos = compradorService.listarProductosComprados(this.filtroTitulo,this.filtroCategoria,this.filtroPrecio,usuario.getId());
-        setAttributes(precioMaximo);
-        mapping = "/comprados";
+        CompradorDTO comprador = new CompradorDTO();
+        comprador.setUsuario((UsuarioDTO) session.getAttribute("usuario"));
+        setFiltros(comprador, filtroTitulo, filtroCategoria, filtroPrecio);
+        comprador.setProductos(compradorService.listarProductosComprados(comprador.getFiltroTitulo(), comprador.getFiltroCategoria(),
+                                                                         comprador.getFiltroPrecio(), comprador.getUsuario().getId()));
+        setAttributes(comprador, precioMaximo);
+        comprador.setMapping("/comprados");
 
-        addAttributes(model, session);
+        addAttributes(comprador, model, session);
 
         return "compradorProductos";
     }
 
-    private void setFiltros(String filtroTitulo, String filtroCategoria, Double filtroPrecio){
+    private void setFiltros(CompradorDTO comprador, String filtroTitulo, String filtroCategoria, Double filtroPrecio){
 
         if(filtroTitulo == null || filtroTitulo.isEmpty() || filtroTitulo.trim().length() <= 0 ){
-            this.filtroTitulo = "";
+            comprador.setFiltroTitulo("");
         }else{
-            this.filtroTitulo = filtroTitulo;
+            comprador.setFiltroTitulo(filtroTitulo);
         }
 
         if(filtroCategoria == null || filtroCategoria.equals("Categoria")){
-            this.filtroCategoria = "";
+            comprador.setFiltroCategoria("");
         }else{
-            this.filtroCategoria = filtroCategoria;
+            comprador.setFiltroCategoria(filtroCategoria);
         }
 
         if(filtroPrecio == null){
-            this.filtroPrecio = Double.MAX_VALUE;
+            comprador.setFiltroPrecio(Double.MAX_VALUE);
         }else{
-            this.filtroPrecio = filtroPrecio;
+            comprador.setFiltroPrecio(filtroPrecio);
         }
     }
 
-    public void setAttributes(String precioMaximo){
-        this.categorias = categoriaService.listarCategorias();
-        this.mayoresPujas = pujaService.buscarMayoresPujas(productos);
+    public void setAttributes(CompradorDTO comprador, String precioMaximo){
+        comprador.setCategorias(categoriaService.listarCategorias());
+        comprador.setMayoresPujas(pujaService.buscarMayoresPujas(comprador.getProductos()));
 
         if(precioMaximo == null){
-            mayorPrecio = productoService.obtenerMayorPrecio(productos);
+            comprador.setMayorPrecio(productoService.obtenerMayorPrecio(comprador.getProductos()));
         }else{
-            mayorPrecio = Double.parseDouble(precioMaximo);
+            comprador.setMayorPrecio(Double.parseDouble(precioMaximo));
         }
     }
 
-    private void addAttributes(Model model, HttpSession session){
-        model.addAttribute("productos", productos);
-        model.addAttribute("categorias", categorias);
-        model.addAttribute("mayoresPujas", mayoresPujas);
-        model.addAttribute("mayorPrecio", mayorPrecio);
-        model.addAttribute("precio", filtroPrecio);
-        model.addAttribute("selected", filtroCategoria);
-        model.addAttribute("servlet", mapping);
-        session.setAttribute("servlet", mapping);
+    private void addAttributes(CompradorDTO comprador, Model model, HttpSession session){
+        model.addAttribute("productos", comprador.getProductos());
+        model.addAttribute("categorias", comprador.getCategorias());
+        model.addAttribute("mayoresPujas", comprador.getMayoresPujas());
+        model.addAttribute("mayorPrecio", comprador.getMayorPrecio());
+        model.addAttribute("filtroTitulo", comprador.getFiltroTitulo());
+        model.addAttribute("precio", comprador.getFiltroPrecio());
+        model.addAttribute("selected", comprador.getFiltroCategoria());
+        model.addAttribute("servlet", comprador.getMapping());
+        session.setAttribute("servlet", comprador.getMapping());
 
-        usuario = usuarioService.buscarUsuario(usuario.getId());
-        session.setAttribute("usuario", usuario);
+        comprador.setUsuario(usuarioService.buscarUsuario(comprador.getUsuario().getId()));
+        session.setAttribute("usuario", comprador.getUsuario());
     }
 
 }
