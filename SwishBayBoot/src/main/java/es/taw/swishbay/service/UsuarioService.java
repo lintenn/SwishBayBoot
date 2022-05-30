@@ -140,7 +140,7 @@ public class UsuarioService {
 
         if (strId == null || strId.isEmpty()) { // si estamos añadiendo
             try {
-                //posibleUser = usuarioRepository.findByCorreo(correo);
+                posibleUser = usuarioRepository.findByCorreo(correo);
             } catch (Exception e) {
                 posibleUser = null;
             }
@@ -175,8 +175,8 @@ public class UsuarioService {
         usuario.setFechaNacimiento(fechaNacimiento);
         usuario.setSaldo(saldo);
 
-        //RolUsuario rol = this.rolUsuarioRepository.findByNombre(strTipoUsuario);
-        //usuario.setRol(rol);
+        RolUsuario rol = this.rolUsuarioRepository.findByNombre(strTipoUsuario);
+        usuario.setRol(rol);
 
         // Faltarian las categorias...
     }
@@ -224,6 +224,8 @@ public class UsuarioService {
         Usuario usuario = new Usuario();
 
         this.rellenarUsuario(usuario, nombre, apellidos, correo, password, domicilio, ciudad, sexo, fechaNacimiento, saldo, strTipoUsuario);
+
+        usuario.setCategoriaList(new ArrayList<>());
 
         this.usuarioRepository.save(usuario);
 

@@ -1,3 +1,4 @@
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%--
     Document   : usuario
     Created on : 10-abr-2022, 2:38:08
@@ -59,7 +60,7 @@
     <h1 class="mb-2">Datos del usuario</h1>
     <br/>
 
-    <form  method="POST" action="/admin/usuario/guardar">
+    <form:form  method="POST" action="/admin/usuario/guardar" modelAttribute="usuario">
         <% if (status != null) {%>
         <div class="form-group row justify-content-center" style="height: 50px;">
             <div class=" alert alert-danger col-sm-4"><%=status%></div>
@@ -67,60 +68,62 @@
         <% } %>
         <div class="form-group row justify-content-md-center mb-4">
             <div class="col-sm-4">
-                <input type="hidden" class="form-control" id="inputId" name="id" value="<%= usuario==null? "": usuario.getId() %>" >
+                <form:hidden path="id" />
             </div>
         </div>
         <div class="form-group row justify-content-md-center mb-4">
             <label for="inputNombre" class="col-sm-1 col-form-label">Nombre:</label>
             <div class="col-sm-4">
-                <input type="text" maxlength="45" class="form-control" id="inputNombre" name="nombre" required="" autofocus="" value="<%= usuario==null? "": usuario.getNombre() %>" >
+                <form:input type="text" maxlength="45" path="nombre" id="inputNombre" class="form-control" required="" autofocus=""/>
             </div>
             *
         </div>
         <div class="form-group row justify-content-md-center mb-4">
             <label for="inputApellidos" class="col-sm-1 col-form-label">Apellidos:</label>
             <div class="col-sm-4">
-                <input type="text" maxlength="45" class="form-control" id="inputApellidos" name="apellidos" required="" value="<%= usuario==null? "": usuario.getApellidos() %>" >
+                <form:input type="text" maxlength="45" path="apellidos" id="inputApellidos" class="form-control" required=""/>
             </div>
             *
         </div>
         <div class="form-group row justify-content-md-center mb-4">
             <label for="inputEmail" class="col-sm-1 col-form-label">Email:</label>
             <div class="col-sm-4">
-                <input type="email" maxlength="45" class="form-control" id="inputEmail" name="correo" required="" value="<%= usuario==null? "": usuario.getCorreo()%>" >
+                <form:input type="email" maxlength="45" path="correo" id="inputEmail" class="form-control" required=""/>
             </div>
             *
         </div>
         <div class="form-group row justify-content-md-center mb-4">
             <label for="inputPassword" class="col-sm-1 col-form-label">Contraseña:</label>
             <div class="col-sm-4">
-                <input type="password" minlength="6" maxlength="45" class="form-control" id="inputPassword" name="password" required="" value="<%= usuario==null? "": usuario.getPassword()%>" >
+                <form:input type="password" maxlength="45" path="password" id="inputPassword" class="form-control" required=""/>
             </div>
             *
         </div>
         <div class="form-group row justify-content-md-center mb-4">
             <label for="inputDomicilio" class="col-sm-1 col-form-label">Domicilio:</label>
             <div class="col-sm-4">
-                <input type="text" maxlength="100" class="form-control" id="inputDomicilio" name="domicilio" value="<%= usuario==null? "": usuario.getDomicilio() %>" >
+                <form:input type="text" maxlength="100" path="domicilio" id="inputDomicilio" class="form-control"/>
             </div>
         </div>
         <div class="form-group row justify-content-md-center mb-4">
             <label for="inputCiudad" class="col-sm-1 col-form-label">Ciudad:</label>
             <div class="col-sm-4">
-                <input type="text" maxlength="45" class="form-control" id="inputCiudad" name="ciudad" value="<%= usuario==null? "": usuario.getCiudad() %>" >
+                <form:input type="text" maxlength="45" path="ciudad" id="inputCiudad" class="form-control"/>
             </div>
         </div>
         <div class="form-group row justify-content-md-center mb-4">
             <label for="inputFechaNacimiento" class="col-sm-2 col-form-label">Fecha de nacimiento: </label>
             <div class="col-sm-4">
-                <input type="date" class="form-control" id="inputFechaNacimiento" style="height: 40px" name="fechaNacimiento" value=<%= usuario==null? "": (new SimpleDateFormat("yyyy-MM-dd")).format(usuario.getFechaNacimiento()) %>>
+                <form:input type="date" path="fechaNacimiento" id="inputFechaNacimiento" style="height: 40px" class="form-control"/>
+
+                <!-- <input type="date" class="form-control" id="inputFechaNacimiento" style="height: 40px" name="fechaNacimiento" value=<%= usuario==null? "": (new SimpleDateFormat("yyyy-MM-dd")).format(usuario.getFechaNacimiento()) %>> -->
             </div>
             &nbsp;
         </div>
         <div class="form-group row justify-content-md-center mb-4">
             <label for="inputSaldo" class="col-sm-1 col-form-label">Saldo:</label>
             <div class="col-sm-4">
-                <input type="text" class="form-control" id="inputSaldo" name="saldo" value="<%= usuario==null? "": usuario.getSaldo() %>" required>
+                <form:input type="number" path="saldo" id="inputSaldo" class="form-control" required=""/>
             </div>
             *
         </div>
@@ -128,16 +131,16 @@
         <label for="inputGender" class="form-label">Sexo:</label>
         <div class="d-flex align-center justify-content-center">
             <div class="form-check mx-1">
-                <input id="masc" name="sexo" value="masc" type="radio" class="form-check-input" <%= usuario==null? "checked":(usuario.getSexo().equals("masc")? "checked":"") %> required=""/>
+                <form:radiobutton path="sexo" value="masc" id="masc" class="form-check-input"/>
                 <label class="form-check-label" for="masc">Masculino</label>
             </div>
             <div class="form-check mx-1">
-                <input id="fem" name="sexo" value="fem" type="radio" class="form-check-input" <%= usuario==null? "":(usuario.getSexo().equals("fem")? "checked":"") %> required=""/>
+                <form:radiobutton path="sexo" value="fem" id="fem" class="form-check-input"/>
                 <label class="form-check-label" for="fem">Femenino</label>
             </div>
         </div>
         <%
-            String strTipo = usuario==null? "":usuario.getRol().getNombre();
+            String strTipo = usuario.getRol()==null? "":usuario.getRol().getNombre();
         %>
         <br/>
         <label for="inputTipo" class="form-label">Tipo de usuario:</label>
@@ -145,7 +148,7 @@
 
             <% for (RolUsuarioDTO rol : roles) { %>
             <div class="form-check mx-1">
-                <input id="<%= rol.getNombre() %>" name="tipo" value="<%= rol.getNombre() %>" type="radio" class="form-check-input" <%= usuario==null? (rol.getNombre().equals("administrador")? "checked":"")
+                <input id="<%= rol.getNombre() %>" name="tipo" value="<%= rol.getNombre() %>" type="radio" class="form-check-input" <%= usuario.getRol()==null? (rol.getNombre().equals("administrador")? "checked":"")
                         : (usuario.getRol().getNombre().equals(rol.getNombre())? "checked":"") %> required=""/>
                 <label class="form-check-label" for="<%= rol.getNombre() %>"><%= rol.getNombre().equals("compradorvendedor")? "comprador/vendedor" : rol.getNombre() %></label>
             </div>
@@ -163,6 +166,7 @@
                 }
         %>
         <div class="custom-control custom-checkbox">
+            <!-- <>form:checkbox path="categoriaList" value="<%= categoria.getId() %>" id="categoria<%= categoria.getId() %>" class="custom-control-input" <%= checked %>/> -->
             <input type="checkbox" class="custom-control-input" id="categoria<%=categoria.getId()%>" name="categoria" <%= checked %> value="<%= categoria.getId() %>"/>
             <label class="custom-control-label" for="categoria<%=categoria.getId()%>"><%=categoria.getNombre()%></label>
         </div>
@@ -176,7 +180,7 @@
                 <a href="/admin/usuarios" class="btn btn-lg btn-secondary fw-bold border-white mx-2">Cancelar</a>
             </div>
         </div>
-    </form>
+    </form:form>
     <br/>
 
 
