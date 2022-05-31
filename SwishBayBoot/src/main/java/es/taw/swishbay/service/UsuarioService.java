@@ -310,7 +310,7 @@ public class UsuarioService {
         Usuario usuario = this.usuarioRepository.findById(idUsuario).orElse(null);
         Producto producto = this.productoRepository.findById(idProducto).orElse(null);
 
-        if(usuario.getProductoList().contains(producto)){
+        if(usuario.getProductoList() != null && usuario.getProductoList().contains(producto)){
             usuario.getProductoList().remove(producto);
             producto.getUsuarioList().remove(usuario);
 
@@ -329,13 +329,16 @@ public class UsuarioService {
     }
 
     public UsuarioDTO sumarSaldo(double cantidad, int idUsuario){ //Miguel Oña Guerrero
-        Usuario usuario = this.usuarioRepository.getById(idUsuario);
 
-        double saldo = usuario.getSaldo();
-        saldo += cantidad;
-        usuario.setSaldo(saldo);
+        Usuario usuario = this.usuarioRepository.findById(idUsuario).orElse(null);
 
-        usuarioRepository.save(usuario);
+        if(usuario != null){
+            double saldo = usuario.getSaldo();
+            saldo += cantidad;
+            usuario.setSaldo(saldo);
+
+            usuarioRepository.save(usuario);
+        }
 
         return usuario.toDTO();
     }

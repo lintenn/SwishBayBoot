@@ -1,6 +1,6 @@
 <%--
-    Document   : productofiltro
-    Created on : Apr 16, 2022, 9:19:09 PM
+    Document   : compradorProductoFiltro
+    Created on : May 30, 2022, 9:19:09 PM
     Author     : Miguel Oña Guerrero
 --%>
 
@@ -9,7 +9,7 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <%
-    String action = (String)request.getAttribute("servlet");
+    String goTo = (String)request.getAttribute("goTo");
     Double mayorPrecio = (Double)request.getAttribute("mayorPrecio");
     Double precio = (Double)request.getAttribute("precio");
     String filtroTitulo = (String)request.getAttribute("filtroTitulo");
@@ -18,7 +18,7 @@
     }
 %>
 <p class=" mx-2">Precio máximo</p>
-<form action="<%= "/comprador" + action %>" method="POST" class="d-flex ">
+<form action="<%= "/comprador" + goTo %>" method="POST" class="d-flex ">
     <input class="me-2 mb-3" type="range" id="points" name="filtroPrecio" min="0" max="<%= mayorPrecio %>" value="<%= precio %>">
     <p class="me-2"><%= precio %>€</p>
     <input type="hidden" name="precioMaximo" value="<%= mayorPrecio %>" />

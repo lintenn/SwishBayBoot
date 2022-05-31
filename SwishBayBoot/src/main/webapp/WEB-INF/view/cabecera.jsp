@@ -1,9 +1,10 @@
-<%@ page import="es.taw.swishbay.dto.UsuarioDTO" %><%--
+<%--
     Document   : cabecera
-    Created on : Apr 12, 2022, 3:01:32 PM
+    Created on : May 30, 2022, 3:01:32 PM
     Author     : Miguel Oña Guerrero
 --%>
 
+<%@ page import="es.taw.swishbay.dto.UsuarioDTO" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <%
@@ -56,11 +57,10 @@
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body text-dark">
-          <input type="hidden" name="id" value="<%=usuario.getId() %>" />
             <div class="my-2">
                 <label for="cantidad" class="form-label">Cantidad que desea añadir: </label>
                 <input type="number" min="0" id="cantidad" name="saldo" required>         
-            </div>          
+            </div>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
