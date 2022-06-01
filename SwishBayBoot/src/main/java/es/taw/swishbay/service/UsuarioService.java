@@ -184,7 +184,11 @@ public class UsuarioService {
     private void actualizarRolUsuario (Usuario newUser) { // Luis
         RolUsuario rol = newUser.getRol();
 
-        rol.getUsuarioList().add(newUser);
+        if ((!rol.getUsuarioList().contains(newUser))) {
+            rol.getUsuarioList().add(newUser);
+        } else {
+            rol.getUsuarioList().set(rol.getUsuarioList().indexOf(newUser), newUser);
+        }
         this.rolUsuarioRepository.save(rol);
     }
 
@@ -229,6 +233,8 @@ public class UsuarioService {
 
         this.usuarioRepository.save(usuario);
 
+        this.usuarioRepository.flush();
+
         this.actualizarRolUsuario(usuario);
 
         this.rellenarCategoriasUsuario(categorias, usuario);
@@ -248,6 +254,8 @@ public class UsuarioService {
         this.rellenarUsuario(usuario, nombre, apellidos, correo, password, domicilio, ciudad, sexo, fechaNacimiento, saldo, strTipoUsuario);
 
         this.usuarioRepository.save(usuario);
+
+        this.usuarioRepository.flush();
 
         this.actualizarRolUsuario(usuario);
 
