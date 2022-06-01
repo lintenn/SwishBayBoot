@@ -1,3 +1,4 @@
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%--
     Document   : categoria
     Created on : 12-abr-2022, 19:55:51
@@ -28,20 +29,20 @@
 
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <div class="container-fluid">
-            <a class="navbar-brand" href="usuarios">Panel de Administrador</a>
+            <a class="navbar-brand" href="/admin/usuarios">Panel de Administrador</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <li class="nav-item">
-                        <a class="nav-link" href="usuarios"> Usuarios</a>
+                        <a class="nav-link" href="/admin/usuarios"> Usuarios</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="productosAdmin">Productos</a>
+                        <a class="nav-link" href="/admin/productosAdmin">Productos</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="categorias">Categorías</a>
+                        <a class="nav-link active" aria-current="page" href="/admin/categorias">Categorías</a>
                     </li>
 
                 </ul>
@@ -53,7 +54,7 @@
     <h1 class="mb-2">Datos de la categoría</h1>
     <br/>
 
-    <form  method="POST" action="categoriaGuardar">
+    <form:form  method="POST" action="/admin/categoria/guardar" modelAttribute="categoria">
         <% if (status != null) {%>
         <div class="form-group row justify-content-center" style="height: 50px;">
             <div class=" alert alert-danger col-sm-4"><%=status%></div>
@@ -61,20 +62,20 @@
         <% } %>
         <div class="form-group row justify-content-md-center mb-4">
             <div class="col-sm-4">
-                <input type="hidden" class="form-control" id="inputId" name="id" value="<%= categoria==null? "": categoria.getId() %>" >
+                <form:hidden path="id" />
             </div>
         </div>
         <div class="form-group row justify-content-md-center mb-4">
             <label for="inputNombre" class="col-sm-1 col-form-label">Nombre:</label>
             <div class="col-sm-4">
-                <input type="text" maxlength="45" class="form-control" id="inputNombre" name="nombre" required="" autofocus="" value="<%= categoria==null? "": categoria.getNombre() %>" >
+                <form:input type="text" path="nombre" id="inputNombre" class="form-control" maxlength="45" required="" autofocus=""/>
             </div>
             *
         </div>
         <div class="form-group row justify-content-md-center mb-4">
             <label for="inputDescripcion" class="col-sm-1 col-form-label">Descripción:</label>
             <div class="col-sm-4">
-                <textarea class="form-control" name="descripcion" rows="4" maxlength="200"><%= categoria==null? "": categoria.getDescripcion() %></textarea>
+                <form:textarea path="descripcion" id="inputDescripcion" class="form-control" rows="4" maxlength="200"/>
             </div>
             &nbsp;
         </div>
@@ -84,12 +85,11 @@
         <div class="form-group row justify-content-md-center mt-2">
             <div class="col-sm-10">
                 <button type="submit" class="btn btn-lg btn-success fw-bold border-white mx-2"><%= categoria==null? "Añadir": "Modificar" %></button>
-                <a href="categorias" class="btn btn-lg btn-secondary fw-bold border-white mx-2">Cancelar</a>
+                <a href="/admin/categorias" class="btn btn-lg btn-secondary fw-bold border-white mx-2">Cancelar</a>
             </div>
         </div>
-    </form>
+    </form:form>
     <br/>
-
 
 
     <footer class="text-white-50">

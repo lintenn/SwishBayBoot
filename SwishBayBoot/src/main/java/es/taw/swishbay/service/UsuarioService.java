@@ -140,7 +140,7 @@ public class UsuarioService {
 
         if (strId == null || strId.isEmpty()) { // si estamos añadiendo
             try {
-                //posibleUser = usuarioRepository.findByCorreo(correo);
+                posibleUser = usuarioRepository.findByCorreo(correo);
             } catch (Exception e) {
                 posibleUser = null;
             }
@@ -175,8 +175,8 @@ public class UsuarioService {
         usuario.setFechaNacimiento(fechaNacimiento);
         usuario.setSaldo(saldo);
 
-        //RolUsuario rol = this.rolUsuarioRepository.findByNombre(strTipoUsuario);
-        //usuario.setRol(rol);
+        RolUsuario rol = this.rolUsuarioRepository.findByNombre(strTipoUsuario);
+        usuario.setRol(rol);
 
         // Faltarian las categorias...
     }
@@ -224,6 +224,8 @@ public class UsuarioService {
         Usuario usuario = new Usuario();
 
         this.rellenarUsuario(usuario, nombre, apellidos, correo, password, domicilio, ciudad, sexo, fechaNacimiento, saldo, strTipoUsuario);
+
+        usuario.setCategoriaList(new ArrayList<>());
 
         this.usuarioRepository.save(usuario);
 
@@ -305,11 +307,10 @@ public class UsuarioService {
 
     public UsuarioDTO manejoFavoritos(int idProducto, int idUsuario){ //Miguel Oña Guerrero
 
-        Usuario usuario = this.usuarioRepository.getById(idUsuario);
-        Producto producto = this.productoRepository.getById(idProducto);
+        Usuario usuario = this.usuarioRepository.findById(idUsuario).orElse(null);
+        Producto producto = this.productoRepository.findById(idProducto).orElse(null);
 
-
-        if(usuario.getProductoList().contains(producto)){
+        if(usuario.getProductoList() != null && usuario.getProductoList().contains(producto)){
             usuario.getProductoList().remove(producto);
             producto.getUsuarioList().remove(usuario);
 
@@ -328,13 +329,16 @@ public class UsuarioService {
     }
 
     public UsuarioDTO sumarSaldo(double cantidad, int idUsuario){ //Miguel Oña Guerrero
-        Usuario usuario = this.usuarioRepository.getById(idUsuario);
 
-        double saldo = usuario.getSaldo();
-        saldo += cantidad;
-        usuario.setSaldo(saldo);
+        Usuario usuario = this.usuarioRepository.findById(idUsuario).orElse(null);
 
-        usuarioRepository.save(usuario);
+        if(usuario != null){
+            double saldo = usuario.getSaldo();
+            saldo += cantidad;
+            usuario.setSaldo(saldo);
+
+            usuarioRepository.save(usuario);
+        }
 
         return usuario.toDTO();
     }

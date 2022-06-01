@@ -30,27 +30,27 @@
 
             <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
                 <div class="container-fluid">
-                    <a class="navbar-brand" href="CompradorProductosServlet">Comprar</a>
+                    <a class="navbar-brand" href="/comprador/productos">Comprar</a>
                     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                         <span class="navbar-toggler-icon"></span>
                     </button>
                     <div class="collapse navbar-collapse" id="navbarSupportedContent">
                         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                             <li class="nav-item">
-                                <a class="nav-link" aria-current="page" href="/misProductos"> Mis productos</a>
+                                <a class="nav-link" aria-current="page" href="/seller/misProductos"> Mis productos</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link active" href="/misProductosEnPuja">Mis pujas</a>
+                                <a class="nav-link active" href="/seller/misProductosEnPuja">Mis pujas</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="/misProductosVendidos">Productos vendidos</a>
+                                <a class="nav-link" href="/seller/misProductosVendidos">Productos vendidos</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="/producto/nuevo">Nuevo producto</a>
+                                <a class="nav-link" href="/productos/nuevo">Nuevo producto</a>
                             </li>
 
                         </ul>
-                        <form method="post" class="d-flex" action="buscarMisProductosEnPuja">
+                        <form method="post" class="d-flex" action="/seller/buscarMisProductosEnPuja">
                             <div class="col-sm-4">
                                 <select class="form-select px-2" id="filtroCategoria" name="filtroCategoria">
 
@@ -104,10 +104,10 @@
                                 <p class="card-text"><small class="text-muted">Fin de puja: <%= str%></small></p>
 
                                 <div class="row justify-content-center pb-2 px-0">
-                                    <a href="/puja/finalizar/<%=producto.getId()%>" class="btn btn-primary col-4 " style="width: 100px">Finalizar</a>
-                                    <a href="/puja/editar/<%=producto.getId()%>" class="btn btn-primary col-4 mx-2" style="width: 100px">Modificar</a>
+                                    <a href="/pujas/<%=producto.getId()%>/finalizar" class="btn btn-primary col-4 " style="width: 100px">Finalizar</a>
+                                    <a href="/pujas/<%=producto.getId()%>/editar" class="btn btn-primary col-4 mx-2" style="width: 100px">Modificar</a>
 
-                                    <a href="/puja/borrar/<%=producto.getId()%>" class="btn btn-danger col-2 ">
+                                    <a href="/pujas/<%=producto.getId()%>/borrar" class="btn btn-danger col-2 ">
                                         <svg xmlns="http://www.w3.org/2000/svg"  fill="currentColor" class="bi bi-trash3-fill" viewBox="0 0 16 16">
                                         <path d="M11 1.5v1h3.5a.5.5 0 0 1 0 1h-.538l-.853 10.66A2 2 0 0 1 11.115 16h-6.23a2 2 0 0 1-1.994-1.84L2.038 3.5H1.5a.5.5 0 0 1 0-1H5v-1A1.5 1.5 0 0 1 6.5 0h3A1.5 1.5 0 0 1 11 1.5Zm-5 0v1h4v-1a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5ZM4.5 5.029l.5 8.5a.5.5 0 1 0 .998-.06l-.5-8.5a.5.5 0 1 0-.998.06Zm6.53-.528a.5.5 0 0 0-.528.47l-.5 8.5a.5.5 0 0 0 .998.058l.5-8.5a.5.5 0 0 0-.47-.528ZM8 4.5a.5.5 0 0 0-.5.5v8.5a.5.5 0 0 0 1 0V5a.5.5 0 0 0-.5-.5Z"></path>
                                         </svg>

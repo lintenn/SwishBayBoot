@@ -235,7 +235,7 @@ public class Producto implements Serializable {
         dto.setPrecioSalida(precioSalida);
         dto.setFoto(foto);
         dto.setEnPuja(enPuja);
-        dto.setCategoria(categoria.toDTO());
+        dto.setCategoria(categoria.getId());
         if(comprador!=null)
             dto.setComprador(comprador.toDTO());
         dto.setVendedor(vendedor.toDTO());

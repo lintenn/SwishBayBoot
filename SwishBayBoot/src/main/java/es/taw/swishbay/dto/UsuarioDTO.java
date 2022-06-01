@@ -5,6 +5,9 @@
  */
 package es.taw.swishbay.dto;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
+import javax.persistence.Temporal;
 import java.util.Date;
 import java.util.List;
 
@@ -19,6 +22,8 @@ public class UsuarioDTO {
     private String nombre;
     private String apellidos;
     private String domicilio;
+    @Temporal(javax.persistence.TemporalType.DATE)
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     private Date fechaNacimiento;
     private String sexo;
     private String ciudad;

@@ -1,3 +1,4 @@
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%--
     Document   : productoAdmin
     Created on : 30-abr-2022, 2:45:13
@@ -29,20 +30,20 @@
 
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <div class="container-fluid">
-            <a class="navbar-brand" href="usuarios">Panel de Administrador</a>
+            <a class="navbar-brand" href="/admin/usuarios">Panel de Administrador</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <li class="nav-item">
-                        <a class="nav-link" href="usuarios"> Usuarios</a>
+                        <a class="nav-link" href="/admin/usuarios"> Usuarios</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="productosAdmin">Productos</a>
+                        <a class="nav-link active" aria-current="page" href="/admin/productosAdmin">Productos</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="categorias">Categorías</a>
+                        <a class="nav-link" href="/admin/categorias">Categorías</a>
                     </li>
 
                 </ul>
@@ -53,7 +54,7 @@
 
     <h1 class="mb-1">Datos del producto</h1>
 
-    <form  method="POST" action="productoAdminGuardar">
+    <form:form  method="POST" action="/admin/productoAdmin/guardar" modelAttribute="producto">
 
         <% if(status != null){ %>
         <div class="form-group row justify-content-center" style="height: 50px;">
@@ -63,55 +64,43 @@
 
         <div class="form-group row justify-content-md-center mb-4">
             <div class="col-sm-4">
-                <input type="hidden" class="form-control" id="inputId" name="id" value="<%= producto==null? "": producto.getId() %>" >
+                <form:hidden path="id" />
             </div>
         </div>
         <div class="form-group row justify-content-md-center mb-4">
             <label for="inputNombre" class="col-sm-1 col-form-label">Nombre:</label>
             <div class="col-sm-4">
-                <input type="text" class="form-control" id="inputNombre" name="nombre" maxlength="45" value="<%= producto==null? "": producto.getTitulo() %>" required >
+                <form:input id="inputNombre" type="text" class="form-control" path="titulo" maxlength="45" required=""/>
             </div>
             *
         </div>
         <div class="form-group row justify-content-md-center mb-4">
             <label for="inputDescripcion" class="col-sm-1 col-form-label">Descripción:</label>
             <div class="col-sm-4">
-                <textarea class="form-control" name="descripcion" rows="3" maxlength="80"><%= producto==null? "": producto.getDescripcion() %></textarea>
+                <form:textarea id="inputDescripcion" class="form-control" path="descripcion" rows="3" maxlength="80" />
             </div>
             &nbsp;
         </div>
         <div class="form-group row justify-content-md-center mb-4">
             <label for="inputPrecio" class="col-sm-1 col-form-label">Precio de salida:</label>
             <div class="col-sm-4">
-                <input type="text" class="form-control" id="input" name="precio" value="<%= producto==null? "": producto.getPrecioSalida() %>" required>
+                <form:input id="inputPrecio" type="number" class="form-control" path="precioSalida" required="true" />
             </div>
             *
         </div>
         <div class="form-group row justify-content-md-center mb-4">
             <label for="inputFoto" class="col-sm-1 col-form-label">Foto (URL):</label>
             <div class="col-sm-4">
-                <textarea class="form-control" id="input" rows="2" name="foto" ><%= producto==null? "": producto.getFoto() %></textarea>
+                <form:textarea id="inputFoto" class="form-control" path="foto" rows="2" />
             </div>
             &nbsp;
         </div>
         <div class="form-group row justify-content-md-center mb-3">
             <label  for="inputCategoria" class="col-sm-1 col-form-label">Categoría:</label>
             <div class="col-sm-4">
-                <select class="form-select mb-2" id="categoria" name="categoria">
-                    <%
-
-                        for (CategoriaDTO c:categorias){
-                            String selected = "";
-
-                            if(producto != null && producto.getCategoria().getId().equals(c.getId()))
-                                selected="selected";
-
-                    %>
-                    <option <%= selected %> value="<%=c.getNombre()%>"><%=c.getNombre()%> </option>
-                    <%
-                        }
-                    %>
-                </select>
+                <form:select id="inputCategoria" class="form-select mb-2" path="categoria">
+                    <form:options items="${categorias}" itemLabel="nombre" itemValue="id" />
+                </form:select>
             </div>
             &nbsp;
         </div>
@@ -121,10 +110,10 @@
         <div class="form-group row justify-content-md-center mt-0">
             <div class="col-sm-10">
                 <button type="submit" class="btn btn-lg btn-success fw-bold border-white mx-2">Modificar</button>
-                <a href="productosAdmin" class="btn btn-lg btn-secondary fw-bold border-white mx-2">Cancelar</a>
+                <a href="/admin/productosAdmin" class="btn btn-lg btn-secondary fw-bold border-white mx-2">Cancelar</a>
             </div>
         </div>
-    </form>
+    </form:form>
     <br/>
 
     <footer class="mt-auto text-white-50">

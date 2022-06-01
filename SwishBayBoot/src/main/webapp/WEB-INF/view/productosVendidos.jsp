@@ -27,27 +27,27 @@
 
             <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
               <div class="container-fluid">
-                <a class="navbar-brand" href="CompradorProductosServlet">Comprar</a>
+                <a class="navbar-brand" href="/comprador/productos">Comprar</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                   <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                   <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <li class="nav-item">
-                      <a class="nav-link" aria-current="page" href="/misProductos"> Mis productos</a>
+                      <a class="nav-link" aria-current="page" href="/seller/misProductos"> Mis productos</a>
                     </li>
                     <li class="nav-item">
-                      <a class="nav-link" href="/misProductosEnPuja">Mis pujas</a>
+                      <a class="nav-link" href="/seller/misProductosEnPuja">Mis pujas</a>
                     </li>
                     <li class="nav-item">
-                      <a class="nav-link active" href="/misProductosVendidos">Productos vendidos</a>
+                      <a class="nav-link active" href="/seller/misProductosVendidos">Productos vendidos</a>
                     </li>
                     <li class="nav-item">
-                      <a class="nav-link" href="/producto/nuevo">Nuevo producto</a>
+                      <a class="nav-link" href="/productos/nuevo">Nuevo producto</a>
                     </li>
                     
                   </ul>
-                  <form method="post" class="d-flex" action="buscarMisProductosVendidos">
+                  <form method="post" class="d-flex" action="/seller/buscarMisProductosVendidos">
                         <div class="col-sm-4">
                             <select class="form-select px-2" id="filtroCategoria" name="filtroCategoria">
                                 <%
