@@ -32,7 +32,7 @@
     
     <body class="d-flex h-100 text-center text-white bg-dark">
         <div class="cover-container d-flex w-100 h-100 p-3 mx-auto flex-column">
-            <%--<jsp:include page="cabecera.jsp" />--%>
+            <jsp:include page="cabecera.jsp" />
 
             <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
               <div class="container-fluid">

@@ -15,7 +15,7 @@
     }
 %>
 <header class="mb-auto">
-        <a href="CompradorProductosServlet" col-1>
+        <a href="/comprador/productos" col-1>
         <img class="float-md-start ms-3" src="https://raw.githubusercontent.com/lintenn/SwishBay/main/img/SwishBay_logo_white.png" alt="" width="15%" height="15%"/>
     </a>
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark mt-2">
