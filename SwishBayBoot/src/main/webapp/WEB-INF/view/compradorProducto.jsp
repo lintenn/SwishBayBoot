@@ -51,7 +51,7 @@
             <div class="mt-2 col-12 d-flex justify-content-between border-bottom">
                 <div class="col-8 d-flex justify-content-start">
                     <h1><%= producto.getTitulo() %></h1>
-                    <a href="favorito/<%=producto.getId() %>" class="col-1 mt-2">
+                    <a href="/comprador/favorito/<%=producto.getId() %>/0" class="col-1 mt-2">
                         <%
                             if(usuario.getFavoritos().contains(producto.getId())){
                         %>

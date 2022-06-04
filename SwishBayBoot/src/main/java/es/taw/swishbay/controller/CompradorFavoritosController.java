@@ -26,8 +26,8 @@ public class CompradorFavoritosController extends SwishBayController{
         this.usuarioService = usuarioService;
     }
 
-    @GetMapping("/favorito/{id}")
-    public String doFavorito(@PathVariable("id")Integer idProducto, HttpSession session){
+    @GetMapping("/favorito/{id}/{redirect}")
+    public String doFavorito(@PathVariable("id")Integer idProducto, @PathVariable("redirect")Boolean redirect, HttpSession session){
 
         if (!super.comprobarCompradorVendedorSession(session)) {
             return super.redirectComprobarCompradorVendedorSession(session);
@@ -39,7 +39,13 @@ public class CompradorFavoritosController extends SwishBayController{
 
         session.setAttribute("usuario", usuario);
 
-        String goTo = (String) session.getAttribute("goTo");
+        String goTo;
+        if(redirect){
+            goTo = (String) session.getAttribute("goTo");
+        }else{
+            goTo = (String) session.getAttribute("goToProducto");
+        }
+
         if(goTo == null){
             goTo = "/productos";
         }

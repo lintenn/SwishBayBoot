@@ -19,7 +19,7 @@ import java.util.List;
 
 @Controller
 @RequestMapping("comprador")
-public class CompradorProductoController {
+public class CompradorProductoController extends SwishBayController{
 
     private ProductoService productoService;
     private CategoriaService categoriaService;
@@ -43,6 +43,10 @@ public class CompradorProductoController {
     @GetMapping("/producto/{id}")
     public String doVerProducto(@PathVariable("id") Integer id, Model model, HttpSession session){
 
+        if (!super.comprobarCompradorVendedorSession(session)) {
+            return super.redirectComprobarCompradorVendedorSession(session);
+        }
+
         ProductoDTO producto = productoService.findByID(id);
         CategoriaDTO categoria = categoriaService.buscarCategoria(producto.getCategoria());
 
@@ -53,7 +57,7 @@ public class CompradorProductoController {
 
         model.addAttribute("producto", producto);
         model.addAttribute("categoria", categoria);
-        session.setAttribute("goTo", "/producto/" + producto.getId());
+        session.setAttribute("goToProducto", "/producto/" + producto.getId());
 
         return "compradorProducto";
     }
