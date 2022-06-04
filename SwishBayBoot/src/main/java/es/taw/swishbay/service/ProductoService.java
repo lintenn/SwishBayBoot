@@ -301,4 +301,11 @@ public class ProductoService {
 
         return (idProductos.isEmpty()) ? 0.0 : productoRepository.findPrecioMaximo(idProductos);
     }
+
+    public ProductoDTO findByID(Integer id){ //Miguel Oña Guerrero
+
+        Producto producto = productoRepository.findById(id).orElse(null);
+
+        return producto.toDTO();
+    }
 }
