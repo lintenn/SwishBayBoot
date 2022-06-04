@@ -55,6 +55,11 @@ public class CompradorProductoController extends SwishBayController{
             model.addAttribute("pujas", pujas);
         }
 
+        if(producto.getComprador() != null){
+            PujaDTO pujaGanadora = pujaService.buscarMayorPuja(producto.getId());
+            model.addAttribute("pujaGanadora", pujaGanadora);
+        }
+
         model.addAttribute("producto", producto);
         model.addAttribute("categoria", categoria);
         session.setAttribute("goToProducto", "/producto/" + producto.getId());

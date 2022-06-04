@@ -1,5 +1,5 @@
 <%--
-    Document   : productoscomprados
+    Document   : compradorProductosComprados
     Created on : Mar 28, 2022, 11:03:29 AM
     Author     : Miguel Oña Guerrero
 --%>
