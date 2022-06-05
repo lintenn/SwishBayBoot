@@ -19,7 +19,7 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * Este contolador efectua las pujas por parte del comprador
+ * Este controlador efectua las pujas por parte del comprador
  *
  * @author Miguel Oña Guerrero
  */
@@ -73,8 +73,6 @@ public class CompradorPujarController extends SwishBayController{
             Double cantidad = pujaService.realizarPuja(puja);
             usuario = usuarioService.sumarSaldo( - cantidad, usuario.getId());
 
-            session.setAttribute("usuario", usuario);
-
         }else{
             List<PujaDTO> pujas = pujaService.buscarPujasOrdenadas(puja.getProducto());
             ProductoDTO producto = productoService.buscarProducto(puja.getProducto());
@@ -88,6 +86,7 @@ public class CompradorPujarController extends SwishBayController{
 
         }
 
+        session.setAttribute("usuario", usuario);
         model.addAttribute("error", error);
 
         return goTo;
