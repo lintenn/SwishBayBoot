@@ -17,4 +17,7 @@ public interface PujaRepository  extends JpaRepository<Puja, PujaPK> {
 
     @Query("select p from Puja p where p.producto1.id = :id order by p.pujaPK.precio desc")
     List<Puja> findOrdenado(int id); //Miguel Oña Guerrero
+
+    @Query("select p from Puja p where p.pujaPK.comprador = :idComprador and p.pujaPK.producto = :idProducto")
+    Puja findByUsuarioProducto(int idComprador, int idProducto); //Miguel Oña Guerrero
 }

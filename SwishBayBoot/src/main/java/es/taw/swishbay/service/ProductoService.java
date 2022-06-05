@@ -5,10 +5,8 @@ import es.taw.swishbay.dao.ProductoRepository;
 import es.taw.swishbay.dao.PujaRepository;
 import es.taw.swishbay.dao.UsuarioRepository;
 import es.taw.swishbay.dto.ProductoDTO;
-import es.taw.swishbay.entity.Categoria;
-import es.taw.swishbay.entity.Producto;
-import es.taw.swishbay.entity.Puja;
-import es.taw.swishbay.entity.Usuario;
+import es.taw.swishbay.dto.PujaDTO;
+import es.taw.swishbay.entity.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -302,7 +300,7 @@ public class ProductoService {
         return (idProductos.isEmpty()) ? 0.0 : productoRepository.findPrecioMaximo(idProductos);
     }
 
-    public ProductoDTO findByID(Integer id){ //Miguel Oña Guerrero
+    public ProductoDTO buscarProducto(Integer id){ //Miguel Oña Guerrero
 
         Producto producto = productoRepository.findById(id).orElse(null);
 

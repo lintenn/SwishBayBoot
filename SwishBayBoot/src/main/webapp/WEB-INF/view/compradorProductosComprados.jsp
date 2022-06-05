@@ -81,8 +81,8 @@
                         <p class="card-text text-dark text-center mb-0" >Producto comprado a <%= producto.getVendedor().getNombre() %></p>
                         <p class="card-text text-dark text-center" style="height: 72px"><%= producto.getDescripcion() %></p>
                         <div class="row justify-content-center pb-2 px-0">
-                            <a href="producto/<%=producto.getId() %>" class="btn btn-primary col-5 mx-2">Ver producto</a>
-                            <a href="favorito/<%=producto.getId() %>/1" class="col-2">
+                            <a href="/comprador/producto/<%=producto.getId() %>" class="btn btn-primary col-5 mx-2">Ver producto</a>
+                            <a href="/comprador/favorito/<%=producto.getId() %>/1" class="col-2">
                                 <%
                                     if(usuario.getFavoritos().contains(producto.getId())){
                                 %>

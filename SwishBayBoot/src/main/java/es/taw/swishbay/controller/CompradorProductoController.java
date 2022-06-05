@@ -1,6 +1,5 @@
 package es.taw.swishbay.controller;
 
-import es.taw.swishbay.dao.ProductoRepository;
 import es.taw.swishbay.dto.CategoriaDTO;
 import es.taw.swishbay.dto.ProductoDTO;
 import es.taw.swishbay.dto.PujaDTO;
@@ -13,9 +12,14 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-
 import javax.servlet.http.HttpSession;
 import java.util.List;
+
+/**
+ * Este controlador muestra la información y las pujas de un producto
+ *
+ * @author Miguel Oña Guerrero
+ */
 
 @Controller
 @RequestMapping("comprador")
@@ -47,8 +51,9 @@ public class CompradorProductoController extends SwishBayController{
             return super.redirectComprobarCompradorVendedorSession(session);
         }
 
-        ProductoDTO producto = productoService.findByID(id);
+        ProductoDTO producto = productoService.buscarProducto(id);
         CategoriaDTO categoria = categoriaService.buscarCategoria(producto.getCategoria());
+        PujaDTO puja = new PujaDTO();
 
         if(producto.getEnPuja() == 1){
             List<PujaDTO> pujas = pujaService.buscarPujasOrdenadas(producto.getId());
@@ -62,6 +67,7 @@ public class CompradorProductoController extends SwishBayController{
 
         model.addAttribute("producto", producto);
         model.addAttribute("categoria", categoria);
+        model.addAttribute("puja", puja);
         session.setAttribute("goToProducto", "/producto/" + producto.getId());
 
         return "compradorProducto";

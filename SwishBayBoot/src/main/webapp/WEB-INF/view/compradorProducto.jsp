@@ -1,3 +1,4 @@
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%--
     Document   : compradorProducto
     Created on : Jun 4, 2022, 9:42:03 PM
@@ -134,16 +135,17 @@
                     }
                 %>
                 <p class="mt-2"><%= error %></p>
-                <form action="CompradorPujarServlet" method="POST" class="col-4 d-flex justify-content-center">
-                    <input type="hidden" name="productoid" value="<%= producto.getId() %>" />
+                <form:form action="/comprador/pujar" method="post" modelAttribute="puja" class="col-4 d-flex justify-content-center">
+
+                    <form:input type="hidden" value="<%= producto.getId() %>" path="producto"/>
                     <div class="col-8 d-flex justify-content-center">
-                        <input type="number" min="1" class="form-control" name="cantidad" placeholder="Cantidad a pujar" required>
+                        <form:input type="number" min="1" class="form-control" placeholder="Cantidad a pujar" path="precio" required="true"/>
                     </div>
                     <div class="col-4">
-                        <button type="submit" class="btn btn-lg btn-success fw-bold border-white mx-2">Pujar</button>
+                        <form:button class="btn btn-lg btn-success fw-bold border-white mx-2">Pujar</form:button>
                     </div>
 
-                </form>
+                </form:form>
             </div>
             <div class="mt-3 col-8 d-flex justify-content-between">
                 <table class="table table-striped table-dark">
