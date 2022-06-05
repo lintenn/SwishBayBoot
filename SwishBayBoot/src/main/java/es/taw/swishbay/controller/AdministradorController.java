@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpSession;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -74,6 +75,8 @@ public class AdministradorController extends SwishBayController {
         UsuarioDTO usuario = new UsuarioDTO();
         usuario.setFechaNacimiento(new Date());
         usuario.setSexo("masc");
+        usuario.setRol(roles.get(0));
+        usuario.setCategoriaList(new ArrayList<>());
 
         model.addAttribute("categorias", categorias);
         model.addAttribute("roles", roles);
@@ -103,7 +106,7 @@ public class AdministradorController extends SwishBayController {
 
 
     @PostMapping("/usuario/guardar")
-    public String usuarioGuardar(Model model, HttpSession session, @ModelAttribute("usuario") UsuarioDTO newUser, @RequestParam(value = "tipo", defaultValue = "compradorvendedor") String strTipoUsuario, @RequestParam(value = "categoria", required = false) String[] categorias) { //, @RequestParam(value = "id", required = false) String id, @RequestParam("nombre") String nombre, @RequestParam("apellidos") String apellidos, @RequestParam("correo") String correo, @RequestParam("password") String password, @RequestParam("domicilio") String domicilio, @RequestParam("ciudad") String ciudad, @RequestParam("fechaNacimiento") String strFechaNacimiento, @RequestParam(value = "saldo",defaultValue = "0") String strSaldo, @RequestParam("sexo") String sexo, @RequestParam(value = "tipo", defaultValue = "compradorvendedor") String strTipoUsuario, @RequestParam("categoria") String[] categorias) {
+    public String usuarioGuardar(Model model, HttpSession session, @ModelAttribute("usuario") UsuarioDTO newUser) { //, @RequestParam(value = "id", required = false) String id, @RequestParam("nombre") String nombre, @RequestParam("apellidos") String apellidos, @RequestParam("correo") String correo, @RequestParam("password") String password, @RequestParam("domicilio") String domicilio, @RequestParam("ciudad") String ciudad, @RequestParam("fechaNacimiento") String strFechaNacimiento, @RequestParam(value = "saldo",defaultValue = "0") String strSaldo, @RequestParam("sexo") String sexo, @RequestParam(value = "tipo", defaultValue = "compradorvendedor") String strTipoUsuario, @RequestParam("categoria") String[] categorias) {
 
         UsuarioDTO user = (UsuarioDTO) session.getAttribute("usuario");
 
@@ -141,7 +144,7 @@ public class AdministradorController extends SwishBayController {
                 if (user == null) {    // Registro de compradorvendedor
 
                     //strTipoUsuario = "compradorvendedor";
-                    UsuarioDTO usuario = this.usuarioService.crearUsuario(newUser.getNombre(), newUser.getApellidos(), newUser.getCorreo(), newUser.getPassword(), newUser.getDomicilio(), newUser.getCiudad(), newUser.getSexo(), fechaNacimiento, saldo, strTipoUsuario, categorias);
+                    UsuarioDTO usuario = this.usuarioService.crearUsuario(newUser.getNombre(), newUser.getApellidos(), newUser.getCorreo(), newUser.getPassword(), newUser.getDomicilio(), newUser.getCiudad(), newUser.getSexo(), fechaNacimiento, saldo, 2, newUser.getCategoriaList());
 
                     session.setAttribute("usuario", usuario);
                     goTo = "redirect:/compradorProductos";
@@ -149,14 +152,14 @@ public class AdministradorController extends SwishBayController {
                 } else if (newUser.getId() == null) {    // Creación desde administrador
 
                     saldo = newUser.getSaldo();
-                    this.usuarioService.crearUsuario(newUser.getNombre(), newUser.getApellidos(), newUser.getCorreo(), newUser.getPassword(), newUser.getDomicilio(), newUser.getCiudad(), newUser.getSexo(), fechaNacimiento, saldo, strTipoUsuario, categorias);
+                    this.usuarioService.crearUsuario(newUser.getNombre(), newUser.getApellidos(), newUser.getCorreo(), newUser.getPassword(), newUser.getDomicilio(), newUser.getCiudad(), newUser.getSexo(), fechaNacimiento, saldo, newUser.getRol().getId(), newUser.getCategoriaList());
 
                     goTo = "redirect:/admin/usuarios";
                 } else {    // Modificación desde administrador
 
                     saldo = newUser.getSaldo();
                     //int idi = Integer.parseInt(id);
-                    UsuarioDTO usuario = this.usuarioService.modificarUsuario(newUser.getId(), newUser.getNombre(), newUser.getApellidos(), newUser.getCorreo(), newUser.getPassword(), newUser.getDomicilio(), newUser.getCiudad(), newUser.getSexo(), fechaNacimiento, saldo, strTipoUsuario, categorias);
+                    UsuarioDTO usuario = this.usuarioService.modificarUsuario(newUser.getId(), newUser.getNombre(), newUser.getApellidos(), newUser.getCorreo(), newUser.getPassword(), newUser.getDomicilio(), newUser.getCiudad(), newUser.getSexo(), fechaNacimiento, saldo, newUser.getRol().getId(), newUser.getCategoriaList());
 
                     if (user.getId() == (int)newUser.getId()) {    // si se modifica al propio administrador, hay que actualizar el usuario de la sesión
                         session.setAttribute("usuario", usuario);

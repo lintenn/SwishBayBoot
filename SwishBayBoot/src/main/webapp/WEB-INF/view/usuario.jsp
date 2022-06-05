@@ -146,37 +146,39 @@
         <label for="inputTipo" class="form-label">Tipo de usuario:</label>
         <div class="d-flex align-center justify-content-center">
 
-            <% for (RolUsuarioDTO rol : roles) { %>
-            <div class="form-check mx-1">
-                <input id="<%= rol.getNombre() %>" name="tipo" value="<%= rol.getNombre() %>" type="radio" class="form-check-input" <%= usuario.getRol()==null? (rol.getNombre().equals("administrador")? "checked":"")
+            <!--<>% for (RolUsuarioDTO rol : roles) %>-->
+
+                <form:radiobuttons path="rol.id" items="${roles}" itemLabel="nombre" itemValue="id" class="form-check-input mx-1"/>
+                <!--<input id="<>%= rol.getNombre() %>" name="tipo" value="<>%= rol.getNombre() %>" type="radio" class="form-check-input" <>%= usuario.getRol()==null? (rol.getNombre().equals("administrador")? "checked":"")
                         : (usuario.getRol().getNombre().equals(rol.getNombre())? "checked":"") %> required=""/>
-                <label class="form-check-label" for="<%= rol.getNombre() %>"><%= rol.getNombre().equals("compradorvendedor")? "comprador/vendedor" : rol.getNombre() %></label>
-            </div>
-            <% } %>
+                <label class="form-check-label" for="<>%= rol.getNombre() %>"><>%= rol.getNombre().equals("compradorvendedor")? "comprador/vendedor" : rol.getNombre() %></label>-->
+
+            <!--<>% } %>-->
+            
         </div>
 
         <br/>
         <label for="inputCategory" class="form-label">Categorías preferidas:</label>
-        <%
+        <!--<>%
 
             for (CategoriaDTO categoria : categorias) {
                 String checked = "";
                 if (usuario != null && usuario.getCategoriaList() != null && usuario.getCategoriaList().contains(categoria.getId())) {
                     checked = "checked";
                 }
-        %>
+        %>-->
         <div class="custom-control custom-checkbox">
-            <!-- <>form:checkbox path="categoriaList" value="<%= categoria.getId() %>" id="categoria<%= categoria.getId() %>" class="custom-control-input" <%= checked %>/> -->
-            <input type="checkbox" class="custom-control-input" id="categoria<%=categoria.getId()%>" name="categoria" <%= checked %> value="<%= categoria.getId() %>"/>
-            <label class="custom-control-label" for="categoria<%=categoria.getId()%>"><%=categoria.getNombre()%></label>
+            <form:checkboxes path="categoriaList" items="${categorias}" itemLabel="nombre" itemValue="id" class="custom-control-input mx-1" />
+            <!--<input type="checkbox" class="custom-control-input" id="categoria<>%=categoria.getId()%>" name="categoria" <>%= checked %> value="<>%= categoria.getId() %>"/>
+            <label class="custom-control-label" for="categoria<>%=categoria.getId()%>"><>%=categoria.getNombre()%></label>-->
         </div>
 
-        <% } %>
+        <!--<>% } %>-->
         <br/>
 
         <div class="form-group row justify-content-md-center mt-2">
             <div class="col-sm-10">
-                <button type="submit" class="btn btn-lg btn-success fw-bold border-white mx-2"><%= usuario==null? "Añadir": "Modificar" %></button>
+                <button type="submit" class="btn btn-lg btn-success fw-bold border-white mx-2"><%= usuario.getId()==null? "Añadir": "Modificar" %></button>
                 <a href="/admin/usuarios" class="btn btn-lg btn-secondary fw-bold border-white mx-2">Cancelar</a>
             </div>
         </div>

@@ -164,7 +164,7 @@ public class UsuarioService {
 
     private void rellenarUsuario (Usuario usuario, String nombre, String apellidos, String correo,
                                   String password, String domicilio, String ciudad, String sexo,
-                                  Date fechaNacimiento, Double saldo, String strTipoUsuario) { // Luis
+                                  Date fechaNacimiento, Double saldo, Integer idTipoUsuario) { // Luis
         usuario.setNombre(nombre);
         usuario.setApellidos(apellidos);
         usuario.setCorreo(correo);
@@ -175,7 +175,7 @@ public class UsuarioService {
         usuario.setFechaNacimiento(fechaNacimiento);
         usuario.setSaldo(saldo);
 
-        RolUsuario rol = this.rolUsuarioRepository.findByNombre(strTipoUsuario);
+        RolUsuario rol = this.rolUsuarioRepository.getById(idTipoUsuario);
         usuario.setRol(rol);
 
         // Faltarian las categorias...
@@ -192,12 +192,19 @@ public class UsuarioService {
         this.rolUsuarioRepository.save(rol);
     }
 
-    private void rellenarCategoriasUsuario (String[] categorias, Usuario newUser) { // Luis
+    private void rellenarCategoriasUsuario (List<Integer> categorias, Usuario newUser) { // Luis
         // Cargamos las categorias...
 
         // Borramos al usuario de las categorias anteriores
         for (Categoria categoria : newUser.getCategoriaList()) {
             categoria.getUsuarioList().remove(newUser);
+            /*List<Usuario> usuarios = new ArrayList<>();
+            for(Usuario user : categoria.getUsuarioList()){
+                if(user != newUser){
+                    usuarios.add(user);
+                }
+            }
+            categoria.setUsuarioList(usuarios);*/
 
             this.categoriaRepository.save(categoria);
         }
@@ -205,9 +212,9 @@ public class UsuarioService {
         newUser.getCategoriaList().clear();
 
         if (categorias != null) {
-            for (String categoriaId : categorias) {
+            for (Integer categoriaId : categorias) {
                 // Añadimos al usuario en las nuevas categorias
-                Categoria categoria = categoriaRepository.getById(Integer.parseInt(categoriaId));
+                Categoria categoria = categoriaRepository.getById(categoriaId);
 
                 categoria.getUsuarioList().add(newUser);
 
@@ -224,10 +231,10 @@ public class UsuarioService {
 
     public UsuarioDTO crearUsuario (String nombre, String apellidos, String correo,
                                     String password, String domicilio, String ciudad, String sexo,
-                                    Date fechaNacimiento, Double saldo, String strTipoUsuario, String[] categorias) { // Luis
+                                    Date fechaNacimiento, Double saldo, Integer idTipoUsuario, List<Integer> categorias) { // Luis
         Usuario usuario = new Usuario();
 
-        this.rellenarUsuario(usuario, nombre, apellidos, correo, password, domicilio, ciudad, sexo, fechaNacimiento, saldo, strTipoUsuario);
+        this.rellenarUsuario(usuario, nombre, apellidos, correo, password, domicilio, ciudad, sexo, fechaNacimiento, saldo, idTipoUsuario);
 
         usuario.setCategoriaList(new ArrayList<>());
 
@@ -244,14 +251,21 @@ public class UsuarioService {
 
     public UsuarioDTO modificarUsuario (Integer id, String nombre, String apellidos, String correo,
                                         String password, String domicilio, String ciudad, String sexo,
-                                        Date fechaNacimiento, Double saldo, String strTipoUsuario, String[] categorias) { // Luis
-        Usuario usuario = this.buscarUsuarioById(id);
+                                        Date fechaNacimiento, Double saldo, Integer idTipoUsuario, List<Integer> categorias) { // Luis
+        Usuario usuario = this.usuarioRepository.findById(id).orElse(null);
 
         RolUsuario rolAntiguo = usuario.getRol();
         rolAntiguo.getUsuarioList().remove(usuario);
+        /*List<Usuario> usuarios = new ArrayList<>();
+        for(Usuario user : rolAntiguo.getUsuarioList()){
+            if(user != usuario){
+                usuarios.add(user);
+            }
+        }
+        rolAntiguo.setUsuarioList(usuarios);*/
         this.rolUsuarioRepository.save(rolAntiguo);
 
-        this.rellenarUsuario(usuario, nombre, apellidos, correo, password, domicilio, ciudad, sexo, fechaNacimiento, saldo, strTipoUsuario);
+        this.rellenarUsuario(usuario, nombre, apellidos, correo, password, domicilio, ciudad, sexo, fechaNacimiento, saldo, idTipoUsuario);
 
         this.usuarioRepository.save(usuario);
 
