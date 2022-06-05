@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpSession;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -42,8 +44,13 @@ public class LoginRegisterController {
     public String doRegister(Model model) {
 
         List<CategoriaDTO> categorias = this.categoriaService.listarCategorias();
+        UsuarioDTO usuario = new UsuarioDTO();
+        usuario.setFechaNacimiento(new Date());
+        usuario.setSexo("masc");
+        usuario.setCategoriaList(new ArrayList<>());
 
         model.addAttribute("categorias", categorias);
+        model.addAttribute("usuario", usuario);
         return "register";
     }
 
@@ -63,7 +70,7 @@ public class LoginRegisterController {
             if (user.getRol().getNombre().equals("administrador")) {
                 goTo = "admin/usuarios";
             } else if (user.getRol().getNombre().equals("compradorvendedor")) {
-                goTo = "seller/misProductos";
+                goTo = "comprador/productos";
             } else if (user.getRol().getNombre().equals("marketing")) {
                 goTo = "usuarioCompradorServlet";
             }
