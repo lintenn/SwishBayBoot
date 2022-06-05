@@ -120,7 +120,6 @@ public class AdministradorController extends SwishBayController {
             //try {
                 //fechaNacimiento = formato.parse(strFechaNacimiento);
                 fechaNacimiento = newUser.getFechaNacimiento();
-                System.out.println(fechaNacimiento);
                 status = this.usuarioService.comprobarInformacionUsuario(fechaNacimiento, newUser.getId() + "", newUser.getCorreo(), newUser.getSaldo() + "");
             /*} catch (ParseException ex) {
                 status = "Formato de fecha de nacimiento incorrecto.";
@@ -147,7 +146,7 @@ public class AdministradorController extends SwishBayController {
                     UsuarioDTO usuario = this.usuarioService.crearUsuario(newUser.getNombre(), newUser.getApellidos(), newUser.getCorreo(), newUser.getPassword(), newUser.getDomicilio(), newUser.getCiudad(), newUser.getSexo(), fechaNacimiento, saldo, 2, newUser.getCategoriaList());
 
                     session.setAttribute("usuario", usuario);
-                    goTo = "redirect:/compradorProductos";
+                    goTo = "redirect:/comprador/productos";
 
                 } else if (newUser.getId() == null) {    // Creación desde administrador
 

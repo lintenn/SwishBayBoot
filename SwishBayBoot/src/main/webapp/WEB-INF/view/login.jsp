@@ -16,7 +16,7 @@
         if (user.getRol().getNombre().equals("administrador")) {
             goTo = "admin/usuarios";
         } else if (user.getRol().getNombre().equals("compradorvendedor")) {
-            goTo = "seller/misProductos";
+            goTo = "comprador/productos";
         } else if (user.getRol().getNombre().equals("marketing")) {
             goTo = "usuarioCompradorServlet";
         }
