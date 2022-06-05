@@ -35,6 +35,12 @@ public class PujaService {
         return listaDTO;
     }
 
+    public List<PujaDTO> buscarPujasOrdenadas(Integer idProducto){ //Miguel Oña Guerrero
+        List<Puja> pujas = pujaRepository.findOrdenado(idProducto);
+
+        return this.listaEntityADTO(pujas);
+    }
+
     public PujaDTO buscarMayorPuja(Integer idProducto){ //Miguel Oña Guerrero
         Puja puja = pujaRepository.findMayor(idProducto);
 

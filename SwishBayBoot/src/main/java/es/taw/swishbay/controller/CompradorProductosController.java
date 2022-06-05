@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import javax.servlet.http.HttpSession;
 
 /**
- * Este controller recupera todos los diferentes productos de la tienda.
+ * Este controller recupera todos productos de la tienda, aplicando diferentes filtros.
  *
  * @author Miguel Oña Guerrero
  */
