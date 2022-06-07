@@ -5,11 +5,10 @@ import es.taw.swishbay.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpSession;
+import java.lang.reflect.Field;
+import java.util.List;
 
 /**
  * Este controller recupera todos productos de la tienda, aplicando diferentes filtros.
@@ -25,7 +24,6 @@ public class CompradorProductosController extends SwishBayController{
     private CategoriaService categoriaService;
     private PujaService pujaService;
     private ProductoService productoService;
-    private UsuarioService usuarioService;
 
     @Autowired
     public void setCompradorService(CompradorService compradorService){
@@ -47,232 +45,193 @@ public class CompradorProductosController extends SwishBayController{
         this.productoService = productoService;
     }
 
-    @Autowired
-    public void setUsuarioService(UsuarioService usuarioService){
-        this.usuarioService = usuarioService;
-    }
-
     @GetMapping("/productos")
-    public String doListarDisponiblesGET(Model model, HttpSession session){
+    public String doListarDisponibles(Model model, HttpSession session){
 
         if (!super.comprobarCompradorVendedorSession(session)) {
             return super.redirectComprobarCompradorVendedorSession(session);
         }
 
-        CompradorDTO comprador = new CompradorDTO();
-        comprador.setUsuario((UsuarioDTO) session.getAttribute("usuario"));
-        setFiltros(comprador,"", "", null);
-        comprador.setProductos(compradorService.listarProductosExistentes(comprador.getFiltroTitulo(), comprador.getFiltroCategoria(),
-                                                                          comprador.getFiltroPrecio(), comprador.getUsuario().getId()));
-        setAttributes(comprador, null);
-        comprador.setMapping("/productos");
+        UsuarioDTO usuario = (UsuarioDTO) session.getAttribute("usuario");
+        List<ProductoDTO> productos = compradorService.listarProductosExistentes(usuario.getId());
+        CompradorFiltroDTO filtro = new CompradorFiltroDTO(productoService.obtenerMayorPrecio(productos), "/comprador/productos");
 
-        addAttributes(comprador, model, session);
+        model.addAttribute("usuario", usuario);
+        model.addAttribute("productos", productos);
+        model.addAttribute("filtro", filtro);
+
+        addAttributesCategoriasAndMayoresPujas(model, productos);
+        setGoTo(filtro, session);
 
         return "compradorProductos";
     }
 
     @PostMapping("/productos")
-    public String doListarDisponiblesPOST(@RequestParam("filtro") String filtroTitulo,
-                                          @RequestParam("filtroCategoria") String filtroCategoria,
-                                          @RequestParam("precioMaximo") String precioMaximo,
-                                          @RequestParam("filtroPrecio") Double filtroPrecio,
-                                          Model model, HttpSession session){
+    public String doListarDisponiblesByFiltro(@ModelAttribute("filtro") CompradorFiltroDTO filtro, Model model, HttpSession session){
 
         if (!super.comprobarCompradorVendedorSession(session)) {
             return super.redirectComprobarCompradorVendedorSession(session);
         }
 
-        CompradorDTO comprador = new CompradorDTO();
-        comprador.setUsuario((UsuarioDTO) session.getAttribute("usuario"));
-        setFiltros(comprador, filtroTitulo, filtroCategoria, filtroPrecio);
-        comprador.setProductos(compradorService.listarProductosExistentes(comprador.getFiltroTitulo(), comprador.getFiltroCategoria(),
-                                                                          comprador.getFiltroPrecio(), comprador.getUsuario().getId()));
-        setAttributes(comprador, precioMaximo);
-        comprador.setMapping("/productos");
+        UsuarioDTO usuario = (UsuarioDTO) session.getAttribute("usuario");
+        checkFiltroTitulo(filtro);
+        List<ProductoDTO> productos = compradorService.listarProductosExistentes(filtro.getFiltroTitulo(),
+                filtro.getFiltroCategoria(), filtro.getFiltroPrecio(), usuario.getId());
 
-        addAttributes(comprador, model, session);
+        model.addAttribute("usuario", usuario);
+        model.addAttribute("productos", productos);
+        model.addAttribute("filtro", filtro);
+
+        addAttributesCategoriasAndMayoresPujas(model, productos);
+        setGoTo(filtro, session);
 
         return "compradorProductos";
     }
 
     @GetMapping("/enPuja")
-    public String doListarEnPujaGET(Model model, HttpSession session){
+    public String doListarEnPuja(Model model, HttpSession session){
 
         if (!super.comprobarCompradorVendedorSession(session)) {
             return super.redirectComprobarCompradorVendedorSession(session);
         }
 
-        CompradorDTO comprador = new CompradorDTO();
-        comprador.setUsuario((UsuarioDTO) session.getAttribute("usuario"));
-        setFiltros(comprador, "", "", null);
-        comprador.setProductos(compradorService.listarProductosEnPuja(comprador.getFiltroTitulo(), comprador.getFiltroCategoria(),
-                                                                      comprador.getFiltroPrecio(), comprador.getUsuario().getId()));
-        setAttributes(comprador, null);
-        comprador.setMapping("/enPuja");
+        UsuarioDTO usuario = (UsuarioDTO) session.getAttribute("usuario");
+        List<ProductoDTO> productos = compradorService.listarProductosEnPuja(usuario.getId());
+        CompradorFiltroDTO filtro = new CompradorFiltroDTO(productoService.obtenerMayorPrecio(productos), "/comprador/enPuja");
 
-        addAttributes(comprador, model, session);
+        model.addAttribute("usuario", usuario);
+        model.addAttribute("productos", productos);
+        model.addAttribute("filtro", filtro);
+
+        addAttributesCategoriasAndMayoresPujas(model, productos);
+        setGoTo(filtro, session);
 
         return "compradorProductosEnPuja";
     }
 
     @PostMapping("/enPuja")
-    public String doListarEnPujaPOST(@RequestParam("filtro") String filtroTitulo,
-                                     @RequestParam("filtroCategoria") String filtroCategoria,
-                                     @RequestParam("precioMaximo") String precioMaximo,
-                                     @RequestParam("filtroPrecio") Double filtroPrecio,
-                                     Model model, HttpSession session){
+    public String doListarEnPujaByFiltro(@ModelAttribute("filtro") CompradorFiltroDTO filtro, Model model, HttpSession session){
 
         if (!super.comprobarCompradorVendedorSession(session)) {
             return super.redirectComprobarCompradorVendedorSession(session);
         }
 
-        CompradorDTO comprador = new CompradorDTO();
-        comprador.setUsuario((UsuarioDTO) session.getAttribute("usuario"));
-        setFiltros(comprador, filtroTitulo, filtroCategoria, filtroPrecio);
-        comprador.setProductos(compradorService.listarProductosEnPuja(comprador.getFiltroTitulo(), comprador.getFiltroCategoria(),
-                                                                      comprador.getFiltroPrecio(), comprador.getUsuario().getId()));
-        setAttributes(comprador, precioMaximo);
-        comprador.setMapping("/enPuja");
+        UsuarioDTO usuario = (UsuarioDTO) session.getAttribute("usuario");
+        checkFiltroTitulo(filtro);
+        List<ProductoDTO> productos = compradorService.listarProductosEnPuja(filtro.getFiltroTitulo(),
+                filtro.getFiltroCategoria(), filtro.getFiltroPrecio(), usuario.getId());
 
-        addAttributes(comprador, model, session);
+        model.addAttribute("usuario", usuario);
+        model.addAttribute("productos", productos);
+        model.addAttribute("filtro", filtro);
+
+        addAttributesCategoriasAndMayoresPujas(model, productos);
+        setGoTo(filtro, session);
 
         return "compradorProductosEnPuja";
     }
 
     @GetMapping("/favoritos")
-    public String doListarFavoritosGET(Model model, HttpSession session){
+    public String doListarFavoritos(Model model, HttpSession session){
 
         if (!super.comprobarCompradorVendedorSession(session)) {
             return super.redirectComprobarCompradorVendedorSession(session);
         }
 
-        CompradorDTO comprador = new CompradorDTO();
-        comprador.setUsuario((UsuarioDTO) session.getAttribute("usuario"));
-        setFiltros(comprador, "", "", null);
-        comprador.setProductos(compradorService.listarProductosFavoritos(comprador.getFiltroTitulo(), comprador.getFiltroCategoria(),
-                                                                         comprador.getFiltroPrecio(), comprador.getUsuario().getId()));
-        setAttributes(comprador, null);
-        comprador.setMapping("/favoritos");
+        UsuarioDTO usuario = (UsuarioDTO) session.getAttribute("usuario");
+        List<ProductoDTO> productos = compradorService.listarProductosFavoritos(usuario.getId());
+        CompradorFiltroDTO filtro = new CompradorFiltroDTO(productoService.obtenerMayorPrecio(productos), "/comprador/favoritos");
 
-        addAttributes(comprador, model, session);
+        model.addAttribute("usuario", usuario);
+        model.addAttribute("productos", productos);
+        model.addAttribute("filtro", filtro);
+
+        addAttributesCategoriasAndMayoresPujas(model, productos);
+        setGoTo(filtro, session);
 
         return "compradorProductos";
     }
 
     @PostMapping("/favoritos")
-    public String listarFavoritos(@RequestParam("filtro") String filtroTitulo,
-                                  @RequestParam("filtroCategoria") String filtroCategoria,
-                                  @RequestParam("precioMaximo") String precioMaximo,
-                                  @RequestParam("filtroPrecio") Double filtroPrecio,
-                                  Model model, HttpSession session){
+    public String listarFavoritosByFiltro(@ModelAttribute("filtro") CompradorFiltroDTO filtro, Model model, HttpSession session){
 
         if (!super.comprobarCompradorVendedorSession(session)) {
             return super.redirectComprobarCompradorVendedorSession(session);
         }
 
-        CompradorDTO comprador = new CompradorDTO();
-        comprador.setUsuario((UsuarioDTO) session.getAttribute("usuario"));
-        setFiltros(comprador, filtroTitulo, filtroCategoria, filtroPrecio);
-        comprador.setProductos(compradorService.listarProductosFavoritos(comprador.getFiltroTitulo(), comprador.getFiltroCategoria(),
-                                                                         comprador.getFiltroPrecio(), comprador.getUsuario().getId()));
-        setAttributes(comprador, precioMaximo);
-        comprador.setMapping("/favoritos");
+        UsuarioDTO usuario = (UsuarioDTO) session.getAttribute("usuario");
+        checkFiltroTitulo(filtro);
+        List<ProductoDTO> productos = compradorService.listarProductosFavoritos(filtro.getFiltroTitulo(),
+                filtro.getFiltroCategoria(), filtro.getFiltroPrecio(), usuario.getId());
 
-        addAttributes(comprador, model, session);
+        model.addAttribute("usuario", usuario);
+        model.addAttribute("productos", productos);
+        model.addAttribute("filtro", filtro);
+
+        addAttributesCategoriasAndMayoresPujas(model, productos);
+        setGoTo(filtro, session);
 
         return "compradorProductos";
     }
 
     @GetMapping("/comprados")
-    public String doListarCompradosGET(Model model, HttpSession session){
+    public String doListarComprados(Model model, HttpSession session){
 
         if (!super.comprobarCompradorVendedorSession(session)) {
             return super.redirectComprobarCompradorVendedorSession(session);
         }
 
-        CompradorDTO comprador = new CompradorDTO();
-        comprador.setUsuario((UsuarioDTO) session.getAttribute("usuario"));
-        setFiltros(comprador, "", "", null);
-        comprador.setProductos(compradorService.listarProductosComprados(comprador.getFiltroTitulo(), comprador.getFiltroCategoria(),
-                                                                         comprador.getFiltroPrecio(), comprador.getUsuario().getId()));
-        setAttributes(comprador, null);
-        comprador.setMapping("/comprados");
+        UsuarioDTO usuario = (UsuarioDTO) session.getAttribute("usuario");
+        List<ProductoDTO> productos = compradorService.listarProductosComprados(usuario.getId());
+        CompradorFiltroDTO filtro = new CompradorFiltroDTO(productoService.obtenerMayorPrecio(productos), "/comprador/comprados");
 
-        addAttributes(comprador, model, session);
+        model.addAttribute("usuario", usuario);
+        model.addAttribute("productos", productos);
+        model.addAttribute("filtro", filtro);
+
+        addAttributesCategoriasAndMayoresPujas(model, productos);
+        setGoTo(filtro, session);
 
         return "compradorProductosComprados";
     }
 
     @PostMapping("/comprados")
-    public String doListarCompradosPOST(@RequestParam("filtro") String filtroTitulo,
-                                  @RequestParam("filtroCategoria") String filtroCategoria,
-                                  @RequestParam("precioMaximo") String precioMaximo,
-                                  @RequestParam("filtroPrecio") Double filtroPrecio,
-                                  Model model, HttpSession session){
+    public String doListarCompradosByFiltro(@ModelAttribute("filtro") CompradorFiltroDTO filtro, Model model, HttpSession session){
 
         if (!super.comprobarCompradorVendedorSession(session)) {
             return super.redirectComprobarCompradorVendedorSession(session);
         }
 
-        CompradorDTO comprador = new CompradorDTO();
-        comprador.setUsuario((UsuarioDTO) session.getAttribute("usuario"));
-        setFiltros(comprador, filtroTitulo, filtroCategoria, filtroPrecio);
-        comprador.setProductos(compradorService.listarProductosComprados(comprador.getFiltroTitulo(), comprador.getFiltroCategoria(),
-                                                                         comprador.getFiltroPrecio(), comprador.getUsuario().getId()));
-        setAttributes(comprador, precioMaximo);
-        comprador.setMapping("/comprados");
+        UsuarioDTO usuario = (UsuarioDTO) session.getAttribute("usuario");
+        checkFiltroTitulo(filtro);
+        List<ProductoDTO> productos = compradorService.listarProductosComprados(filtro.getFiltroTitulo(),
+                filtro.getFiltroCategoria(), filtro.getFiltroPrecio(), usuario.getId());
 
-        addAttributes(comprador, model, session);
+        model.addAttribute("usuario", usuario);
+        model.addAttribute("productos", productos);
+        model.addAttribute("filtro", filtro);
+
+        addAttributesCategoriasAndMayoresPujas(model, productos);
+        setGoTo(filtro, session);
 
         return "compradorProductosComprados";
     }
 
-    private void setFiltros(CompradorDTO comprador, String filtroTitulo, String filtroCategoria, Double filtroPrecio){
+    private void addAttributesCategoriasAndMayoresPujas(Model model, List<ProductoDTO> productos){
+        List<PujaDTO> mayoresPujas = pujaService.buscarMayoresPujas(productos);
+        List<CategoriaDTO> categorias = categoriaService.listarCategorias();
 
-        if(filtroTitulo == null || filtroTitulo.isEmpty() || filtroTitulo.trim().length() <= 0 ){
-            comprador.setFiltroTitulo("");
-        }else{
-            comprador.setFiltroTitulo(filtroTitulo);
-        }
+        model.addAttribute("mayoresPujas", mayoresPujas);
+        model.addAttribute("categorias", categorias);
+    }
 
-        if(filtroCategoria == null || filtroCategoria.equals("Categoria")){
-            comprador.setFiltroCategoria("");
-        }else{
-            comprador.setFiltroCategoria(filtroCategoria);
-        }
-
-        if(filtroPrecio == null){
-            comprador.setFiltroPrecio(Double.MAX_VALUE);
-        }else{
-            comprador.setFiltroPrecio(filtroPrecio);
+    private void checkFiltroTitulo(CompradorFiltroDTO filtro){
+        if(filtro.getFiltroTitulo().trim().length() <= 0 ){
+            filtro.setFiltroTitulo("");
         }
     }
 
-    public void setAttributes(CompradorDTO comprador, String precioMaximo){
-        comprador.setCategorias(categoriaService.listarCategorias());
-        comprador.setMayoresPujas(pujaService.buscarMayoresPujas(comprador.getProductos()));
-
-        if(precioMaximo == null){
-            comprador.setMayorPrecio(productoService.obtenerMayorPrecio(comprador.getProductos()));
-        }else{
-            comprador.setMayorPrecio(Double.parseDouble(precioMaximo));
-        }
+    private void setGoTo(CompradorFiltroDTO filtro, HttpSession session){
+        session.setAttribute("goTo", filtro.getGoTo());
     }
-
-    private void addAttributes(CompradorDTO comprador, Model model, HttpSession session){
-        model.addAttribute("productos", comprador.getProductos());
-        model.addAttribute("categorias", comprador.getCategorias());
-        model.addAttribute("mayoresPujas", comprador.getMayoresPujas());
-        model.addAttribute("mayorPrecio", comprador.getMayorPrecio());
-        model.addAttribute("filtroTitulo", comprador.getFiltroTitulo());
-        model.addAttribute("precio", comprador.getFiltroPrecio());
-        model.addAttribute("selected", comprador.getFiltroCategoria());
-        model.addAttribute("goTo", comprador.getMapping());
-        session.setAttribute("goTo", comprador.getMapping());
-
-        comprador.setUsuario(usuarioService.buscarUsuario(comprador.getUsuario().getId()));
-        session.setAttribute("usuario", comprador.getUsuario());
-    }
-
 }

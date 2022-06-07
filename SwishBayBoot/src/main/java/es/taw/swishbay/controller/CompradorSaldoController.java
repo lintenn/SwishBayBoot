@@ -41,9 +41,9 @@ public class CompradorSaldoController extends SwishBayController{
 
         String goTo = (String) session.getAttribute("goTo");
         if(goTo == null){
-            goTo = "/productos";
+            goTo = "/comprador/productos";
         }
 
-        return "redirect:/comprador" + goTo;
+        return "redirect:" + goTo;
     }
 }

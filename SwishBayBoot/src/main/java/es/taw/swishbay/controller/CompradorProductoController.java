@@ -68,7 +68,7 @@ public class CompradorProductoController extends SwishBayController{
         model.addAttribute("producto", producto);
         model.addAttribute("categoria", categoria);
         model.addAttribute("puja", puja);
-        session.setAttribute("goToProducto", "/producto/" + producto.getId());
+        session.setAttribute("goToProducto", "/comprador/producto/" + producto.getId());
 
         return "compradorProducto";
     }

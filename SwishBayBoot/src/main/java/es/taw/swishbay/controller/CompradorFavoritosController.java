@@ -47,9 +47,9 @@ public class CompradorFavoritosController extends SwishBayController{
         }
 
         if(goTo == null){
-            goTo = "/productos";
+            goTo = "/comprador/productos";
         }
 
-        return "redirect:/comprador" +  goTo;
+        return "redirect:" +  goTo;
     }
 }
