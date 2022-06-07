@@ -257,7 +257,6 @@ public class ProductoService {
 
         if(!p.getPujaList().isEmpty()){
 
-            //puja = pujaRepository.findMax(p.getId());
             puja = pujaRepository.findMayor(p.getId());
             Usuario comprador =puja.getUsuario();
             List<Puja> pujasPerdedoras = productoRepository.findLosers(id, puja.getPujaPK());

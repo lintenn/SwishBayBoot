@@ -35,8 +35,32 @@ public class CompradorService {
         return listaDTO;
     }
 
+    public List<ProductoDTO> listarProductosExistentes(int idUsuario){
+        List<Producto> productos = productoRepository.findAllExistentes(idUsuario);
+
+        return listaProductoEntityADTO(productos);
+    }
+
     public List<ProductoDTO> listarProductosExistentes(String filtroTitulo, String filtroCategoria, Double filtroPrecio, int idUsuario){ // Miguel
         List<Producto> productos = productoRepository.findExistentesByFiltro(filtroTitulo, filtroCategoria, filtroPrecio, idUsuario);
+
+        return listaProductoEntityADTO(productos);
+    }
+
+    public List<ProductoDTO> listarProductosEnPuja(int idUsuario){
+        List<Producto> productos = productoRepository.findAllEnPuja(idUsuario);
+
+        return listaProductoEntityADTO(productos);
+    }
+
+    public List<ProductoDTO> listarProductosEnPuja(String filtroTitulo, String filtroCategoria, Double filtroPrecio, int idUsuario){ // Miguel
+        List<Producto> productos = productoRepository.findEnPujaByFiltro(filtroTitulo, filtroCategoria, filtroPrecio, idUsuario);
+
+        return this.listaProductoEntityADTO(productos);
+    }
+
+    public List<ProductoDTO> listarProductosFavoritos(int idUsuario){
+        List<Producto> productos = productoRepository.findAllFavoritos(idUsuario);
 
         return listaProductoEntityADTO(productos);
     }
@@ -47,15 +71,16 @@ public class CompradorService {
         return this.listaProductoEntityADTO(productos);
     }
 
+    public List<ProductoDTO> listarProductosComprados(int idUsuario){
+        List<Producto> productos = productoRepository.findAllComprados(idUsuario);
+
+        return listaProductoEntityADTO(productos);
+    }
+
     public List<ProductoDTO> listarProductosComprados(String filtroTitulo, String filtroCategoria, Double filtroPrecio, int idUsuario){ // Miguel
         List<Producto> productos = productoRepository.findCompradosByFiltro(filtroTitulo, filtroCategoria, filtroPrecio, idUsuario);
 
         return this.listaProductoEntityADTO(productos);
     }
 
-    public List<ProductoDTO> listarProductosEnPuja(String filtroTitulo, String filtroCategoria, Double filtroPrecio, int idUsuario){ // Miguel
-        List<Producto> productos = productoRepository.findEnPujaByFiltro(filtroTitulo, filtroCategoria, filtroPrecio, idUsuario);
-
-        return this.listaProductoEntityADTO(productos);
-    }
 }

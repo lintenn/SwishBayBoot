@@ -13,11 +13,7 @@ import java.util.List;
 
 public interface PujaRepository  extends JpaRepository<Puja, PujaPK> {
 
-    /*
-    @Query("select pu from Producto p JOIN p.pujaList pu WHERE p.id = :producto ORDER BY pu.pujaPK.precio DESC")
-    Puja findMax(int producto);*/
-
-    @Query("select p from Puja p where p.producto1.id = :id and p.pujaPK.precio = (select max(p.pujaPK.precio) from Puja p where p.producto1.id = :idProducto)")
+    @Query("select p from Puja p where p.producto1.id = :idProducto and p.pujaPK.precio = (select max(p.pujaPK.precio) from Puja p where p.producto1.id = :idProducto)")
     Puja findMayor(int idProducto); //Miguel Oña Guerrero
 
     @Query("select p from Puja p where p.producto1.id = :idProducto order by p.pujaPK.precio desc")
