@@ -4,41 +4,25 @@
     Author     : Miguel Oña Guerrero
 --%>
 
-<%@page import="java.util.List"%>
-<%@ page import="es.taw.swishbay.dto.CategoriaDTO" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@ page import="es.taw.swishbay.dto.CompradorFiltroDTO" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <%
-    String goTo = (String)request.getAttribute("goTo");
-    Double mayorPrecio = (Double)request.getAttribute("mayorPrecio");
-    Double precio = (Double)request.getAttribute("precio");
-    String filtroTitulo = (String)request.getAttribute("filtroTitulo");
-    if(precio == null || precio > mayorPrecio){
-        precio = mayorPrecio;
-    }
+    CompradorFiltroDTO filtro = (CompradorFiltroDTO) request.getAttribute("filtro");
 %>
 <p class=" mx-2">Precio máximo</p>
-<form action="<%= "/comprador" + goTo %>" method="POST" class="d-flex ">
-    <input class="me-2 mb-3" type="range" id="points" name="filtroPrecio" min="0" max="<%= mayorPrecio %>" value="<%= precio %>">
-    <p class="me-2"><%= precio %>€</p>
-    <input type="hidden" name="precioMaximo" value="<%= mayorPrecio %>" />
+<form:form action="<%=filtro.getGoTo()%>"  method="post" modelAttribute="filtro" class="d-flex">
+    <form:hidden path="goTo"/>
+    <form:input path="filtroPrecio" type="range" min="0" max="<%=filtro.getMayorPrecio()%>" id="points" class="me-2 mb-3"/>
+    <p class="me-2"><%= filtro.getFiltroPrecio() %>€</p>
+    <form:input path="mayorPrecio" type="hidden"/>
     <div class="col-sm-4">
-        <select class="form-select px-2" id="filtroCategoria" name="filtroCategoria">
-            <%
-                List<CategoriaDTO> categorias = (List) request.getAttribute("categorias");
-                String filtroCategoria = (String) request.getAttribute("selected");
-            %>
-            <option <%= (filtroCategoria==null || filtroCategoria.equals("Categoria")) ? "selected":"" %> value="Categoria">Categoría </option>
-            <%
-                for (CategoriaDTO categoria : categorias){
-
-            %>
-            <option <%= (filtroCategoria!=null && filtroCategoria.equals(categoria.getNombre())) ? "selected":"" %> value="<%=categoria.getNombre()%>"><%=categoria.getNombre()%> </option>
-            <%
-                }
-            %>
-        </select>
+        <form:select path="filtroCategoria" class="form-select px-2" id="filtroCategoria" >
+            <form:option value="" label="Categoria"/>
+            <form:options items="${categorias}" itemLabel="nombre" itemValue="nombre"/>
+        </form:select>
     </div>
-    <input class="form-control me-2 mx-2" type="search" placeholder="Buscar" value="<%= filtroTitulo %>" name="filtro" aria-label="Search">
-    <input class="btn btn-outline-success" type="submit" value="Buscar">
-</form>
+    <form:input path="filtroTitulo" class="form-control me-2 mx-2" type="search" placeholder="Buscar" />
+    <form:button class="btn btn-outline-success">Buscar</form:button>
+</form:form>
