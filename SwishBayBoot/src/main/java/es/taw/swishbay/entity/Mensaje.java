@@ -5,6 +5,8 @@
  */
 package es.taw.swishbay.entity;
 
+import es.taw.swishbay.dto.MensajeDTO;
+
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
@@ -158,6 +160,19 @@ public class Mensaje implements Serializable {
     @Override
     public String toString() {
         return "swishbay.entity.Mensaje[ id=" + id + " ]";
+    }
+
+    public MensajeDTO toDTO(){ // angel
+
+        MensajeDTO mensajeDTO = new MensajeDTO();
+
+        mensajeDTO.setAsunto(asunto);
+        mensajeDTO.setContenido(contenido);
+        mensajeDTO.setFecha(fecha);
+        mensajeDTO.setId(id);
+
+        return mensajeDTO;
+
     }
     
 }

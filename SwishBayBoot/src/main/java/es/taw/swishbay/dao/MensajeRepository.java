@@ -8,19 +8,19 @@ import java.util.List;
 
 public interface MensajeRepository  extends JpaRepository<Mensaje, Integer> {
 
-    @Query("select m from Mensaje m where m.grupo.id = :grupo and m.asunto like CONCAT('%',:asunto,'%')")
+    @Query("select m from Mensaje m where m.grupo.id = :idGrupo and m.asunto like CONCAT('%',:asunto,'%')")
     public List<Mensaje> findByAsuntoAndIdGrupo (Integer idGrupo, String asunto);
 
-    @Query("select m from Mensaje m where m.grupo.id = :grupo")
+    @Query("select m from Mensaje m where m.grupo.id = :idGrupo")
     public List<Mensaje> findByIdGrupo (Integer idGrupo);
 
     @Query("select m from Usuario u Join u.mensajeList m where u.id = :idUsuario and m.asunto like CONCAT('%',:asunto,'%')")
     public List<Mensaje> findByAsuntoAndAreInAUser (String asunto, Integer idUsuario);
 
-    @Query("select m from Mensaje m where m.grupo.id = :grupo and m.asunto like CONCAT('%',:asunto,'%') and m.id IN :mensajes")
+    @Query("select m from Mensaje m where m.grupo.id = :idGrupo and m.asunto like CONCAT('%',:asunto,'%') and m.id IN :mensajes")
     public List<Mensaje> findByAsuntoAndIdGrupoByMessages (Integer idGrupo, String asunto, List<Integer> mensajes);
 
-    @Query("select m from Mensaje m where m.grupo.id = :grupo and m.contenido like CONCAT('%',:contenido,'%') and m.id IN :mensajes")
+    @Query("select m from Mensaje m where m.grupo.id = :idGrupo and m.contenido like CONCAT('%',:contenido,'%') and m.id IN :mensajes")
     public List<Mensaje> findByContenidoAndIdGrupoByMessages (Integer idGrupo, String contenido, List<Integer> mensajes);
 
     @Query("select m from Usuario u Join u.mensajeList m where u.id = :idUsuario and m.asunto like CONCAT('%',:asunto,'%') and m.id IN :mensajes")
