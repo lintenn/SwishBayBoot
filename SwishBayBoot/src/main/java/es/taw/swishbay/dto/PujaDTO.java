@@ -8,7 +8,7 @@ import java.util.Date;
 
 /**
  *
- * @author galop
+ * @author Galo
  */
 public class PujaDTO {
     

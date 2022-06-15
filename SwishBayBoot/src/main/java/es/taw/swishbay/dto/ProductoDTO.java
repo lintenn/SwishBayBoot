@@ -9,7 +9,7 @@ import java.util.List;
 
 /**
  *
- * @author galop
+ * @author Galo
  */
 public class ProductoDTO {
     

@@ -98,5 +98,5 @@ public interface UsuarioRepository  extends JpaRepository<Usuario, Integer> {
     List<Usuario> findByCompradorVendedorBySaldoHastaQuePertencenAUnGrupo(Integer saldoDesde, List<Integer> usuarios); // angel
 
     @Query("select u from Usuario u where u.rol.nombre like 'marketing'")
-    Usuario findByMarketing(); // angel
+    List<Usuario> findByMarketing(); // angel
 }

@@ -19,6 +19,11 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
+/**
+ * Controlador del administrador
+ * @author Galo
+ */
+
 @Controller
 @RequestMapping("pujas")
 public class PujasController extends SwishBayController {
