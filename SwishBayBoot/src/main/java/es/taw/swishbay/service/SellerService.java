@@ -13,6 +13,11 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Service del vendedor
+ * @author Galo
+ */
+
 @Service
 public class SellerService {
 

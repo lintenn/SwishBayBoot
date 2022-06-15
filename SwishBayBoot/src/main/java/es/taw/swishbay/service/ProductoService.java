@@ -14,6 +14,11 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+/**
+ * Service del vendedor
+ * @author Galo 68.75%, Luis 18.75%, Miguel 12.5%
+ */
+
 @Service
 public class ProductoService {
 
@@ -170,7 +175,7 @@ public class ProductoService {
 
     }
 
-    public void crearProducto(String nombre, String descripcion, String foto, java.sql.Date date, int categoria, Double precio, Integer id) {
+    public void crearProducto(String nombre, String descripcion, String foto, java.sql.Date date, int categoria, Double precio, Integer id) { //Galo
 
         Producto p = new Producto();
         Categoria c = categoriaRepository.getById(categoria);
@@ -185,7 +190,7 @@ public class ProductoService {
         usuarioRepository.save(seller);
     }
 
-    public void modificarProducto(int id, String nombre, String descripcion, String foto, Date date, int categoria, Double precio) {
+    public void modificarProducto(int id, String nombre, String descripcion, String foto, Date date, int categoria, Double precio) { //Galo
 
         Producto p = productoRepository.getById(id);
         Categoria anteriorCategoria = p.getCategoria();
@@ -201,13 +206,13 @@ public class ProductoService {
         productoRepository.save(p);
     }
 
-    public void borrarProducto(int id) {
+    public void borrarProducto(int id) { //Galo
 
         Producto p = productoRepository.getById(id);
         productoRepository.delete(p);
     }
 
-    public void modificarPuja(int id, Date d) {
+    public void modificarPuja(int id, Date d) { //Galo
 
         Producto p = productoRepository.getById(id);
 
@@ -219,7 +224,7 @@ public class ProductoService {
         productoRepository.save(p);
     }
 
-    public void modificarPuja(int id, Double precio, Date d) {
+    public void modificarPuja(int id, Double precio, Date d) { //Galo
 
         Producto p = productoRepository.getById(id);
 
@@ -233,7 +238,7 @@ public class ProductoService {
         productoRepository.save(p);
     }
 
-    public void quitarPuja(String id) {
+    public void quitarPuja(String id) { //Galo
 
         Producto p = this.productoRepository.getById(Integer.parseInt(id));
         p.getPujaList().clear();
@@ -245,7 +250,7 @@ public class ProductoService {
         productoRepository.save(p);
     }
 
-    public void finalizarPuja(int id) {
+    public void finalizarPuja(int id) { //Galo
 
         Producto p = productoRepository.getById(id);
 
