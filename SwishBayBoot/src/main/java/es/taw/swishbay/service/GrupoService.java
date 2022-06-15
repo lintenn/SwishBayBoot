@@ -17,6 +17,11 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ *
+ * @author angel
+ */
+
 @Service
 public class GrupoService {
 

@@ -8,6 +8,10 @@ import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
 
+/**
+ * @author Luis 21%, Galo 51%, Miguel 26%, Ángel 2%
+ */
+
 public interface ProductoRepository  extends JpaRepository<Producto, Integer> {
 
     @Query("select p from Producto p where p.titulo like CONCAT('%',:titulo,'%')")
@@ -32,58 +36,58 @@ public interface ProductoRepository  extends JpaRepository<Producto, Integer> {
     List<Producto> findByNombreFilteredDesde(String titulo, String filtroCategoria, Double desde, Double hasta); // Luis
 
     @Query("select p from Producto p where p.vendedor.id= :user")
-    List<Producto> findVendidos(Integer user);
+    List<Producto> findVendidos(Integer user); // Galo
 
     @Query("select p from Producto p where p.vendedor.id= :user and p.precioSalida>=:desde and p.precioSalida<=:hasta")
-    List<Producto> findVendidosDesde(Integer user, Double desde, Double hasta);
+    List<Producto> findVendidosDesde(Integer user, Double desde, Double hasta); // Galo
 
     @Query("select p from Producto p where p.categoria.nombre like :filtroCategoria and p.vendedor.id=:user")
-    List<Producto> findVendidosFiltered(Integer user, String filtroCategoria);
+    List<Producto> findVendidosFiltered(Integer user, String filtroCategoria); // Galo
 
     @Query("select p from Producto p where p.categoria.nombre like :filtroCategoria and p.vendedor.id=:user and p.precioSalida>=:desde and p.precioSalida<=:hasta")
-    List<Producto> findVendidosFilteredDesde(Integer user, String filtroCategoria, Double desde, Double hasta);
+    List<Producto> findVendidosFilteredDesde(Integer user, String filtroCategoria, Double desde, Double hasta); // Galo
 
     @Query("select p from Producto p where p.titulo like CONCAT('%', :titulo,'%') and p.vendedor.id=:user")
-    List<Producto> findVendidosByNombre(Integer user, String titulo);
+    List<Producto> findVendidosByNombre(Integer user, String titulo); // Galo
 
     @Query("select p from Producto p where p.titulo like CONCAT('%', :titulo,'%') and p.categoria.nombre like :filtroCategoria and p.vendedor.id=:user")
-    List<Producto> findVendidosByNombreFiltered(Integer user, String titulo, String filtroCategoria);
+    List<Producto> findVendidosByNombreFiltered(Integer user, String titulo, String filtroCategoria); // Galo
 
     @Query("select p from Producto p where p.titulo like CONCAT('%', :titulo,'%') and p.vendedor.id=:user and p.precioSalida>=:desde and p.precioSalida<=:hasta")
-    List<Producto> findVendidosByNombreDesde(Integer user, String titulo, Double desde, Double hasta);
+    List<Producto> findVendidosByNombreDesde(Integer user, String titulo, Double desde, Double hasta); // Galo
 
     @Query("select p from Producto p where p.titulo like CONCAT('%', :titulo,'%') and p.categoria.nombre like :filtroCategoria and p.vendedor.id=:user and p.precioSalida>=:desde and p.precioSalida<=:hasta")
-    List<Producto> findVendidosByNombreFilteredDesde(Integer user, String titulo, String filtroCategoria, Double desde, Double hasta);
+    List<Producto> findVendidosByNombreFilteredDesde(Integer user, String titulo, String filtroCategoria, Double desde, Double hasta); // Galo
 
     @Query("select p, MAX(pu.pujaPK.precio) from Producto p LEFT JOIN p.pujaList pu where p.enPuja=1 and p.vendedor.id= :user GROUP BY p")
-    List<Object[]> findEnPuja(Integer user);
+    List<Object[]> findEnPuja(Integer user); // Galo
 
     @Query("select p, MAX(pu.pujaPK.precio) from Producto p LEFT JOIN p.pujaList pu where p.categoria.nombre like :filtroCategoria and p.enPuja=1 and p.vendedor.id= :user GROUP BY p")
-    List<Object[]> findEnPujaFiltered(Integer user, String filtroCategoria);
+    List<Object[]> findEnPujaFiltered(Integer user, String filtroCategoria); // Galo
 
     @Query("select p, MAX(pu.pujaPK.precio) from Producto p LEFT JOIN p.pujaList pu where p.titulo like CONCAT('%', :titulo,'%') and p.enPuja=1 and p.vendedor.id= :user GROUP BY p")
-    List<Object[]> findEnPujaByNombre(Integer user, String titulo);
+    List<Object[]> findEnPujaByNombre(Integer user, String titulo); // Galo
 
     @Query("select p, MAX(pu.pujaPK.precio) from Producto p LEFT JOIN p.pujaList pu where p.titulo like CONCAT('%', :titulo,'%') and p.categoria.nombre like :filtroCategoria and p.enPuja=1 and p.vendedor.id= :user GROUP BY p")
-    List<Object[]> findEnPujaByNombreFiltered(Integer user, String titulo, String filtroCategoria);
+    List<Object[]> findEnPujaByNombreFiltered(Integer user, String titulo, String filtroCategoria); // Galo
 
     @Query("select p, MAX(pu.pujaPK.precio) from Producto p JOIN p.pujaList pu where p.vendedor.id=:user and p.comprador is not null GROUP BY p")
-    List<Object[]> findVendidosAUser(Integer user);
+    List<Object[]> findVendidosAUser(Integer user); // Galo
 
     @Query("select p, MAX(pu.pujaPK.precio) from Producto p JOIN p.pujaList pu where p.vendedor.id=:user and p.categoria.nombre like :filtroCategoria and p.comprador is not null GROUP BY p")
-    List<Object[]> findVendidosAUserFiltered(Integer user, String filtroCategoria);
+    List<Object[]> findVendidosAUserFiltered(Integer user, String filtroCategoria); // Galo
 
     @Query("select p, MAX(pu.pujaPK.precio) from Producto p JOIN p.pujaList pu where p.vendedor.id=:user and p.titulo like CONCAT('%', :titulo,'%') and p.comprador is not null GROUP BY p")
-    List<Object[]> findVendidosAUserByNombre(Integer user, String titulo);
+    List<Object[]> findVendidosAUserByNombre(Integer user, String titulo); // Galo
 
     @Query("select p, MAX(pu.pujaPK.precio) from Producto p JOIN p.pujaList pu where p.vendedor.id=:user and p.titulo like CONCAT('%', :titulo,'%') and p.categoria.nombre like :filtroCategoria and p.comprador is not null GROUP BY p")
-    List<Object[]> findVendidosAUserByNombreFiltered(Integer user, String titulo, String filtroCategoria);
+    List<Object[]> findVendidosAUserByNombreFiltered(Integer user, String titulo, String filtroCategoria); // Galo
 
     @Query("select MAX(pu.pujaPK.precio) from Producto p LEFT JOIN p.pujaList pu where p.id=:id Group by p")
-    Double findPrecioMax(Integer id);
+    Double findPrecioMax(Integer id); // Galo
 
     @Query("select pu from Puja pu where pu.producto1.id= :pId and pu.pujaPK<>:pujaId")
-    List<Puja> findLosers(Integer pId, PujaPK pujaId);
+    List<Puja> findLosers(Integer pId, PujaPK pujaId); // Galo
 
     @Query("select p from Producto p where NOT (p.vendedor.id = :id) and p.comprador is null")
     List<Producto> findAllExistentes(Integer id); //Miguel Oña Guerrero
