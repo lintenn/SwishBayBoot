@@ -10,6 +10,11 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+/**
+ *
+ * @author Luis 78%, Angel 7%, Miguel 15%
+ */
+
 @Service
 public class UsuarioService {
 
