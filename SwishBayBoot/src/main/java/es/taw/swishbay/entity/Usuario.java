@@ -5,6 +5,7 @@
  */
 package es.taw.swishbay.entity;
 
+import es.taw.swishbay.dto.MensajeDTO;
 import es.taw.swishbay.dto.UsuarioDTO;
 
 import java.io.Serializable;
@@ -342,7 +343,15 @@ public class Usuario implements Serializable {
             }
         }
         dto.setFavoritos(favoritos);
-       
+        List<MensajeDTO> mensajeDTOList = null;
+        if(mensajeList != null){
+            mensajeDTOList = new ArrayList<>();
+            for(Mensaje mensaje : mensajeList){
+                mensajeDTOList.add(mensaje.toDTO());
+            }
+        }
+        dto.setMensajeList(mensajeDTOList);
+
         return dto;        
     }
 }
