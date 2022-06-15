@@ -84,4 +84,32 @@ public interface ProductoRepository  extends JpaRepository<Producto, Integer> {
 
     @Query("select pu from Puja pu where pu.producto1.id= :pId and pu.pujaPK<>:pujaId")
     List<Puja> findLosers(Integer pId, PujaPK pujaId);
+
+    @Query("select p from Producto p where NOT (p.vendedor.id = :id) and p.comprador is null")
+    List<Producto> findAllExistentes(Integer id); //Miguel Oña Guerrero
+
+    @Query("select p from Producto p where p.titulo like CONCAT('%', :titulo,'%')  and p.precioSalida <= :precio and p.categoria.nombre like CONCAT('%',:filtroCategoria ,'%') and NOT (p.vendedor.id = :id) and p.comprador is null")
+    List<Producto> findExistentesByFiltro(String titulo, String filtroCategoria, Double precio, Integer id); //Miguel Oña Guerrero
+
+    @Query("select p from Producto p where p.enPuja = 1 and NOT (p.vendedor.id = :id) and p.comprador is null")
+    List<Producto> findAllEnPuja(Integer id); //Miguel Oña Guerrero
+
+    @Query("select p from Producto p where p.enPuja = 1 and p.titulo like CONCAT('%', :titulo,'%') and p.precioSalida <= :precio and p.categoria.nombre like CONCAT('%',:filtroCategoria ,'%') and NOT (p.vendedor.id = :id) and p.comprador is null")
+    List<Producto> findEnPujaByFiltro(String titulo, String filtroCategoria, Double precio, Integer id); //Miguel Oña Guerrero
+
+    @Query("select p from Producto p join p.usuarioList u where u.id = :id and NOT (p.vendedor.id = :id) and (p.comprador is null or p.comprador.id = :id)")
+    List<Producto> findAllFavoritos(Integer id); //Miguel Oña Guerrero
+
+    @Query("select p from Producto p join p.usuarioList u where u.id = :id and p.precioSalida <= :precio and p.titulo like CONCAT('%', :titulo,'%') and p.categoria.nombre like CONCAT('%',:filtroCategoria ,'%') and NOT (p.vendedor.id = :id) and (p.comprador is null or p.comprador.id = :id)")
+    List<Producto> findFavoritosByFiltro(String titulo, String filtroCategoria, Double precio, Integer id); //Miguel Oña Guerrero
+
+    @Query("select p from Producto p where p.comprador.id = :id")
+    List<Producto> findAllComprados(Integer id); //Miguel Oña Guerrero
+
+    @Query("select p from Producto p where p.titulo like CONCAT('%', :titulo,'%') and p.precioSalida <= :precio and p.categoria.nombre like CONCAT('%',:filtroCategoria ,'%') and p.comprador.id = :id")
+    List<Producto> findCompradosByFiltro(String titulo, String filtroCategoria, Double precio, Integer id); //Miguel Oña Guerrero
+
+    @Query("select max(p.precioSalida) from Producto p where p.id in :ids")
+    Double findPrecioMaximo(List<Integer> ids); //Miguel Oña Guerrero
+
 }

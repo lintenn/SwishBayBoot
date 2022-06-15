@@ -5,10 +5,8 @@ import es.taw.swishbay.dao.ProductoRepository;
 import es.taw.swishbay.dao.PujaRepository;
 import es.taw.swishbay.dao.UsuarioRepository;
 import es.taw.swishbay.dto.ProductoDTO;
-import es.taw.swishbay.entity.Categoria;
-import es.taw.swishbay.entity.Producto;
-import es.taw.swishbay.entity.Puja;
-import es.taw.swishbay.entity.Usuario;
+import es.taw.swishbay.dto.PujaDTO;
+import es.taw.swishbay.entity.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -187,7 +185,7 @@ public class ProductoService {
         usuarioRepository.save(seller);
     }
 
-    public void modificarProducto(int id, String nombre, String descripcion, String foto, java.sql.Date date, int categoria, Double precio) {
+    public void modificarProducto(int id, String nombre, String descripcion, String foto, Date date, int categoria, Double precio) {
 
         Producto p = productoRepository.getById(id);
         Categoria anteriorCategoria = p.getCategoria();
@@ -259,7 +257,7 @@ public class ProductoService {
 
         if(!p.getPujaList().isEmpty()){
 
-            puja = pujaRepository.findMax(p.getId());
+            puja = pujaRepository.findMayor(p.getId());
             Usuario comprador =puja.getUsuario();
             List<Puja> pujasPerdedoras = productoRepository.findLosers(id, puja.getPujaPK());
 
@@ -290,5 +288,22 @@ public class ProductoService {
         user.setSaldo(saldo);
 
         usuarioRepository.save(user);
+    }
+
+    public Double obtenerMayorPrecio(List<ProductoDTO> productos){ //Miguel Oña Guerrero
+        List<Integer> idProductos = new ArrayList();
+
+        for(ProductoDTO producto : productos){
+            idProductos.add(producto.getId());
+        }
+
+        return (idProductos.isEmpty()) ? 0.0 : productoRepository.findPrecioMaximo(idProductos);
+    }
+
+    public ProductoDTO buscarProducto(Integer id){ //Miguel Oña Guerrero
+
+        Producto producto = productoRepository.findById(id).orElse(null);
+
+        return producto.toDTO();
     }
 }

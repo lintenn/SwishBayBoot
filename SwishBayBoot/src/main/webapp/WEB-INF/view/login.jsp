@@ -14,9 +14,9 @@
     if (user != null) {
         String goTo = "misProductos";
         if (user.getRol().getNombre().equals("administrador")) {
-            goTo = "usuarios";
+            goTo = "admin/usuarios";
         } else if (user.getRol().getNombre().equals("compradorvendedor")) {
-            goTo = "misProductos";
+            goTo = "comprador/productos";
         } else if (user.getRol().getNombre().equals("marketing")) {
             goTo = "usuarioCompradorServlet";
         }

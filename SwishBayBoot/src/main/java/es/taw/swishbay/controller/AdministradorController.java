@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpSession;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -25,6 +26,7 @@ import java.util.List;
  */
 
 @Controller
+@RequestMapping("admin")
 public class AdministradorController extends SwishBayController {
 
     @Autowired
@@ -61,8 +63,30 @@ public class AdministradorController extends SwishBayController {
         return "usuarios";
     }
 
-    @GetMapping("/usuarioNuevoEditar")
-    public String usuarioNuevoEditar(Model model, HttpSession session, @RequestParam(value = "id", required = false) String id) {
+    @GetMapping("/usuario/nuevo")
+    public String usuarioNuevo(Model model, HttpSession session) {
+
+        if (!super.comprobarAdminSession(session)) {
+            return super.redirectComprobarAdminSession(session);
+        }
+
+        List<CategoriaDTO> categorias = this.categoriaService.listarCategorias();
+        List<RolUsuarioDTO> roles = this.rolUsuarioService.listarRoles();
+        UsuarioDTO usuario = new UsuarioDTO();
+        usuario.setFechaNacimiento(new Date());
+        usuario.setSexo("masc");
+        usuario.setRol(roles.get(0));
+        usuario.setCategoriaList(new ArrayList<>());
+
+        model.addAttribute("categorias", categorias);
+        model.addAttribute("roles", roles);
+        model.addAttribute("usuario", usuario);
+
+        return "usuario";
+    }
+
+    @GetMapping("/usuario/{id}/editar")
+    public String usuarioEditar(Model model, HttpSession session, @PathVariable("id") Integer id) {
 
         if (!super.comprobarAdminSession(session)) {
             return super.redirectComprobarAdminSession(session);
@@ -74,16 +98,15 @@ public class AdministradorController extends SwishBayController {
         model.addAttribute("categorias", categorias);
         model.addAttribute("roles", roles);
 
-        if (id != null && !id.isEmpty()) {
-            UsuarioDTO usuario = this.usuarioService.buscarUsuario(Integer.parseInt(id));
-            model.addAttribute("usuario", usuario);
-        }
+        UsuarioDTO usuario = this.usuarioService.buscarUsuario(id);
+        model.addAttribute("usuario", usuario);
 
         return "usuario";
     }
 
-    @PostMapping("/usuarioGuardar")
-    public String usuarioGuardar(Model model, HttpSession session, @RequestParam(value = "id", required = false) String id, @RequestParam("nombre") String nombre, @RequestParam("apellidos") String apellidos, @RequestParam("correo") String correo, @RequestParam("password") String password, @RequestParam("domicilio") String domicilio, @RequestParam("ciudad") String ciudad, @RequestParam("fechaNacimiento") String strFechaNacimiento, @RequestParam(value = "saldo",defaultValue = "0") String strSaldo, @RequestParam("sexo") String sexo, @RequestParam(value = "tipo", defaultValue = "compradorvendedor") String strTipoUsuario, @RequestParam("categoria") String[] categorias) {
+
+    @PostMapping("/usuario/guardar")
+    public String usuarioGuardar(Model model, HttpSession session, @ModelAttribute("usuario") UsuarioDTO newUser) { //, @RequestParam(value = "id", required = false) String id, @RequestParam("nombre") String nombre, @RequestParam("apellidos") String apellidos, @RequestParam("correo") String correo, @RequestParam("password") String password, @RequestParam("domicilio") String domicilio, @RequestParam("ciudad") String ciudad, @RequestParam("fechaNacimiento") String strFechaNacimiento, @RequestParam(value = "saldo",defaultValue = "0") String strSaldo, @RequestParam("sexo") String sexo, @RequestParam(value = "tipo", defaultValue = "compradorvendedor") String strTipoUsuario, @RequestParam("categoria") String[] categorias) {
 
         UsuarioDTO user = (UsuarioDTO) session.getAttribute("usuario");
 
@@ -94,13 +117,14 @@ public class AdministradorController extends SwishBayController {
             SimpleDateFormat formato = new SimpleDateFormat("yyyy-MM-dd");
             Date fechaNacimiento = null;
 
-            try {
-                fechaNacimiento = formato.parse(strFechaNacimiento);
-                status = this.usuarioService.comprobarInformacionUsuario(fechaNacimiento, id, correo, strSaldo);
-            } catch (ParseException ex) {
+            //try {
+                //fechaNacimiento = formato.parse(strFechaNacimiento);
+                fechaNacimiento = newUser.getFechaNacimiento();
+                status = this.usuarioService.comprobarInformacionUsuario(fechaNacimiento, newUser.getId() + "", newUser.getCorreo(), newUser.getSaldo() + "");
+            /*} catch (ParseException ex) {
                 status = "Formato de fecha de nacimiento incorrecto.";
                 System.out.println(ex);
-            }
+            }*/
 
             if (status != null) {
 
@@ -119,28 +143,28 @@ public class AdministradorController extends SwishBayController {
                 if (user == null) {    // Registro de compradorvendedor
 
                     //strTipoUsuario = "compradorvendedor";
-                    UsuarioDTO usuario = this.usuarioService.crearUsuario(nombre, apellidos, correo, password, domicilio, ciudad, sexo, fechaNacimiento, saldo, strTipoUsuario, categorias);
+                    UsuarioDTO usuario = this.usuarioService.crearUsuario(newUser.getNombre(), newUser.getApellidos(), newUser.getCorreo(), newUser.getPassword(), newUser.getDomicilio(), newUser.getCiudad(), newUser.getSexo(), fechaNacimiento, saldo, 2, newUser.getCategoriaList());
 
                     session.setAttribute("usuario", usuario);
-                    goTo = "redirect:/compradorProductos";
+                    goTo = "redirect:/comprador/productos";
 
-                } else if (id == null || id.isEmpty()) {    // Creación desde administrador
+                } else if (newUser.getId() == null) {    // Creación desde administrador
 
-                    saldo = Double.parseDouble(strSaldo);
-                    this.usuarioService.crearUsuario(nombre, apellidos, correo, password, domicilio, ciudad, sexo, fechaNacimiento, saldo, strTipoUsuario, categorias);
+                    saldo = newUser.getSaldo();
+                    this.usuarioService.crearUsuario(newUser.getNombre(), newUser.getApellidos(), newUser.getCorreo(), newUser.getPassword(), newUser.getDomicilio(), newUser.getCiudad(), newUser.getSexo(), fechaNacimiento, saldo, newUser.getRol().getId(), newUser.getCategoriaList());
 
-                    goTo = "redirect:/usuarios";
+                    goTo = "redirect:/admin/usuarios";
                 } else {    // Modificación desde administrador
 
-                    saldo = Double.parseDouble(strSaldo);
-                    int idi = Integer.parseInt(id);
-                    UsuarioDTO usuario = this.usuarioService.modificarUsuario(idi, nombre, apellidos, correo, password, domicilio, ciudad, sexo, fechaNacimiento, saldo, strTipoUsuario, categorias);
+                    saldo = newUser.getSaldo();
+                    //int idi = Integer.parseInt(id);
+                    UsuarioDTO usuario = this.usuarioService.modificarUsuario(newUser.getId(), newUser.getNombre(), newUser.getApellidos(), newUser.getCorreo(), newUser.getPassword(), newUser.getDomicilio(), newUser.getCiudad(), newUser.getSexo(), fechaNacimiento, saldo, newUser.getRol().getId(), newUser.getCategoriaList());
 
-                    if (user.getId() == idi) {    // si se modifica al propio administrador, hay que actualizar el usuario de la sesión
+                    if (user.getId() == (int)newUser.getId()) {    // si se modifica al propio administrador, hay que actualizar el usuario de la sesión
                         session.setAttribute("usuario", usuario);
                     }
 
-                    goTo = "redirect:/usuarios";
+                    goTo = "redirect:/admin/usuarios";
 
                 }
 
@@ -161,15 +185,15 @@ public class AdministradorController extends SwishBayController {
         }
     }
 
-    @GetMapping("/usuarioBorrar")
-    public String usuarioBorrar(@RequestParam("id") Integer id, HttpSession session) {
+    @GetMapping("/usuario/{id}/borrar")
+    public String usuarioBorrar(@PathVariable("id") Integer id, HttpSession session) {
         if (!super.comprobarAdminSession(session)) {
             return super.redirectComprobarAdminSession(session);
         }
 
         this.usuarioService.borrarUsuario(id);
 
-        return "redirect:/usuarios";
+        return "redirect:/admin/usuarios";
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -198,8 +222,8 @@ public class AdministradorController extends SwishBayController {
         return "productosAdmin";
     }
 
-    @GetMapping("/productoAdminEditar")
-    public String productoEditar(@RequestParam("id") String id, Model model, HttpSession session) {
+    @GetMapping("/productoAdmin/{id}/editar")
+    public String productoEditar(@PathVariable("id") String id, Model model, HttpSession session) {
         if (!super.comprobarAdminSession(session)) {
             return super.redirectComprobarAdminSession(session);
         }
@@ -214,17 +238,36 @@ public class AdministradorController extends SwishBayController {
         return "productoAdmin";
     }
 
-    // Falta /productoAdminGuardar
+    @PostMapping("/productoAdmin/guardar")
+    public String productoGuardar(@ModelAttribute("producto") ProductoDTO producto, HttpSession session) {
 
-    @GetMapping("/productoAdminBorrar")
-    public String productoBorrar(@RequestParam("id") Integer id, HttpSession session) {
+        if (!super.comprobarAdminSession(session)) {
+            return super.redirectComprobarAdminSession(session);
+        }
+
+        //String status = null;
+
+        Date date = new Date();
+
+        if(producto.getFoto()==null || producto.getFoto().isEmpty()){
+            producto.setFoto("https://th.bing.com/th/id/OIP.KeKY2Y3R0HRBkPEmGWU3FwHaHa?pid=ImgDet&rs=1");
+        }
+
+        productoService.modificarProducto(producto.getId(), producto.getTitulo(), producto.getDescripcion(), producto.getFoto(), date, producto.getCategoria(), producto.getPrecioSalida());
+
+        return "redirect:/admin/productosAdmin";
+
+    }
+
+    @GetMapping("/productoAdmin/{id}/borrar")
+    public String productoBorrar(@PathVariable("id") Integer id, HttpSession session) {
         if (!super.comprobarAdminSession(session)) {
             return super.redirectComprobarAdminSession(session);
         }
 
         this.productoService.borrarProducto(id);
 
-        return "redirect:/productosAdmin";
+        return "redirect:/admin/productosAdmin";
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -244,31 +287,55 @@ public class AdministradorController extends SwishBayController {
         return "categorias";
     }
 
-    @GetMapping("/categoriaNuevoEditar")
-    public String categoriaNuevoEditar(@RequestParam(value = "id", required = false) String id, Model model, HttpSession session) {
+    @GetMapping("/categoria/nuevo")
+    public String categoriaNuevo(Model model, HttpSession session) {
         if (!super.comprobarAdminSession(session)) {
             return super.redirectComprobarAdminSession(session);
         }
 
-        if (id != null && !id.isEmpty()) {
-            CategoriaDTO categoria = this.categoriaService.buscarCategoria(Integer.parseInt(id));
-            model.addAttribute("categoria", categoria);
-        }
+        CategoriaDTO categoria = new CategoriaDTO();
+        model.addAttribute("categoria", categoria);
 
         return "categoria";
     }
 
-    // Falta /categoriaGuardar
+    @GetMapping("/categoria/{id}/editar")
+    public String categoriaEditar(@PathVariable("id") Integer id, Model model, HttpSession session) {
+        if (!super.comprobarAdminSession(session)) {
+            return super.redirectComprobarAdminSession(session);
+        }
 
-    @GetMapping("/categoriaBorrar")
-    public String categoriaBorrar(@RequestParam("id") Integer id, HttpSession session) {
+        CategoriaDTO categoria = this.categoriaService.buscarCategoria(id);
+        model.addAttribute("categoria", categoria);
+
+        return "categoria";
+    }
+
+    @PostMapping("/categoria/guardar")
+    public String categoriaGuardar(@ModelAttribute("categoria") CategoriaDTO categoria, HttpSession session) {
+
+        if (!super.comprobarAdminSession(session)) {
+            return super.redirectComprobarAdminSession(session);
+        }
+
+        if (categoria.getId() == null) {
+            this.categoriaService.crearCategoria(categoria.getNombre(), categoria.getDescripcion());
+        } else {
+            this.categoriaService.modificarCategoria(categoria.getId(), categoria.getNombre(), categoria.getDescripcion());
+        }
+
+        return "redirect:/admin/categorias";
+    }
+
+    @GetMapping("/categoria/{id}/borrar")
+    public String categoriaBorrar(@PathVariable("id") Integer id, HttpSession session) {
         if (!super.comprobarAdminSession(session)) {
             return super.redirectComprobarAdminSession(session);
         }
 
         this.categoriaService.borrarCategoria(id);
 
-        return "redirect:/categorias";
+        return "redirect:/admin/categorias";
     }
 
 }

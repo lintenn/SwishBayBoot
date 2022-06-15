@@ -14,9 +14,9 @@
         response.sendRedirect(request.getContextPath());
     } else {
         if (user.getRol().getNombre().equals("administrador")) {
-            home = "usuarios";
+            home = "/admin/usuarios";
         } else if (user.getRol().getNombre().equals("compradorvendedor")) {
-            home = "compradorProductosServlet";
+            home = "/seller/misProductos";
         } else if (user.getRol().getNombre().equals("marketing")) {
             home = "usuarioCompradorServlet";
         }
@@ -33,7 +33,7 @@
                 Bienvenido/a, <%= user.getNombre() %> <%= user.getApellidos() %>
             </span>
             <div class="nav-item">
-                <a class="nav-link link-light active" href="logout">Cerrar sesión</a>
+                <a class="nav-link link-light active" href="/logout">Cerrar sesión</a>
             </div>
         </nav>
     </div>

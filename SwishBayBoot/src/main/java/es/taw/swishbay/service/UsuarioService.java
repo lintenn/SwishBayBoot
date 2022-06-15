@@ -140,7 +140,7 @@ public class UsuarioService {
 
         if (strId == null || strId.isEmpty()) { // si estamos añadiendo
             try {
-                //posibleUser = usuarioRepository.findByCorreo(correo);
+                posibleUser = usuarioRepository.findByCorreo(correo);
             } catch (Exception e) {
                 posibleUser = null;
             }
@@ -164,7 +164,7 @@ public class UsuarioService {
 
     private void rellenarUsuario (Usuario usuario, String nombre, String apellidos, String correo,
                                   String password, String domicilio, String ciudad, String sexo,
-                                  Date fechaNacimiento, Double saldo, String strTipoUsuario) { // Luis
+                                  Date fechaNacimiento, Double saldo, Integer idTipoUsuario) { // Luis
         usuario.setNombre(nombre);
         usuario.setApellidos(apellidos);
         usuario.setCorreo(correo);
@@ -175,8 +175,8 @@ public class UsuarioService {
         usuario.setFechaNacimiento(fechaNacimiento);
         usuario.setSaldo(saldo);
 
-        //RolUsuario rol = this.rolUsuarioRepository.findByNombre(strTipoUsuario);
-        //usuario.setRol(rol);
+        RolUsuario rol = this.rolUsuarioRepository.getById(idTipoUsuario);
+        usuario.setRol(rol);
 
         // Faltarian las categorias...
     }
@@ -184,16 +184,27 @@ public class UsuarioService {
     private void actualizarRolUsuario (Usuario newUser) { // Luis
         RolUsuario rol = newUser.getRol();
 
-        rol.getUsuarioList().add(newUser);
+        if ((!rol.getUsuarioList().contains(newUser))) {
+            rol.getUsuarioList().add(newUser);
+        } else {
+            rol.getUsuarioList().set(rol.getUsuarioList().indexOf(newUser), newUser);
+        }
         this.rolUsuarioRepository.save(rol);
     }
 
-    private void rellenarCategoriasUsuario (String[] categorias, Usuario newUser) { // Luis
+    private void rellenarCategoriasUsuario (List<Integer> categorias, Usuario newUser) { // Luis
         // Cargamos las categorias...
 
         // Borramos al usuario de las categorias anteriores
         for (Categoria categoria : newUser.getCategoriaList()) {
             categoria.getUsuarioList().remove(newUser);
+            /*List<Usuario> usuarios = new ArrayList<>();
+            for(Usuario user : categoria.getUsuarioList()){
+                if(user != newUser){
+                    usuarios.add(user);
+                }
+            }
+            categoria.setUsuarioList(usuarios);*/
 
             this.categoriaRepository.save(categoria);
         }
@@ -201,9 +212,9 @@ public class UsuarioService {
         newUser.getCategoriaList().clear();
 
         if (categorias != null) {
-            for (String categoriaId : categorias) {
+            for (Integer categoriaId : categorias) {
                 // Añadimos al usuario en las nuevas categorias
-                Categoria categoria = categoriaRepository.getById(Integer.parseInt(categoriaId));
+                Categoria categoria = categoriaRepository.getById(categoriaId);
 
                 categoria.getUsuarioList().add(newUser);
 
@@ -220,12 +231,16 @@ public class UsuarioService {
 
     public UsuarioDTO crearUsuario (String nombre, String apellidos, String correo,
                                     String password, String domicilio, String ciudad, String sexo,
-                                    Date fechaNacimiento, Double saldo, String strTipoUsuario, String[] categorias) { // Luis
+                                    Date fechaNacimiento, Double saldo, Integer idTipoUsuario, List<Integer> categorias) { // Luis
         Usuario usuario = new Usuario();
 
-        this.rellenarUsuario(usuario, nombre, apellidos, correo, password, domicilio, ciudad, sexo, fechaNacimiento, saldo, strTipoUsuario);
+        this.rellenarUsuario(usuario, nombre, apellidos, correo, password, domicilio, ciudad, sexo, fechaNacimiento, saldo, idTipoUsuario);
+
+        usuario.setCategoriaList(new ArrayList<>());
 
         this.usuarioRepository.save(usuario);
+
+        this.usuarioRepository.flush();
 
         this.actualizarRolUsuario(usuario);
 
@@ -236,16 +251,25 @@ public class UsuarioService {
 
     public UsuarioDTO modificarUsuario (Integer id, String nombre, String apellidos, String correo,
                                         String password, String domicilio, String ciudad, String sexo,
-                                        Date fechaNacimiento, Double saldo, String strTipoUsuario, String[] categorias) { // Luis
-        Usuario usuario = this.buscarUsuarioById(id);
+                                        Date fechaNacimiento, Double saldo, Integer idTipoUsuario, List<Integer> categorias) { // Luis
+        Usuario usuario = this.usuarioRepository.findById(id).orElse(null);
 
         RolUsuario rolAntiguo = usuario.getRol();
         rolAntiguo.getUsuarioList().remove(usuario);
+        /*List<Usuario> usuarios = new ArrayList<>();
+        for(Usuario user : rolAntiguo.getUsuarioList()){
+            if(user != usuario){
+                usuarios.add(user);
+            }
+        }
+        rolAntiguo.setUsuarioList(usuarios);*/
         this.rolUsuarioRepository.save(rolAntiguo);
 
-        this.rellenarUsuario(usuario, nombre, apellidos, correo, password, domicilio, ciudad, sexo, fechaNacimiento, saldo, strTipoUsuario);
+        this.rellenarUsuario(usuario, nombre, apellidos, correo, password, domicilio, ciudad, sexo, fechaNacimiento, saldo, idTipoUsuario);
 
         this.usuarioRepository.save(usuario);
+
+        this.usuarioRepository.flush();
 
         this.actualizarRolUsuario(usuario);
 
@@ -305,11 +329,10 @@ public class UsuarioService {
 
     public UsuarioDTO manejoFavoritos(int idProducto, int idUsuario){ //Miguel Oña Guerrero
 
-        Usuario usuario = this.usuarioRepository.getById(idUsuario);
-        Producto producto = this.productoRepository.getById(idProducto);
+        Usuario usuario = this.usuarioRepository.findById(idUsuario).orElse(null);
+        Producto producto = this.productoRepository.findById(idProducto).orElse(null);
 
-
-        if(usuario.getProductoList().contains(producto)){
+        if(usuario.getProductoList() != null && usuario.getProductoList().contains(producto)){
             usuario.getProductoList().remove(producto);
             producto.getUsuarioList().remove(usuario);
 
@@ -328,13 +351,16 @@ public class UsuarioService {
     }
 
     public UsuarioDTO sumarSaldo(double cantidad, int idUsuario){ //Miguel Oña Guerrero
-        Usuario usuario = this.usuarioRepository.getById(idUsuario);
 
-        double saldo = usuario.getSaldo();
-        saldo += cantidad;
-        usuario.setSaldo(saldo);
+        Usuario usuario = this.usuarioRepository.findById(idUsuario).orElse(null);
 
-        usuarioRepository.save(usuario);
+        if(usuario != null){
+            double saldo = usuario.getSaldo();
+            saldo += cantidad;
+            usuario.setSaldo(saldo);
+
+            usuarioRepository.save(usuario);
+        }
 
         return usuario.toDTO();
     }
