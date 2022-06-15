@@ -17,6 +17,11 @@ import javax.servlet.http.HttpSession;
 import java.util.Collections;
 import java.util.List;
 
+/**
+ * Controlador del administrador
+ * @author Galo
+ */
+
 @Controller
 @RequestMapping("seller")
 public class SellerController extends SwishBayController{
