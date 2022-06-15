@@ -18,6 +18,7 @@ public class UsuarioService {
     private CategoriaRepository categoriaRepository;
     private GrupoRepository grupoRepository;
     private ProductoRepository productoRepository;
+    private GrupoService grupoService;
 
     @Autowired
     public void setUsuarioRepository(UsuarioRepository usuarioRepository) {
@@ -42,6 +43,11 @@ public class UsuarioService {
     @Autowired
     public void setProductoRepository(ProductoRepository productoRepository) {
         this.productoRepository = productoRepository;
+    }
+
+    @Autowired
+    public void setGrupoService(GrupoService grupoService){
+        this.grupoService = grupoService;
     }
 
     public List<Usuario> findAll() {
@@ -278,42 +284,6 @@ public class UsuarioService {
         return usuario.toDTO();
     }
 
-    public void modificarListaMensajesUsuario(Integer id, List<Mensaje> mensajes){ // angel
-
-        Usuario usuario = this.buscarUsuarioById(id);
-
-        usuario.setMensajeList(mensajes);
-
-        this.usuarioRepository.save(usuario);
-
-    }
-
-    public void anadirGrupoAListaGruposUsuario(Integer idUsuario, Integer idGrupo){ // angel
-
-        Usuario usuario = this.buscarUsuarioById(idUsuario);
-        Grupo grupo = this.grupoRepository.getById(idGrupo);
-
-        List<Grupo> grupoList = usuario.getGrupoList();
-        grupoList.add(grupo);
-        usuario.setGrupoList(grupoList);
-
-        this.usuarioRepository.save(usuario);
-
-    }
-
-    public void eliminarGrupoAListaGruposUsuario(Integer idUsuario, Integer idGrupo){ // angel
-
-        Usuario usuario = this.buscarUsuarioById(idUsuario);
-        Grupo grupo = this.grupoRepository.getById(idGrupo);
-
-        List<Grupo> grupoList = usuario.getGrupoList();
-        grupoList.remove(grupo);
-        usuario.setGrupoList(grupoList);
-
-        this.usuarioRepository.save(usuario);
-
-    }
-
     public UsuarioDTO comprobarCredenciales (String correo, String password) { // Luis
         UsuarioDTO userdto = null;
 
@@ -336,12 +306,12 @@ public class UsuarioService {
             usuario.getProductoList().remove(producto);
             producto.getUsuarioList().remove(usuario);
 
-            //this.eliminarUsuarioAGrupoADarleFavoritoAProducto(idProducto, idUsuario); //Marketing
+            this.grupoService.eliminarUsuarioAGrupoADarleFavoritoAProducto(idProducto, idUsuario); //Marketing
         }else{
             usuario.getProductoList().add(producto);
             producto.getUsuarioList().add(usuario);
 
-            //this.anadirUsuarioAGrupoADarleFavoritoAProducto(idProducto, idUsuario); //Marketing
+            this.grupoService.anadirUsuarioAGrupoADarleFavoritoAProducto(idProducto, idUsuario); //Marketing
         }
 
         this.usuarioRepository.save(usuario);
@@ -364,25 +334,6 @@ public class UsuarioService {
 
         return usuario.toDTO();
     }
-
-    /*public void anadirUsuarioAGrupoADarleFavoritoAProducto(int idProducto, int idUsuario){ // angel
-
-        this.grupoService.comprobarExistenciaGrupoPorNombre("Grupo_"+idProducto);
-        //Integer idGrupo = this.grupoService.buscarGruposPorNombre("Grupo_"+idProducto).get(0).getId();
-        Integer idGrupo = this.grupoFacade.findGrupoByGrupoNombreExtricto("Grupo_"+idProducto).get(0).getId();
-
-        this.grupoService.anadirUsuarioAListaUsuariosGrupo(idUsuario, idGrupo);
-        this.anadirGrupoAListaGruposUsuario(idUsuario, idGrupo);
-
-    }*/
-
-    /*public void eliminarUsuarioAGrupoADarleFavoritoAProducto(int idProducto, int idUsuario){ // angel
-
-        Integer idGrupo = this.grupoFacade.findGrupoByGrupoNombreExtricto("Grupo_"+idProducto).get(0).getId();
-        this.grupoService.eliminarUsuarioAListaUsuariosGrupo(idUsuario, idGrupo);
-        this.eliminarGrupoAListaGruposUsuario(idUsuario, idGrupo);
-
-    }*/
 
 }
 
