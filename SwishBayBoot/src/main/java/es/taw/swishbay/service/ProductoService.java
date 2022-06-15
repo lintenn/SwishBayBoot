@@ -26,6 +26,12 @@ public class ProductoService {
     private CategoriaRepository categoriaRepository;
     private UsuarioRepository usuarioRepository;
     private PujaRepository pujaRepository;
+    private GrupoService grupoService;
+
+    @Autowired
+    public void setGrupoService(GrupoService grupoService){
+        this.grupoService = grupoService;
+    }
 
     @Autowired
     public void setProductoRepository(ProductoRepository productoRepository) {
@@ -234,7 +240,7 @@ public class ProductoService {
         }
         p.setFinPuja(d);
 
-        //this.grupoService.notificarComienzoPuja("Grupo_"+p.getId(), p.toDTO());
+        this.grupoService.notificarComienzoPuja("Grupo_"+p.getId(), p.toDTO());
         productoRepository.save(p);
     }
 
@@ -254,7 +260,7 @@ public class ProductoService {
 
         Producto p = productoRepository.getById(id);
 
-        //this.grupoService.notificarFinPuja("Grupo_"+p.getId(), p.toDTO());
+        this.grupoService.notificarFinPuja("Grupo_"+p.getId(), p.toDTO());
 
         Double d=p.getPrecioSalida();
         Puja puja=null;
