@@ -112,4 +112,7 @@ public interface ProductoRepository  extends JpaRepository<Producto, Integer> {
     @Query("select max(p.precioSalida) from Producto p where p.id in :ids")
     Double findPrecioMaximo(List<Integer> ids); //Miguel Oña Guerrero
 
+    @Query("select pu from Puja pu where pu.producto1.id = :idProducto and pu.usuario.id NOT IN :idsUsers")
+    List<Puja> findUsersPujaNoGrupo(Integer idProducto, List<Integer> idsUsers); //angel
+
 }
