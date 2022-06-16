@@ -349,4 +349,36 @@ public class GrupoService {
 
     }
 
+    public List<GrupoDTO> buscarGruposPorNombreYGrupos(String nombre, List<Integer> ids){ // angel
+
+        List<Grupo> grupos = this.grupoRepository.findGrupoByGrupoNombreAndGroups(nombre, ids);
+
+        return this.listaGruposEntityADTO(grupos);
+
+    }
+
+    public List<GrupoDTO> buscarGruposPorNombreYApellidosCreador(String nombre, String apellidos, List<Integer> ids){ // angel
+
+        List<Grupo> grupos = this.grupoRepository.findGrupoByGrupoNombreCreadorAndApellidosCreadorAndGroups(nombre, apellidos, ids);
+
+        return this.listaGruposEntityADTO(grupos);
+
+    }
+
+    public List<GrupoDTO> buscarGruposPorNombreCreador(String nombre, List<Integer> ids){ // angel
+
+        List<Grupo> grupos = this.grupoRepository.findGrupoByGrupoNombreCreadorAndGroups(nombre, ids);
+
+        return this.listaGruposEntityADTO(grupos);
+
+    }
+
+    public List<GrupoDTO> buscarGruposPorApellidosCreador(String apellidos, List<Integer> ids){ // angel
+
+        List<Grupo> grupos = this.grupoRepository.findGrupoByGrupoApellidosCreadorAndGroups(apellidos, ids);
+
+        return this.listaGruposEntityADTO(grupos);
+
+    }
+
 }

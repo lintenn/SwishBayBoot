@@ -1,6 +1,8 @@
 package es.taw.swishbay.controller;
 
 import es.taw.swishbay.dto.GrupoDTO;
+import es.taw.swishbay.dto.GrupoFiltroDTO;
+import es.taw.swishbay.dto.MensajeFiltroDTO;
 import es.taw.swishbay.dto.UsuarioDTO;
 import es.taw.swishbay.service.GrupoService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,6 +36,53 @@ public class GrupoController extends SwishBayController{
 
         List<GrupoDTO> grupos = this.grupoService.buscarTodosGrupos();
 
+        GrupoFiltroDTO filtro = new GrupoFiltroDTO();
+
+        model.addAttribute("filtro", filtro);
+        model.addAttribute("grupos", grupos);
+
+        return "grupos";
+    }
+
+    @PostMapping("/grupos")
+    public String listarGruposFiltrados(@ModelAttribute("filtro") GrupoFiltroDTO filtro, Model model, HttpSession session) {
+
+        if (!super.comprobarMarketingSession(session)) {
+            return super.redirectComprobarMarketingSession(session);
+        }
+
+        List<GrupoDTO> grupos = this.grupoService.buscarTodosGrupos();
+
+        if(filtro.getNombreGrupo() != null && !filtro.getNombreGrupo().isEmpty() && grupos.size() > 0){
+
+            List<Integer> ids = new ArrayList<>();
+            for(GrupoDTO grupo : grupos){
+                ids.add(grupo.getId());
+            }
+
+            grupos = this.grupoService.buscarGruposPorNombreYGrupos(filtro.getNombreGrupo(), ids);
+
+        }
+
+        if(((filtro.getApellidoCreador() != null && !filtro.getApellidoCreador().isEmpty()) || (filtro.getNombreCreador() != null && !filtro.getNombreCreador().isEmpty())) && grupos.size() > 0){
+
+            List<Integer> ids = new ArrayList<>();
+            for(GrupoDTO grupo : grupos){
+                ids.add(grupo.getId());
+            }
+
+            if((filtro.getNombreCreador() == null || filtro.getNombreCreador().isEmpty()) && (filtro.getApellidoCreador() != null && !filtro.getApellidoCreador().isEmpty())){
+                grupos = this.grupoService.buscarGruposPorApellidosCreador(filtro.getApellidoCreador(), ids);
+            } else if((filtro.getApellidoCreador() == null || filtro.getApellidoCreador().isEmpty()) && (filtro.getNombreCreador() != null && !filtro.getNombreCreador().isEmpty())){
+                grupos = this.grupoService.buscarGruposPorNombreCreador(filtro.getNombreCreador(), ids);
+            } else {
+                grupos = this.grupoService.buscarGruposPorNombreYApellidosCreador(filtro.getNombreCreador(), filtro.getApellidoCreador(), ids);
+            }
+
+
+        }
+
+        model.addAttribute("filtro", filtro);
         model.addAttribute("grupos", grupos);
 
         return "grupos";

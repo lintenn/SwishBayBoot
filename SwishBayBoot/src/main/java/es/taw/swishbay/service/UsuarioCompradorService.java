@@ -110,7 +110,7 @@ public class UsuarioCompradorService {
 
     }
 
-    public List<UsuarioDTO> buscarPorCompradorVendedorPorSaldoDesde(Integer desde, List<Integer> ids){// angel
+    public List<UsuarioDTO> buscarPorCompradorVendedorPorSaldoDesde(Double desde, List<Integer> ids){// angel
 
         List<Usuario> usuarios = this.usuarioRepository.findByCompradorVendedorBySaldoDesde(desde, ids);
 
@@ -118,7 +118,7 @@ public class UsuarioCompradorService {
 
     }
 
-    public List<UsuarioDTO> buscarPorCompradorVendedorPorSaldoHasta(Integer desde, List<Integer> ids){// angel
+    public List<UsuarioDTO> buscarPorCompradorVendedorPorSaldoHasta(Double desde, List<Integer> ids){// angel
 
         List<Usuario> usuarios = this.usuarioRepository.findByCompradorVendedorBySaldoHasta(desde, ids);
 
@@ -174,7 +174,7 @@ public class UsuarioCompradorService {
 
     }
 
-    public List<UsuarioDTO> buscarPorCompradorVendedorPorSaldoDesdeQueNoPertencenAUnGrupo(Integer desde, List<Integer> ids, List<Integer> idsGrupo){// angel
+    public List<UsuarioDTO> buscarPorCompradorVendedorPorSaldoDesdeQueNoPertencenAUnGrupo(Double desde, List<Integer> ids, List<Integer> idsGrupo){// angel
 
         List<Usuario> usuarios = this.usuarioRepository.findByCompradorVendedorBySaldoDesdeQueNoPertencenAUnGrupo(desde, ids, idsGrupo);
 
@@ -182,7 +182,7 @@ public class UsuarioCompradorService {
 
     }
 
-    public List<UsuarioDTO> buscarPorCompradorVendedorPorSaldoHastaQueNoPertencenAUnGrupo(Integer desde, List<Integer> ids, List<Integer> idsGrupo){// angel
+    public List<UsuarioDTO> buscarPorCompradorVendedorPorSaldoHastaQueNoPertencenAUnGrupo(Double desde, List<Integer> ids, List<Integer> idsGrupo){// angel
 
         List<Usuario> usuarios = this.usuarioRepository.findByCompradorVendedorBySaldoHastaQueNoPertencenAUnGrupo(desde, ids, idsGrupo);
 
@@ -238,7 +238,7 @@ public class UsuarioCompradorService {
 
     }
 
-    public List<UsuarioDTO> buscarPorCompradorVendedorPorSaldoDesdeQuePertencenAUnGrupo(Integer desde, List<Integer> ids){// angel
+    public List<UsuarioDTO> buscarPorCompradorVendedorPorSaldoDesdeQuePertencenAUnGrupo(Double desde, List<Integer> ids){// angel
 
         List<Usuario> usuarios = this.usuarioRepository.findByCompradorVendedorBySaldoDesdeQuePertencenAUnGrupo(desde, ids);
 
@@ -246,7 +246,7 @@ public class UsuarioCompradorService {
 
     }
 
-    public List<UsuarioDTO> buscarPorCompradorVendedorPorSaldoHastaQuePertencenAUnGrupo(Integer desde, List<Integer> ids){// angel
+    public List<UsuarioDTO> buscarPorCompradorVendedorPorSaldoHastaQuePertencenAUnGrupo(Double desde, List<Integer> ids){// angel
 
         List<Usuario> usuarios = this.usuarioRepository.findByCompradorVendedorBySaldoHastaQuePertencenAUnGrupo(desde, ids);
 
