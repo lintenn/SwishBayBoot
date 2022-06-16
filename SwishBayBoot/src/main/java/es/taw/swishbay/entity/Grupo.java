@@ -139,9 +139,8 @@ public class Grupo implements Serializable {
         grupoDTO.setId(id);
         grupoDTO.setMarketing(marketing.toDTO());
         grupoDTO.setNombre(nombre);
-        List<UsuarioDTO> usuarios = null;
+        List<UsuarioDTO> usuarios = new ArrayList<>();
         if(usuarioList != null){
-            usuarios = new ArrayList<>();
             for(Usuario usuario : usuarioList){
                 usuarios.add(usuario.toDTO());
             }

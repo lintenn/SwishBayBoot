@@ -1,3 +1,4 @@
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%--
     Document   : crearGrupo
     Created on : 16 abr 2022, 3:29:13
@@ -31,10 +32,10 @@
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <li class="nav-item">
-                        <a class="nav-link" href="UsuarioCompradorServlet">Panel de usuarios compradores</a>
+                        <a class="nav-link" href="usuariosCompradorVendedor">Panel de usuarios compradores</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="GrupoServlet">Panel de grupos</a>
+                        <a class="nav-link" href="grupos">Panel de grupos</a>
                     </li>
 
                 </ul>
@@ -46,16 +47,18 @@
     <h1 class="mb-2">Datos del grupo</h1>
     <br/>
     <%
-        String id = "";
-        if(grupo != null){
-            id = "?id="+grupo.getId();
+        String id = "/guardarGrupo";
+        if(grupo.getUsuarioList() != null){
+            id += "/"+grupo.getId();
+        } else {
+            id += "/0";
         }
     %>
-    <form  method="POST" action="GrupoGuardarServlet<%=id%>">
+    <form:form modelAttribute="grupo" method="POST" action="<%=id%>">
         <div class="form-group row justify-content-md-center mb-4">
             <label for="inputNombre" class="col-sm-1 col-form-label">Nombre:</label>
             <div class="col-sm-4">
-                <input type="text" maxlength="45" class="form-control" id="inputNombre" name="nombre" required="" autofocus="" value="<%= grupo==null? "": grupo.getNombre() %>" >
+                <form:input path="nombre" type="text" maxlength="45" class="form-control" id="inputNombre" name="nombre" required="" autofocus="" />
             </div>
             *
             <br/>
@@ -67,18 +70,18 @@
             <div class="form-group row justify-content-md-center mt-2">
                 <div class="col-sm-10">
                     <%
-                        if(grupo!=null){
+                        if(grupo.getUsuarioList()!=null){
                     %>
                     <a href="ParticipantesGrupoEditarServlet<%=id%>" class="btn btn-lg btn-success fw-bold border-white mx-2"><%= grupo.getUsuarioList().size()==0? "Añadir participantes": "Modificar participantes" %></a>
                     <%
                         }
                     %>
-                    <button type="submit" class="btn btn-lg btn-success fw-bold border-white mx-2"><%= grupo==null? "Añadir": "Modificar" %></button>
-                    <a href="GrupoServlet" class="btn btn-lg btn-secondary fw-bold border-white mx-2">Cancelar</a>
+                    <form:button type="submit" class="btn btn-lg btn-success fw-bold border-white mx-2"><%= grupo.getUsuarioList()==null? "Añadir": "Modificar" %></form:button>
+                    <a class="btn btn-lg btn-secondary fw-bold border-white mx-2" href="/grupos">Cancelar</a>
                 </div>
             </div>
         </div>
-    </form>
+    </form:form>
     <br/>
 
 
