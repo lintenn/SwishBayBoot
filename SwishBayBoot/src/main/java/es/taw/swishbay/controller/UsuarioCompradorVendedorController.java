@@ -1,5 +1,8 @@
 package es.taw.swishbay.controller;
 
+import es.taw.swishbay.dto.GrupoFiltroDTO;
+import es.taw.swishbay.dto.MensajeFiltroDTO;
+import es.taw.swishbay.dto.UsuarioCompradorDTO;
 import es.taw.swishbay.dto.UsuarioDTO;
 import es.taw.swishbay.service.GrupoService;
 import es.taw.swishbay.service.UsuarioCompradorService;
@@ -8,7 +11,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 
 import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
@@ -45,6 +50,85 @@ public class UsuarioCompradorVendedorController extends SwishBayController{
 
         List<UsuarioDTO> usuarios = this.usuarioCompradorService.buscarPorCompradorVendedor();
 
+        UsuarioCompradorDTO filtro = new UsuarioCompradorDTO("Nombre");
+
+        List<UsuarioCompradorDTO> usuarioCompradorDTOS = new ArrayList<>();
+        usuarioCompradorDTOS.add(new UsuarioCompradorDTO("Nombre"));
+        usuarioCompradorDTOS.add(new UsuarioCompradorDTO("Correo"));
+        usuarioCompradorDTOS.add(new UsuarioCompradorDTO("Apellidos"));
+        usuarioCompradorDTOS.add(new UsuarioCompradorDTO("Ciudad"));
+        usuarioCompradorDTOS.add(new UsuarioCompradorDTO("Domicilio"));
+        usuarioCompradorDTOS.add(new UsuarioCompradorDTO("Sexo"));
+
+        model.addAttribute("filtro", filtro);
+        model.addAttribute("filtros", usuarioCompradorDTOS);
+        model.addAttribute("usuarios", usuarios);
+
+        return "usuariosCompradores";
+
+    }
+
+    @PostMapping("/usuariosCompradorVendedor")
+    public String listarUsuariosCompradorVendedorFiltrado(@ModelAttribute("filtro") UsuarioCompradorDTO filtro, Model model, HttpSession session){
+
+        if(!super.comprobarMarketingSession(session)){
+            return super.redirectComprobarMarketingSession(session);
+        }
+
+        List<UsuarioDTO> usuarios = this.usuarioCompradorService.buscarPorCompradorVendedor();
+
+        switch(filtro.getSeleccionado()){
+            case "Nombre":
+                usuarios = this.usuarioCompradorService.buscarPorCompradorVendedorPorNombre(filtro.getBusqueda());
+                break;
+            case "Correo":
+                usuarios = this.usuarioCompradorService.buscarPorCompradorVendedorPorCorreo(filtro.getBusqueda());
+                break;
+            case "Apellidos":
+                usuarios = this.usuarioCompradorService.buscarPorCompradorVendedorPorApellidos(filtro.getBusqueda());
+                break;
+            case "Ciudad":
+                usuarios = this.usuarioCompradorService.buscarPorCompradorVendedorPorCiudad(filtro.getBusqueda());
+                break;
+            case "Domicilio":
+                usuarios = this.usuarioCompradorService.buscarPorCompradorVendedorPorDomicilio(filtro.getBusqueda());
+                break;
+            case "Sexo":
+                usuarios = this.usuarioCompradorService.buscarPorCompradorVendedorPorSexo(filtro.getBusqueda());
+                break;
+        }
+
+        if(filtro.getSaldoDesde() != null && usuarios.size() > 0){
+
+            List<Integer> ids = new ArrayList<>();
+            for(UsuarioDTO user : usuarios){
+                ids.add(user.getId());
+            }
+
+            usuarios = this.usuarioCompradorService.buscarPorCompradorVendedorPorSaldoDesde(filtro.getSaldoDesde(), ids);
+
+        }
+
+        if(filtro.getSaldoHasta() != null && usuarios.size() > 0){
+
+            List<Integer> ids = new ArrayList<>();
+            for(UsuarioDTO user : usuarios){
+                ids.add(user.getId());
+            }
+
+            usuarios = this.usuarioCompradorService.buscarPorCompradorVendedorPorSaldoHasta(filtro.getSaldoHasta(), ids);
+
+        }
+        List<UsuarioCompradorDTO> usuarioCompradorDTOS = new ArrayList<>();
+        usuarioCompradorDTOS.add(new UsuarioCompradorDTO("Nombre"));
+        usuarioCompradorDTOS.add(new UsuarioCompradorDTO("Correo"));
+        usuarioCompradorDTOS.add(new UsuarioCompradorDTO("Apellidos"));
+        usuarioCompradorDTOS.add(new UsuarioCompradorDTO("Ciudad"));
+        usuarioCompradorDTOS.add(new UsuarioCompradorDTO("Domicilio"));
+        usuarioCompradorDTOS.add(new UsuarioCompradorDTO("Sexo"));
+
+        model.addAttribute("filtro", filtro);
+        model.addAttribute("filtros", usuarioCompradorDTOS);
         model.addAttribute("usuarios", usuarios);
 
         return "usuariosCompradores";

@@ -110,7 +110,7 @@ public class UsuarioCompradorService {
 
     }
 
-    public List<UsuarioDTO> buscarPorCompradorVendedorPorSaldoDesde(Integer desde, List<Integer> ids){// angel
+    public List<UsuarioDTO> buscarPorCompradorVendedorPorSaldoDesde(Double desde, List<Integer> ids){// angel
 
         List<Usuario> usuarios = this.usuarioRepository.findByCompradorVendedorBySaldoDesde(desde, ids);
 
@@ -118,7 +118,7 @@ public class UsuarioCompradorService {
 
     }
 
-    public List<UsuarioDTO> buscarPorCompradorVendedorPorSaldoHasta(Integer desde, List<Integer> ids){// angel
+    public List<UsuarioDTO> buscarPorCompradorVendedorPorSaldoHasta(Double desde, List<Integer> ids){// angel
 
         List<Usuario> usuarios = this.usuarioRepository.findByCompradorVendedorBySaldoHasta(desde, ids);
 

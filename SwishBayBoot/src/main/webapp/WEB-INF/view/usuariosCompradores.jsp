@@ -1,3 +1,4 @@
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%--
     Document   : usuariosCompradores
     Created on : 16 abr 2022, 1:58:16
@@ -33,6 +34,27 @@
                         <a class="nav-link" href="grupos">Panel de grupos</a>
                     </li>
                 </ul>
+                <form:form modelAttribute="filtro" method="post" class="d-flex" action="usuariosCompradorVendedor">
+                    <div class="mt-2 me-2">
+                        Sueldo
+                    </div>
+                    <div class="mt-2 mx-1">
+                        Desde:
+                    </div>
+                    <form:input path="saldoDesde" class="form-control mx-1" type="number" min="0"  style=" width:100px;" id="saldoDesde" name="saldoDesde"/>
+                    <div class="mt-2" style="margin-right: 15px;">€</div>
+                    <div class="mt-2">
+                        Hasta:
+                    </div>
+                    <form:input path="saldoHasta" class="form-control mx-1" type="number" min="0" style=" width:100px;" id="saldoHasta" name="saldoHasta"/>
+                    <div class="mt-2" style="margin-right: 15px;">€</div>
+
+                    <form:select path="seleccionado" class="form-select px-2 me-2" id="filtroUsuariosCompradores" name="filtroUsuariosCompradores">
+                        <form:options items="${filtros}" itemValue="seleccionado" itemLabel="seleccionado"/>
+                    </form:select>
+                    <form:input path="busqueda" class="form-control me-2" type="search" placeholder="Buscar" name="filtro" aria-label="Search"/>
+                    <form:button class="btn btn-outline-success" type="submit">Buscar</form:button>
+                </form:form>
             </div>
         </div>
     </nav>

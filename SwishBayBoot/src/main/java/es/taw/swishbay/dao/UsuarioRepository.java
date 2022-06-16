@@ -48,10 +48,10 @@ public interface UsuarioRepository  extends JpaRepository<Usuario, Integer> {
     List<Usuario> findByCompradorVendedorBySexo(String sexo); // angel
 
     @Query("select u from Usuario u where u.saldo >= :saldoDesde and u.id IN :usuarios")
-    List<Usuario> findByCompradorVendedorBySaldoDesde(Integer saldoDesde, List<Integer> usuarios); // angel
+    List<Usuario> findByCompradorVendedorBySaldoDesde(Double saldoDesde, List<Integer> usuarios); // angel
 
     @Query("select u from Usuario u where u.saldo <= :saldoDesde and u.id IN :usuarios")
-    List<Usuario> findByCompradorVendedorBySaldoHasta(Integer saldoDesde, List<Integer> usuarios); // angel
+    List<Usuario> findByCompradorVendedorBySaldoHasta(Double saldoDesde, List<Integer> usuarios); // angel
 
     @Query("select u from Usuario u where u.rol.nombre like 'compradorvendedor' and u.nombre like CONCAT('%',:nombre,'%') and u.id NOT IN :idsGrupo")
     List<Usuario> findByCompradorVendedorByNameQueNoPertencenAUnGrupo(String nombre, List<Integer> idsGrupo); // angel
