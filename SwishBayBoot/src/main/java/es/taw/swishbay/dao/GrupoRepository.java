@@ -7,6 +7,10 @@ import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
 
+/**
+ * @author Ángel
+ */
+
 public interface GrupoRepository extends JpaRepository<Grupo, Integer> {
 
     @Query("select g from Grupo g where g.nombre like CONCAT('%',:nombre,'%')")

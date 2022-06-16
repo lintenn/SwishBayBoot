@@ -97,7 +97,7 @@ public class PujaService {
         }else if(mayorPuja == null && puja.getPrecio() < producto.getPrecioSalida()){
             error = "¡Cantidad insuficiente!";
 
-        }else if(mayorPuja != null && puja.getPrecio() < mayorPuja.getPrecio()){
+        }else if(mayorPuja != null && puja.getPrecio() <= mayorPuja.getPrecio()){
             error = "¡Cantidad insuficiente!";
 
         }else if(mayorPuja != null && mayorPuja.getComprador().getId() == puja.getComprador().getId()) {

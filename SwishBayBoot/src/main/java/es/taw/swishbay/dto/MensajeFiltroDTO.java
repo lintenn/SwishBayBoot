@@ -1,5 +1,10 @@
 package es.taw.swishbay.dto;
 
+/**
+ *
+ * @author angel
+ */
+
 public class MensajeFiltroDTO {
 
     private String filtroTitulo;

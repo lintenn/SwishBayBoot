@@ -6,6 +6,10 @@ import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
 
+/**
+ * @author Luis 16%, Ángel 84%
+ */
+
 public interface UsuarioRepository  extends JpaRepository<Usuario, Integer> {
 
     Usuario findByCorreo(String correo); // Luis

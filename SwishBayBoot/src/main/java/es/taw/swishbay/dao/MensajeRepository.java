@@ -6,6 +6,10 @@ import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
 
+/**
+ * @author Ángel
+ */
+
 public interface MensajeRepository  extends JpaRepository<Mensaje, Integer> {
 
     @Query("select m from Mensaje m where m.grupo.id = :idGrupo and m.asunto like CONCAT('%',:asunto,'%')")

@@ -1,5 +1,10 @@
 package es.taw.swishbay.dto;
 
+/**
+ *
+ * @author Miguel Oña Guerrero
+ */
+
 public class CompradorFiltroDTO {
 
     private String filtroTitulo;
