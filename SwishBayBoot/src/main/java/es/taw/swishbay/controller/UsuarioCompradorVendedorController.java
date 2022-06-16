@@ -37,7 +37,7 @@ public class UsuarioCompradorVendedorController extends SwishBayController{
     }
 
     @GetMapping("/usuariosCompradorVendedor")
-    public String lisarUsuariosCompradorVendedor(Model model, HttpSession session){
+    public String listarUsuariosCompradorVendedor(Model model, HttpSession session){
 
         if(!super.comprobarMarketingSession(session)){
             return super.redirectComprobarMarketingSession(session);
@@ -52,7 +52,7 @@ public class UsuarioCompradorVendedorController extends SwishBayController{
     }
 
     @GetMapping("/usuariosCompradorVendedorDeUnGrupo/{id}")
-    public String lisarUsuariosCompradorVendedorDeUngrupo(@PathVariable("id") Integer id, Model model, HttpSession session){
+    public String listarUsuariosCompradorVendedorDeUnGrupo(@PathVariable("id") Integer id, Model model, HttpSession session){
 
         if(!super.comprobarMarketingSession(session)){
             return super.redirectComprobarMarketingSession(session);
@@ -68,7 +68,7 @@ public class UsuarioCompradorVendedorController extends SwishBayController{
     }
 
     @GetMapping("/borrarUsuarioCompradorVendedorDeUnGrupo/{id}/{idUsuario}")
-    public String borrarUsuarioCompradorVendedorDeUngrupo(@PathVariable("id") Integer id, @PathVariable("idUsuario") Integer idUsuario, HttpSession session){
+    public String borrarUsuarioCompradorVendedorDeUnGrupo(@PathVariable("id") Integer id, @PathVariable("idUsuario") Integer idUsuario, HttpSession session){
 
         if(!super.comprobarMarketingSession(session)){
             return super.redirectComprobarMarketingSession(session);
@@ -78,6 +78,37 @@ public class UsuarioCompradorVendedorController extends SwishBayController{
         this.usuarioService.eliminarGrupoAListaGruposUsuario(idUsuario, id);
 
         return "redirect:/usuariosCompradorVendedorDeUnGrupo/"+id;
+
+    }
+
+    @GetMapping("/usuariosCompradorVendedorQueNoSonDeUnGrupo/{id}")
+    public String listarUsuariosCompradorVendedorQueNoSonDeUnGrupo(@PathVariable("id") Integer id, Model model, HttpSession session){
+
+        if(!super.comprobarMarketingSession(session)){
+            return super.redirectComprobarMarketingSession(session);
+        }
+
+        List<Integer> idsUsuariosGrupo = this.grupoService.listarIdsUsuariosDeUnGrupo(id);
+        List<UsuarioDTO> usuarios = this.grupoService.listarUsuariosQueNoPertenecenAUnGrupo(idsUsuariosGrupo);
+
+        model.addAttribute("usuarios", usuarios);
+        model.addAttribute("idGrupo", id);
+
+        return "participantesAñadirGrupo";
+
+    }
+
+    @GetMapping("añadirParticipanteAGrupo/{idGrupo}/{idUsuario}")
+    public String añadirParticipanteAGrupo(@PathVariable("idGrupo") Integer idGrupo, @PathVariable("idUsuario") Integer idUsuario, Model model, HttpSession session){
+
+        if(!super.comprobarMarketingSession(session)){
+            return super.redirectComprobarMarketingSession(session);
+        }
+
+        this.grupoService.anadirUsuarioAListaUsuariosGrupo(idUsuario, idGrupo);
+        this.usuarioService.anadirGrupoAListaGruposUsuario(idUsuario, idGrupo);
+
+        return "redirect:/usuariosCompradorVendedorQueNoSonDeUnGrupo/"+idGrupo;
 
     }
 

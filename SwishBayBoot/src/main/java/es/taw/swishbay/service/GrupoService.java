@@ -322,4 +322,31 @@ public class GrupoService {
         return listaDTO;
     }
 
+    public List<Integer> listarIdsUsuariosDeUnGrupo(Integer idGrupo){ // angel
+
+        List<UsuarioDTO> usuarios = this.listarUsuariosDeUnGrupo(idGrupo);
+
+        List<Integer> ids = new ArrayList<>();
+
+        for(UsuarioDTO usuario : usuarios){
+            ids.add(usuario.getId());
+        }
+
+        return ids;
+
+    }
+
+    public List<UsuarioDTO> listarUsuariosQueNoPertenecenAUnGrupo(List<Integer> ids){ // angel
+
+
+        List<Usuario> usuarios = this.usuarioRepository.findByCompradorVendedor();
+
+        if(!ids.isEmpty()){
+            usuarios = this.grupoRepository.findUsuariosNotInGrupoId(ids);
+        }
+
+        return this.listaUsuarioEntityADTO(usuarios);
+
+    }
+
 }

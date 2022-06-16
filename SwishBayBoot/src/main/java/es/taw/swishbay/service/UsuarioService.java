@@ -353,5 +353,18 @@ public class UsuarioService {
 
     }
 
+    public void anadirGrupoAListaGruposUsuario(Integer idUsuario, Integer idGrupo){ // angel
+
+        Usuario usuario = this.buscarUsuarioById(idUsuario);
+        Grupo grupo = this.grupoRepository.findById(idGrupo).orElse(null);
+
+        List<Grupo> grupoList = usuario.getGrupoList();
+        grupoList.add(grupo);
+        usuario.setGrupoList(grupoList);
+
+        this.usuarioRepository.save(usuario);
+
+    }
+
 }
 
