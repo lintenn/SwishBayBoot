@@ -295,4 +295,12 @@ public class GrupoService {
 
     }
 
+    public void borrarGrupo(Integer id){ // angel
+
+        Grupo grupo = this.buscarGrupo(id);
+
+        this.grupoRepository.delete(grupo);
+
+    }
+
 }

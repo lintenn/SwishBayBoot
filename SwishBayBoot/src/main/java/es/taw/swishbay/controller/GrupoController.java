@@ -84,4 +84,16 @@ public class GrupoController extends SwishBayController{
         return "redirect:/grupos";
     }
 
+    @GetMapping("/borrarGrupo/{id}")
+    public String borrarGrupo(@PathVariable("id") Integer id, Model model, HttpSession session){
+
+        if (!super.comprobarMarketingSession(session)) {
+            return super.redirectComprobarMarketingSession(session);
+        }
+
+        this.grupoService.borrarGrupo(id);
+
+        return "redirect:/grupos";
+    }
+
 }
