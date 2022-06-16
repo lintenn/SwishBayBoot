@@ -72,10 +72,10 @@ public interface UsuarioRepository  extends JpaRepository<Usuario, Integer> {
     List<Usuario> findByCompradorVendedorBySexoQueNoPertencenAUnGrupo(String sexo, List<Integer> idsGrupo); // angel
 
     @Query("select u from Usuario u where u.saldo >= :saldoDesde and u.id IN :usuarios and u.id NOT IN :idsGrupo")
-    List<Usuario> findByCompradorVendedorBySaldoDesdeQueNoPertencenAUnGrupo(Integer saldoDesde, List<Integer> usuarios, List<Integer> idsGrupo); // angel
+    List<Usuario> findByCompradorVendedorBySaldoDesdeQueNoPertencenAUnGrupo(Double saldoDesde, List<Integer> usuarios, List<Integer> idsGrupo); // angel
 
     @Query("select u from Usuario u where u.saldo <= :saldoDesde and u.id IN :usuarios and u.id NOT IN :idsGrupo")
-    List<Usuario> findByCompradorVendedorBySaldoHastaQueNoPertencenAUnGrupo(Integer saldoDesde, List<Integer> usuarios, List<Integer> idsGrupo); // angel
+    List<Usuario> findByCompradorVendedorBySaldoHastaQueNoPertencenAUnGrupo(Double saldoDesde, List<Integer> usuarios, List<Integer> idsGrupo); // angel
 
     @Query("select u from Usuario u where u.rol.nombre like 'compradorvendedor' and u.nombre like CONCAT('%',:nombre,'%') and u.id IN :idsGrupo")
     List<Usuario> findByCompradorVendedorByNameQuePertencenAUnGrupo(String nombre, List<Integer> idsGrupo); // angel
@@ -96,10 +96,10 @@ public interface UsuarioRepository  extends JpaRepository<Usuario, Integer> {
     List<Usuario> findByCompradorVendedorBySexoQuePertencenAUnGrupo(String sexo, List<Integer> idsGrupo); // angel
 
     @Query("select u from Usuario u where u.saldo >= :saldoDesde and u.id IN :usuarios")
-    List<Usuario> findByCompradorVendedorBySaldoDesdeQuePertencenAUnGrupo(Integer saldoDesde, List<Integer> usuarios); // angel
+    List<Usuario> findByCompradorVendedorBySaldoDesdeQuePertencenAUnGrupo(Double saldoDesde, List<Integer> usuarios); // angel
 
     @Query("select u from Usuario u where u.saldo <= :saldoDesde and u.id IN :usuarios")
-    List<Usuario> findByCompradorVendedorBySaldoHastaQuePertencenAUnGrupo(Integer saldoDesde, List<Integer> usuarios); // angel
+    List<Usuario> findByCompradorVendedorBySaldoHastaQuePertencenAUnGrupo(Double saldoDesde, List<Integer> usuarios); // angel
 
     @Query("select u from Usuario u where u.rol.nombre like 'marketing'")
     List<Usuario> findByMarketing(); // angel

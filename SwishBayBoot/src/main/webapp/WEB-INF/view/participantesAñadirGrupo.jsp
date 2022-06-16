@@ -1,3 +1,4 @@
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%--
     Document   : participantesGrupoAñadir
     Created on : 20 abr 2022, 21:21:54
@@ -22,6 +23,43 @@
 <div class="cover-container d-flex w-100 h-100 p-3 mx-auto flex-column">
     <jsp:include page="cabeceraPrincipal.jsp" />
 
+    <%
+        Integer idGrupo = (Integer)request.getAttribute("idGrupo");
+        String id = "/usuariosCompradorVendedorQueNoSonDeUnGrupo/"+idGrupo;
+    %>
+
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container-fluid">
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                    </li>
+                </ul>
+                <form:form modelAttribute="filtro" method="post" class="d-flex" action="<%= id %>">
+                    <div class="mt-2 me-2">
+                        Sueldo
+                    </div>
+                    <div class="mt-2 mx-1">
+                        Desde:
+                    </div>
+                    <form:input path="saldoDesde" class="form-control mx-1" type="number" min="0"  style=" width:100px;" id="saldoDesde" name="saldoDesde"/>
+                    <div class="mt-2" style="margin-right: 15px;">€</div>
+                    <div class="mt-2">
+                        Hasta:
+                    </div>
+                    <form:input path="saldoHasta" class="form-control mx-1" type="number" min="0" style=" width:100px;" id="saldoHasta" name="saldoHasta"/>
+                    <div class="mt-2" style="margin-right: 15px;">€</div>
+
+                    <form:select path="seleccionado" class="form-select px-2 me-2" id="filtroUsuariosCompradores" name="filtroUsuariosCompradores">
+                        <form:options items="${filtros}" itemValue="seleccionado" itemLabel="seleccionado"/>
+                    </form:select>
+                    <form:input path="busqueda" class="form-control me-2" type="search" placeholder="Buscar" name="filtro" aria-label="Search"/>
+                    <form:button class="btn btn-outline-success" type="submit">Buscar</form:button>
+                </form:form>
+            </div>
+        </div>
+    </nav>
+
 <main class="row d-flex justify-content-center mt-4">
 
     <div class="d-flex justify-content-between">
@@ -41,7 +79,6 @@
             <th></th>
         </tr>
         <%
-            Integer idGrupo = (Integer)request.getAttribute("idGrupo");
             List<UsuarioDTO> usuarios = (List)request.getAttribute("usuarios");
             if(usuarios.size() != 0){
                 for (UsuarioDTO usuario : usuarios) {
