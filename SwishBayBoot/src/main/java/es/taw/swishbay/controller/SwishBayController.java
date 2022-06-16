@@ -6,7 +6,7 @@ import org.springframework.stereotype.Controller;
 import javax.servlet.http.HttpSession;
 
 /**
- * @author Luis 67%, Galo 33%
+ * @author Luis 50%, Galo 25%, angel 25%
  */
 
 @Controller

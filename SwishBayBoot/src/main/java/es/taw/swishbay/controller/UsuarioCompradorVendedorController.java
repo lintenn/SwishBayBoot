@@ -19,6 +19,12 @@ import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Controlador de los usuarios cuyo rol es compradorvendedor. En este controlador solo se realizan operaciones de añadir y eliminar participantes en los grupos
+ *
+ * @author angel
+ */
+
 @Controller
 public class UsuarioCompradorVendedorController extends SwishBayController{
 

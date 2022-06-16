@@ -1,5 +1,9 @@
 package es.taw.swishbay.dto;
 
+/**
+ *
+ * @author angel
+ */
 public class UsuarioCompradorDTO {
 
     private Double saldoDesde;

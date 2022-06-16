@@ -17,6 +17,12 @@ import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Controlador de los grupos
+ *
+ * @author angel
+ */
+
 @Controller
 public class GrupoController extends SwishBayController{
 
