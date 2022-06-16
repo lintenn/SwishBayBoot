@@ -209,7 +209,7 @@ public class GrupoService {
     public void anadirUsuarioAGrupoADarleFavoritoAProducto(int idProducto, int idUsuario){ // angel
 
         this.comprobarExistenciaGrupoPorNombre("Grupo_"+idProducto);
-        //Integer idGrupo = this.grupoService.buscarGruposPorNombre("Grupo_"+idProducto).get(0).getId();
+
         Integer idGrupo = this.grupoRepository.findGrupoByGrupoNombreExtricto("Grupo_"+idProducto).get(0).getId();
 
         this.anadirUsuarioAListaUsuariosGrupo(idUsuario, idGrupo);
@@ -264,6 +264,88 @@ public class GrupoService {
         }
 
         return pujasDTO;
+
+    }
+
+    public List<GrupoDTO> buscarTodosGrupos(){ // angel
+
+        List<Grupo> grupos = this.grupoRepository.findAll();
+
+        return this.listaGruposEntityADTO(grupos);
+
+    }
+
+    public GrupoDTO buscarGrupoDTO(Integer id){ // angel
+
+        GrupoDTO grupoDTO = this.buscarGrupo(id).toDTO();
+
+        return grupoDTO;
+
+    }
+
+    public void editarGrupo(Integer id, String nombre, Integer idMarketing){ // angel
+
+        Grupo grupo = this.buscarGrupo(id);
+
+        Usuario marketing = this.usuarioRepository.findById(idMarketing).orElse(null);
+
+        this.rellenarGrupo(grupo, nombre, marketing);
+
+        this.grupoRepository.save(grupo);
+
+    }
+
+    public void borrarGrupo(Integer id){ // angel
+
+        Grupo grupo = this.buscarGrupo(id);
+
+        this.grupoRepository.delete(grupo);
+
+    }
+
+    public List<UsuarioDTO> listarUsuariosDeUnGrupo(Integer idGrupo){ // angel
+
+        List<Usuario> usuarios = this.grupoRepository.findUsuariosByGrupoId(idGrupo);
+
+        return this.listaUsuarioEntityADTO(usuarios);
+
+    }
+
+    private List<UsuarioDTO> listaUsuarioEntityADTO (List<Usuario> lista) { // angel
+        List<UsuarioDTO> listaDTO = null;
+        if (lista != null) {
+            listaDTO = new ArrayList<>();
+            for (Usuario usuario : lista) {
+                listaDTO.add(usuario.toDTO());
+            }
+        }
+        return listaDTO;
+    }
+
+    public List<Integer> listarIdsUsuariosDeUnGrupo(Integer idGrupo){ // angel
+
+        List<UsuarioDTO> usuarios = this.listarUsuariosDeUnGrupo(idGrupo);
+
+        List<Integer> ids = new ArrayList<>();
+
+        for(UsuarioDTO usuario : usuarios){
+            ids.add(usuario.getId());
+        }
+
+        return ids;
+
+    }
+
+    public List<UsuarioDTO> listarUsuariosQueNoPertenecenAUnGrupo(List<Integer> ids){ // angel
+
+
+        List<Usuario> usuarios = this.usuarioRepository.findByCompradorVendedor();
+
+        if(!ids.isEmpty()){
+            usuarios = this.grupoRepository.findUsuariosNotInGrupoId(ids);
+        }
+
+        return this.listaUsuarioEntityADTO(usuarios);
 
     }
 

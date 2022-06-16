@@ -109,4 +109,46 @@ public class MensajeService {
 
     }
 
+    public List<MensajeDTO> buscarMensajesPorIdGrupo(Integer id){
+
+        List<Mensaje> mensajes = this.mensajeRepository.findByIdGrupo(id);
+
+        return this.listaMensajesEntityADTO(mensajes);
+
+    }
+
+    public void borrarMensaje(Integer id){ // angel
+
+        Mensaje mensaje = this.buscarMensaje(id);
+
+        this.mensajeRepository.delete(mensaje);
+
+    }
+
+    private Mensaje buscarMensaje(Integer id){ // angel
+
+        Mensaje mensaje = this.mensajeRepository.findById(id).orElse(null);
+
+        return mensaje;
+
+    }
+
+    public MensajeDTO buscarMensajeDTO(Integer id){ // angel
+
+        Mensaje mensaje = buscarMensaje(id);
+
+        return mensaje.toDTO();
+
+    }
+
+    public void modificarMensaje(Integer id, String asunto, String contenido){ // angel
+
+        Mensaje mensaje = this.buscarMensaje(id);
+
+        this.rellenarMensaje(mensaje, asunto, contenido);
+
+        this.mensajeRepository.save(mensaje);
+
+    }
+
 }
