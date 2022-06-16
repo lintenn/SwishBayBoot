@@ -1,3 +1,4 @@
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%--
     Document   : grupos
     Created on : 16 abr 2022, 2:32:52
@@ -34,6 +35,27 @@
                     </li>
 
                 </ul>
+                <form:form modelAttribute="filtro" method="post" class="d-flex" action="grupos">
+                    <div class="mt-2 me-2">
+                        Creador
+                    </div>
+                    <div class="mt-2 mx-1">
+                        Nombre:
+                    </div>
+                    <form:input path="nombreCreador" class="form-control me-2" type="search" placeholder="Nombre creador" name="filtroNombreCreador" aria-label="Search"/>
+                    <div class="mt-2 mx-1">
+                        Apellido:
+                    </div>
+                    <form:input path="apellidoCreador" class="form-control me-2" type="search" placeholder="Apellido creador" name="filtroApellidoCreador" aria-label="Search"/>
+                    <div class="mt-2 me-2">
+                        Grupo
+                    </div>
+                    <div class="mt-2 mx-1">
+                        Nombre:
+                    </div>
+                    <form:input path="nombreGrupo" class="form-control me-2" type="search" placeholder="Nombre grupo" name="filtroNombreGrupo" aria-label="Search"/>
+                    <form:button class="btn btn-outline-success" type="submit">Buscar</form:button>
+                </form:form>
             </div>
         </div>
     </nav>

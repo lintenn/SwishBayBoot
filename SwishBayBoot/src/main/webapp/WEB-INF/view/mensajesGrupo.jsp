@@ -1,3 +1,4 @@
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%--
     Document   : mensajes
     Created on : 25 abr 2022, 13:55:52
@@ -23,10 +24,30 @@
 <div class="cover-container d-flex w-100 h-100 p-3 mx-auto flex-column">
     <jsp:include page="cabeceraPrincipal.jsp" />
 
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container-fluid">
+            <div class="collapse navbar-collapse" style="float: right" id="navbarSupportedContent">
+
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                    </li>
+                </ul>
+                <%
+                    Integer idGrupo = (Integer)request.getAttribute("idGrupo");
+                    String action = "/verMensajes/" + idGrupo;
+                %>
+                <form:form modelAttribute="filtroMensaje" method="post" class="d-flex" action="<%= action %>">
+                    <form:select path="filtro" class="form-select px-2 me-2" id="filtroMensajes" name="filtroMensajes">
+                        <form:options items="${filtros}" itemValue="filtro" itemLabel="filtro"/>
+                    </form:select>
+                    <form:input path="busqueda" class="form-control me-2" type="search" placeholder="Buscar" name="filtro" aria-label="Search"/>
+                    <form:button class="btn btn-outline-success" type="submit">Buscar</form:button>
+                </form:form>
+            </div>
+        </div>
+    </nav>
+
     <main class="row d-flex justify-content-center mt-4">
-    <%
-        Integer idGrupo = (Integer)request.getAttribute("idGrupo");
-    %>
         <div class="d-flex justify-content-between">
             <h1>Listado de mensajes: </h1>
             <a href="/crearEditarMensaje/<%=idGrupo%>" class="btn btn-lg btn-secondary fw-bold border-white">Crear nuevo mensaje</a>

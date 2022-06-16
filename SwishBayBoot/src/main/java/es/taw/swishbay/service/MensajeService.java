@@ -151,4 +151,20 @@ public class MensajeService {
 
     }
 
+    public List<MensajeDTO> listarMensajesDeUnGrupoPorAsuntoPorMensajes(String asunto, Integer idGrupo, List<Integer> ids){
+
+        List<Mensaje> mensajes = this.mensajeRepository.findByAsuntoAndIdGrupoByMessages(idGrupo, asunto, ids);
+
+        return this.listaMensajesEntityADTO(mensajes);
+
+    }
+
+    public List<MensajeDTO> listarMensajesDeUnGrupoPorContenidoPorMensajes(String contenido, Integer idGrupo, List<Integer> ids){
+
+        List<Mensaje> mensajes = this.mensajeRepository.findByContenidoAndIdGrupoByMessages(idGrupo, contenido, ids);
+
+        return this.listaMensajesEntityADTO(mensajes);
+
+    }
+
 }
