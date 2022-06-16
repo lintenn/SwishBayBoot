@@ -53,6 +53,7 @@
         } else {
             id += "/0";
         }
+        String id2 = "/"+grupo.getId();
     %>
     <form:form modelAttribute="grupo" method="POST" action="<%=id%>">
         <div class="form-group row justify-content-md-center mb-4">
@@ -72,7 +73,7 @@
                     <%
                         if(grupo.getUsuarioList()!=null){
                     %>
-                    <a href="ParticipantesGrupoEditarServlet<%=id%>" class="btn btn-lg btn-success fw-bold border-white mx-2"><%= grupo.getUsuarioList().size()==0? "Añadir participantes": "Modificar participantes" %></a>
+                    <a href="/usuariosCompradorVendedorDeUnGrupo<%=id2%>" class="btn btn-lg btn-success fw-bold border-white mx-2"><%= grupo.getUsuarioList().size()==0? "Añadir participantes": "Modificar participantes" %></a>
                     <%
                         }
                     %>

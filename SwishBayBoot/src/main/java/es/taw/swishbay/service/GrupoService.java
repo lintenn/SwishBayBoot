@@ -303,4 +303,23 @@ public class GrupoService {
 
     }
 
+    public List<UsuarioDTO> listarUsuariosDeUnGrupo(Integer idGrupo){ // angel
+
+        List<Usuario> usuarios = this.grupoRepository.findUsuariosByGrupoId(idGrupo);
+
+        return this.listaUsuarioEntityADTO(usuarios);
+
+    }
+
+    private List<UsuarioDTO> listaUsuarioEntityADTO (List<Usuario> lista) { // angel
+        List<UsuarioDTO> listaDTO = null;
+        if (lista != null) {
+            listaDTO = new ArrayList<>();
+            for (Usuario usuario : lista) {
+                listaDTO.add(usuario.toDTO());
+            }
+        }
+        return listaDTO;
+    }
+
 }
