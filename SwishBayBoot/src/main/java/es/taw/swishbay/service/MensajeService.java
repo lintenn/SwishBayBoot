@@ -109,4 +109,12 @@ public class MensajeService {
 
     }
 
+    public List<MensajeDTO> buscarMensajesPorIdGrupo(Integer id){
+
+        List<Mensaje> mensajes = this.mensajeRepository.findByIdGrupo(id);
+
+        return this.listaMensajesEntityADTO(mensajes);
+
+    }
+
 }

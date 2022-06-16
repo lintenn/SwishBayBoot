@@ -62,4 +62,20 @@ public class MensajeController extends SwishBayController {
 
     }
 
+    @GetMapping("/verMensajes/{id}")
+    public String listarMensajesPorGrupo(@PathVariable("id") Integer id, Model model, HttpSession session){
+
+        if (!super.comprobarMarketingSession(session)) {
+            return super.redirectComprobarMarketingSession(session);
+        }
+
+        List<MensajeDTO> mensajes = this.mensajeService.buscarMensajesPorIdGrupo(id);
+
+        model.addAttribute("mensajes", mensajes);
+        model.addAttribute("idGrupo", id);
+
+        return "mensajesGrupo";
+
+    }
+
 }
