@@ -17,6 +17,12 @@ import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Controlador de los mensajes
+ *
+ * @author angel
+ */
+
 @Controller
 public class MensajeController extends SwishBayController {
 
