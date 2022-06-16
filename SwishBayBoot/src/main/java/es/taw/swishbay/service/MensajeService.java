@@ -85,11 +85,13 @@ public class MensajeService {
 
         this.mensajeRepository.save(mensaje);
 
-        for(Usuario usuario : grupo.getUsuarioList()){
-            List<Mensaje> mensajeList = usuario.getMensajeList();
-            mensajeList.add(mensaje);
-            this.modificarListaMensajesUsuario(usuario.getId(), mensajeList);
-        };
+        if(grupo.getUsuarioList() != null){
+            for(Usuario usuario : grupo.getUsuarioList()){
+                List<Mensaje> mensajeList = usuario.getMensajeList();
+                mensajeList.add(mensaje);
+                this.modificarListaMensajesUsuario(usuario.getId(), mensajeList);
+            };
+        }
     }
 
     public void modificarListaMensajesUsuario(Integer id, List<Mensaje> mensajes){ // angel
