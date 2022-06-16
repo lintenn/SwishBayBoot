@@ -28,17 +28,18 @@
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <div class="container-fluid">
             <div class="collapse navbar-collapse" style="float: right" id="navbarSupportedContent">
-                <%
-                    String str = request.getParameter("id");
-                    String id = "/"+str;
-                    String tipoFiltro = (String)request.getAttribute("tipoFiltro");
-                    String filtro = (String)request.getAttribute("filtro");
-                    MensajeFiltroDTO mensajeFiltroDTO = (MensajeFiltroDTO) request.getAttribute("filtroMensaje");
-                %>
+
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <li class="nav-item">
                     </li>
                 </ul>
+                <form:form modelAttribute="filtroMensaje" method="post" class="d-flex" action="/NotificacionesVerServlet">
+                    <form:select path="filtro" class="form-select px-2 me-2" id="filtroMensajes" name="filtroMensajes">
+                        <form:options items="${filtros}" itemValue="filtro" itemLabel="filtro"/>
+                    </form:select>
+                    <form:input path="busqueda" class="form-control me-2" type="search" placeholder="Buscar" name="filtro" aria-label="Search"/>
+                    <form:button class="btn btn-outline-success" type="submit">Buscar</form:button>
+                </form:form>
             </div>
         </div>
     </nav>

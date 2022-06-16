@@ -7,26 +7,26 @@ package es.taw.swishbay.dto;
 
 public class MensajeFiltroDTO {
 
-    private String filtroTitulo;
-    private String filtroMensaje;
+    private String filtro;
+    private String busqueda;
 
-    public MensajeFiltroDTO(String filtroTitulo) {
-        this.filtroTitulo = filtroTitulo;
+    public MensajeFiltroDTO(String filtro) {
+        this.filtro = filtro;
     }
 
-    public String getFiltroTitulo() {
-        return filtroTitulo;
+    public String getFiltro() {
+        return filtro;
     }
 
-    public void setFiltroTitulo(String filtroTitulo) {
-        this.filtroTitulo = filtroTitulo;
+    public void setFiltro(String filtro) {
+        this.filtro = filtro;
     }
 
-    public String getFiltroMensaje() {
-        return filtroMensaje;
+    public String getBusqueda() {
+        return busqueda;
     }
 
-    public void setFiltroMensaje(String filtroMensaje) {
-        this.filtroMensaje = filtroMensaje;
+    public void setBusqueda(String busqueda) {
+        this.busqueda = busqueda;
     }
 }

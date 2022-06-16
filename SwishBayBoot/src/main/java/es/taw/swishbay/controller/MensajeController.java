@@ -27,37 +27,86 @@ public class MensajeController extends SwishBayController {
         this.mensajeService = mensajeService;
     }
 
-    @GetMapping("/NotificacionesVerServlet/{id}")
-    public String verNotificaciones(@PathVariable("id") int id, @ModelAttribute("filtro") MensajeFiltroDTO filtro, Model model, HttpSession session){
+    @GetMapping("/NotificacionesVerServlet")
+    public String verNotificaciones(@ModelAttribute("filtro") MensajeFiltroDTO filtro, Model model, HttpSession session){
 
         if(!super.comprobarCompradorVendedorSession(session)){
             return super.redirectComprobarCompradorVendedorSession(session);
         }
 
+        if(filtro == null){
+            filtro = new MensajeFiltroDTO("Asunto");
+        }
+
         UsuarioDTO usuarioDTO = (UsuarioDTO) session.getAttribute("usuario");
         List<MensajeDTO> mensajeDTOList = usuarioDTO.getMensajeList();
 
-        if(filtro.getFiltroTitulo() != null && !filtro.getFiltroTitulo().isEmpty() && mensajeDTOList != null) {
+        if(filtro.getBusqueda() != null && !filtro.getBusqueda().isEmpty() && mensajeDTOList != null) {
 
             List<Integer> ids = new ArrayList<>();
             for(MensajeDTO mensaje : mensajeDTOList){
                 ids.add(mensaje.getId());
             }
 
-            switch(filtro.getFiltroMensaje()){
+            switch(filtro.getFiltro()){
                 case "Asunto":
-                    mensajeDTOList = this.mensajeService.listarMensajesDeUnUsuarioPorAsuntoPorMensajes(filtro.getFiltroTitulo(), usuarioDTO.getId(), ids);
+                    mensajeDTOList = this.mensajeService.listarMensajesDeUnUsuarioPorAsuntoPorMensajes(filtro.getFiltro(), usuarioDTO.getId(), ids);
                     break;
                 case "Cuerpo del mensaje":
-                    mensajeDTOList = this.mensajeService.listarMensajesDeUnUsuarioPorContenidoPorMensajes(filtro.getFiltroTitulo(), usuarioDTO.getId(), ids);
+                    mensajeDTOList = this.mensajeService.listarMensajesDeUnUsuarioPorContenidoPorMensajes(filtro.getFiltro(), usuarioDTO.getId(), ids);
                     break;
             }
 
         }
+        List<MensajeFiltroDTO> mensajeFiltroDTOS = new ArrayList<>();
+        mensajeFiltroDTOS.add(new MensajeFiltroDTO("Asunto"));
+        mensajeFiltroDTOS.add(new MensajeFiltroDTO("Cuerpo del mensaje"));
 
-        model.addAttribute("tipoFiltro", filtro.getFiltroMensaje());
-        model.addAttribute("filtro", filtro.getFiltroTitulo());
         model.addAttribute("filtroMensaje", filtro);
+        model.addAttribute("filtros", mensajeFiltroDTOS);
+        model.addAttribute("mensajes", mensajeDTOList);
+
+        return "notificaciones";
+
+    }
+
+    @PostMapping("/NotificacionesVerServlet")
+    public String verNotificacionesFiltradas(@ModelAttribute("filtro") MensajeFiltroDTO filtro, Model model, HttpSession session){
+
+        if(!super.comprobarCompradorVendedorSession(session)){
+            return super.redirectComprobarCompradorVendedorSession(session);
+        }
+
+        if(filtro == null){
+            filtro = new MensajeFiltroDTO("Asunto");
+        }
+
+        UsuarioDTO usuarioDTO = (UsuarioDTO) session.getAttribute("usuario");
+        List<MensajeDTO> mensajeDTOList = usuarioDTO.getMensajeList();
+
+        if(filtro.getBusqueda() != null && !filtro.getBusqueda().isEmpty() && mensajeDTOList != null) {
+
+            List<Integer> ids = new ArrayList<>();
+            for(MensajeDTO mensaje : mensajeDTOList){
+                ids.add(mensaje.getId());
+            }
+
+            switch(filtro.getFiltro()){
+                case "Asunto":
+                    mensajeDTOList = this.mensajeService.listarMensajesDeUnUsuarioPorAsuntoPorMensajes(filtro.getBusqueda(), usuarioDTO.getId(), ids);
+                    break;
+                case "Cuerpo del mensaje":
+                    mensajeDTOList = this.mensajeService.listarMensajesDeUnUsuarioPorContenidoPorMensajes(filtro.getBusqueda(), usuarioDTO.getId(), ids);
+                    break;
+            }
+
+        }
+        List<MensajeFiltroDTO> mensajeFiltroDTOS = new ArrayList<>();
+        mensajeFiltroDTOS.add(new MensajeFiltroDTO("Asunto"));
+        mensajeFiltroDTOS.add(new MensajeFiltroDTO("Cuerpo del mensaje"));
+
+        model.addAttribute("filtroMensaje", filtro);
+        model.addAttribute("filtros", mensajeFiltroDTOS);
         model.addAttribute("mensajes", mensajeDTOList);
 
         return "notificaciones";
