@@ -40,6 +40,12 @@ public abstract class SwishBayController {
         return user != null && user.getRol().getNombre().equals("compradorvendedor");
     }
 
+    protected boolean comprobarMarketingSession(HttpSession session) { // angel
+        UsuarioDTO user = (UsuarioDTO)session.getAttribute("usuario");
+
+        return user != null && user.getRol().getNombre().equals("marketing");
+    }
+
     protected String redirectComprobarCompradorVendedorSession(HttpSession session) { // Galo
         UsuarioDTO user = (UsuarioDTO)session.getAttribute("usuario");
 
@@ -62,6 +68,20 @@ public abstract class SwishBayController {
         } else if (user.getRol().getNombre().equals("compradorvendedor")) {
             return "redirect:/";
         } else if (user.getRol().getNombre().equals("marketing")) {
+            return "redirect:/";
+        } else {
+            return "";
+        }
+    }
+
+    protected String redirectComprobarMarketingSession(HttpSession session) { // angel
+        UsuarioDTO user = (UsuarioDTO)session.getAttribute("usuario");
+
+        if (user == null) {
+            return "redirect:/";
+        } else if (user.getRol().getNombre().equals("compradorvendedor")) {
+            return "redirect:/";
+        } else if (user.getRol().getNombre().equals("admin")) {
             return "redirect:/";
         } else {
             return "";

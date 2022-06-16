@@ -29,7 +29,7 @@ public class MensajeController extends SwishBayController {
     public String verNotificaciones(@PathVariable("id") int id, @ModelAttribute("filtro") MensajeFiltroDTO filtro, Model model, HttpSession session){
 
         if(!super.comprobarCompradorVendedorSession(session)){
-            super.redirectComprobarCompradorVendedorSession(session);
+            return super.redirectComprobarCompradorVendedorSession(session);
         }
 
         UsuarioDTO usuarioDTO = (UsuarioDTO) session.getAttribute("usuario");

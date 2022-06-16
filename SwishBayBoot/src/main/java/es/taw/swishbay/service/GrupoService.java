@@ -267,4 +267,12 @@ public class GrupoService {
 
     }
 
+    public List<GrupoDTO> buscarTodosGrupos(){ // angel
+
+        List<Grupo> grupos = this.grupoRepository.findAll();
+
+        return this.listaGruposEntityADTO(grupos);
+
+    }
+
 }
