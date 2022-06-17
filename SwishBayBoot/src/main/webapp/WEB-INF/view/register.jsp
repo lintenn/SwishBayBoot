@@ -26,7 +26,7 @@
         } else if (user.getRol().getNombre().equals("compradorvendedor")) {
             redirectTo = "comprador/productos";
         } else if (user.getRol().getNombre().equals("marketing")) {
-            redirectTo = "usuarioCompradorServlet";
+            redirectTo = "usuariosCompradorVendedor";
         }
         response.sendRedirect(request.getContextPath() + "/" + redirectTo);
     }

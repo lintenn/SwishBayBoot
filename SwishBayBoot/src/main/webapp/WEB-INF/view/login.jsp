@@ -18,7 +18,7 @@
         } else if (user.getRol().getNombre().equals("compradorvendedor")) {
             goTo = "comprador/productos";
         } else if (user.getRol().getNombre().equals("marketing")) {
-            goTo = "usuarioCompradorServlet";
+            goTo = "usuariosCompradorVendedor";
         }
         response.sendRedirect(request.getContextPath() + "/" + goTo);
     }

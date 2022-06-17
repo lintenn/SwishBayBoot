@@ -48,6 +48,7 @@ public class LoginRegisterController {
         usuario.setFechaNacimiento(new Date());
         usuario.setSexo("masc");
         usuario.setCategoriaList(new ArrayList<>());
+        usuario.setFavoritos(new ArrayList<>());
 
         model.addAttribute("categorias", categorias);
         model.addAttribute("usuario", usuario);
