@@ -23,6 +23,7 @@ public class CompradorProductosController extends SwishBayController{
     private CategoriaService categoriaService;
     private PujaService pujaService;
     private ProductoService productoService;
+    private UsuarioService usuarioService;
 
     @Autowired
     public void setCompradorService(CompradorService compradorService){
@@ -44,6 +45,11 @@ public class CompradorProductosController extends SwishBayController{
         this.productoService = productoService;
     }
 
+    @Autowired
+    public void setUsuarioService(UsuarioService usuarioService){
+        this.usuarioService = usuarioService;
+    }
+
     @GetMapping("/productos")
     public String doListarDisponibles(Model model, HttpSession session){
 
@@ -55,10 +61,10 @@ public class CompradorProductosController extends SwishBayController{
         List<ProductoDTO> productos = compradorService.listarProductosExistentes(usuario.getId());
         CompradorFiltroDTO filtro = new CompradorFiltroDTO(productoService.obtenerMayorPrecio(productos), "/comprador/productos");
 
-        model.addAttribute("usuario", usuario);
         model.addAttribute("productos", productos);
         model.addAttribute("filtro", filtro);
 
+        updateUsuario(usuario, session);
         addAttributesCategoriasAndMayoresPujas(model, productos);
         setGoTo(filtro, session);
 
@@ -77,10 +83,10 @@ public class CompradorProductosController extends SwishBayController{
         List<ProductoDTO> productos = compradorService.listarProductosExistentes(filtro.getFiltroTitulo(),
                 filtro.getFiltroCategoria(), filtro.getFiltroPrecio(), usuario.getId());
 
-        model.addAttribute("usuario", usuario);
         model.addAttribute("productos", productos);
         model.addAttribute("filtro", filtro);
 
+        updateUsuario(usuario, session);
         addAttributesCategoriasAndMayoresPujas(model, productos);
         setGoTo(filtro, session);
 
@@ -98,10 +104,10 @@ public class CompradorProductosController extends SwishBayController{
         List<ProductoDTO> productos = compradorService.listarProductosEnPuja(usuario.getId());
         CompradorFiltroDTO filtro = new CompradorFiltroDTO(productoService.obtenerMayorPrecio(productos), "/comprador/enPuja");
 
-        model.addAttribute("usuario", usuario);
         model.addAttribute("productos", productos);
         model.addAttribute("filtro", filtro);
 
+        updateUsuario(usuario, session);
         addAttributesCategoriasAndMayoresPujas(model, productos);
         setGoTo(filtro, session);
 
@@ -120,10 +126,10 @@ public class CompradorProductosController extends SwishBayController{
         List<ProductoDTO> productos = compradorService.listarProductosEnPuja(filtro.getFiltroTitulo(),
                 filtro.getFiltroCategoria(), filtro.getFiltroPrecio(), usuario.getId());
 
-        model.addAttribute("usuario", usuario);
         model.addAttribute("productos", productos);
         model.addAttribute("filtro", filtro);
 
+        updateUsuario(usuario, session);
         addAttributesCategoriasAndMayoresPujas(model, productos);
         setGoTo(filtro, session);
 
@@ -141,10 +147,10 @@ public class CompradorProductosController extends SwishBayController{
         List<ProductoDTO> productos = compradorService.listarProductosFavoritos(usuario.getId());
         CompradorFiltroDTO filtro = new CompradorFiltroDTO(productoService.obtenerMayorPrecio(productos), "/comprador/favoritos");
 
-        model.addAttribute("usuario", usuario);
         model.addAttribute("productos", productos);
         model.addAttribute("filtro", filtro);
 
+        updateUsuario(usuario, session);
         addAttributesCategoriasAndMayoresPujas(model, productos);
         setGoTo(filtro, session);
 
@@ -163,10 +169,10 @@ public class CompradorProductosController extends SwishBayController{
         List<ProductoDTO> productos = compradorService.listarProductosFavoritos(filtro.getFiltroTitulo(),
                 filtro.getFiltroCategoria(), filtro.getFiltroPrecio(), usuario.getId());
 
-        model.addAttribute("usuario", usuario);
         model.addAttribute("productos", productos);
         model.addAttribute("filtro", filtro);
 
+        updateUsuario(usuario, session);
         addAttributesCategoriasAndMayoresPujas(model, productos);
         setGoTo(filtro, session);
 
@@ -184,10 +190,10 @@ public class CompradorProductosController extends SwishBayController{
         List<ProductoDTO> productos = compradorService.listarProductosComprados(usuario.getId());
         CompradorFiltroDTO filtro = new CompradorFiltroDTO(productoService.obtenerMayorPrecio(productos), "/comprador/comprados");
 
-        model.addAttribute("usuario", usuario);
         model.addAttribute("productos", productos);
         model.addAttribute("filtro", filtro);
 
+        updateUsuario(usuario, session);
         addAttributesCategoriasAndMayoresPujas(model, productos);
         setGoTo(filtro, session);
 
@@ -206,10 +212,10 @@ public class CompradorProductosController extends SwishBayController{
         List<ProductoDTO> productos = compradorService.listarProductosComprados(filtro.getFiltroTitulo(),
                 filtro.getFiltroCategoria(), filtro.getFiltroPrecio(), usuario.getId());
 
-        model.addAttribute("usuario", usuario);
         model.addAttribute("productos", productos);
         model.addAttribute("filtro", filtro);
 
+        updateUsuario(usuario, session);
         addAttributesCategoriasAndMayoresPujas(model, productos);
         setGoTo(filtro, session);
 
@@ -222,6 +228,11 @@ public class CompradorProductosController extends SwishBayController{
 
         model.addAttribute("mayoresPujas", mayoresPujas);
         model.addAttribute("categorias", categorias);
+    }
+
+    private void updateUsuario(UsuarioDTO usuario, HttpSession session){
+        usuario = usuarioService.buscarUsuario(usuario.getId());
+        session.setAttribute("usuario", usuario);
     }
 
     private void checkFiltroTitulo(CompradorFiltroDTO filtro){
