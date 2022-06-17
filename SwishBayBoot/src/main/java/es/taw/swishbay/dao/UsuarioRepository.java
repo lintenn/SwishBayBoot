@@ -12,6 +12,7 @@ import java.util.List;
 
 public interface UsuarioRepository  extends JpaRepository<Usuario, Integer> {
 
+    @Query("SELECT u FROM Usuario u WHERE u.correo like :correo")
     Usuario findByCorreo(String correo); // Luis
 
     @Query("select u from Usuario u where u.correo = :correo and u.password = :password")

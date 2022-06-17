@@ -248,6 +248,7 @@ public class UsuarioService {
         this.rellenarUsuario(usuario, nombre, apellidos, correo, password, domicilio, ciudad, sexo, fechaNacimiento, saldo, idTipoUsuario);
 
         usuario.setCategoriaList(new ArrayList<>());
+        usuario.setProductoList(new ArrayList<>());
 
         this.usuarioRepository.save(usuario);
 

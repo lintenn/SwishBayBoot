@@ -84,7 +84,7 @@
 
         <div class="form-group row justify-content-md-center mt-2">
             <div class="col-sm-10">
-                <button type="submit" class="btn btn-lg btn-success fw-bold border-white mx-2"><%= categoria==null? "Añadir": "Modificar" %></button>
+                <button type="submit" class="btn btn-lg btn-success fw-bold border-white mx-2"><%= categoria.getId()==null? "Añadir": "Modificar" %></button>
                 <a href="/admin/categorias" class="btn btn-lg btn-secondary fw-bold border-white mx-2">Cancelar</a>
             </div>
         </div>

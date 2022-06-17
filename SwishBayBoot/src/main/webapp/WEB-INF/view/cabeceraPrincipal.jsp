@@ -16,9 +16,9 @@
         if (user.getRol().getNombre().equals("administrador")) {
             home = "/admin/usuarios";
         } else if (user.getRol().getNombre().equals("compradorvendedor")) {
-            home = "/seller/misProductos";
+            home = "/comprador/productos";
         } else if (user.getRol().getNombre().equals("marketing")) {
-            home = "usuarioCompradorServlet";
+            home = "/usuariosCompradorVendedor";
         }
     }
 %>

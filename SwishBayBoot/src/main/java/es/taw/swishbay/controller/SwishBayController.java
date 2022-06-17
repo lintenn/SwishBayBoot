@@ -6,7 +6,7 @@ import org.springframework.stereotype.Controller;
 import javax.servlet.http.HttpSession;
 
 /**
- * @author Luis 50%, Galo 25%, angel 25%
+ * @author Luis 60%, Galo 20%, angel 20%
  */
 
 @Controller
@@ -51,10 +51,10 @@ public abstract class SwishBayController {
 
         if (user == null) {
             return "redirect:/";
-        } else if (user.getRol().getNombre().equals("admin")) {
-            return "redirect:/";
+        } else if (user.getRol().getNombre().equals("administrador")) {
+            return "redirect:/admin/usuarios";
         } else if (user.getRol().getNombre().equals("marketing")) {
-            return "redirect:/";
+            return "redirect:/usuariosCompradorVendedor";
         } else {
             return "";
         }
@@ -66,9 +66,9 @@ public abstract class SwishBayController {
         if (user == null) {
             return "redirect:/";
         } else if (user.getRol().getNombre().equals("compradorvendedor")) {
-            return "redirect:/";
+            return "redirect:/comprador/productos";
         } else if (user.getRol().getNombre().equals("marketing")) {
-            return "redirect:/";
+            return "redirect:/usuariosCompradorVendedor";
         } else {
             return "";
         }
@@ -80,9 +80,9 @@ public abstract class SwishBayController {
         if (user == null) {
             return "redirect:/";
         } else if (user.getRol().getNombre().equals("compradorvendedor")) {
-            return "redirect:/";
-        } else if (user.getRol().getNombre().equals("admin")) {
-            return "redirect:/";
+            return "redirect:/comprador/productos";
+        } else if (user.getRol().getNombre().equals("administrador")) {
+            return "redirect:/admin/usuarios";
         } else {
             return "";
         }

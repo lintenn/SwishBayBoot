@@ -99,6 +99,7 @@ public class AdministradorController extends SwishBayController {
         model.addAttribute("roles", roles);
 
         UsuarioDTO usuario = this.usuarioService.buscarUsuario(id);
+        usuario.setFechaNacimiento(new Date(usuario.getFechaNacimiento().getTime() + (1000 * 60 * 60 * 24)));
         model.addAttribute("usuario", usuario);
 
         return "usuario";
@@ -120,7 +121,7 @@ public class AdministradorController extends SwishBayController {
             //try {
                 //fechaNacimiento = formato.parse(strFechaNacimiento);
                 fechaNacimiento = newUser.getFechaNacimiento();
-                status = this.usuarioService.comprobarInformacionUsuario(fechaNacimiento, newUser.getId() + "", newUser.getCorreo(), newUser.getSaldo() + "");
+                status = this.usuarioService.comprobarInformacionUsuario(fechaNacimiento, newUser.getId()==null? "":newUser.getId() + "", newUser.getCorreo(), newUser.getSaldo() + "");
             /*} catch (ParseException ex) {
                 status = "Formato de fecha de nacimiento incorrecto.";
                 System.out.println(ex);
@@ -129,11 +130,16 @@ public class AdministradorController extends SwishBayController {
             if (status != null) {
 
                 model.addAttribute("status", status);
+                List<CategoriaDTO> categorias = this.categoriaService.listarCategorias();
+                model.addAttribute("categorias", categorias);
+                List<RolUsuarioDTO> roles = this.rolUsuarioService.listarRoles();
+                model.addAttribute("roles", roles);
+                model.addAttribute("usuario", newUser);
 
                 if (user == null) {
                     return "register";
                 } else {
-                    return "usuarioNuevoEditar";
+                    return "usuario";
                 }
 
             } else {
